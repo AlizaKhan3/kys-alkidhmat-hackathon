@@ -13,3 +13,9 @@
 {"t": 1790613651.7866611, "q": "Do you press your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B05"]}
 {"t": 1790613664.757826, "q": "ok great!", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
 {"t": 1790614255.66893, "q": "I want you to let me know how a single beef patty takes time to completely get cooked.", "status": "escalated", "score": 0.19, "mode": "threshold", "ids": []}
+{"t": 1790614894.828672, "q": "assalam o alaikum", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790614920.6558888, "q": "are you a bot", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790614948.230507, "q": "great", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790614996.4979992, "q": "how are you", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790615015.3328562, "q": "alright, can you tell what is 2+2", "status": "escalated", "score": 0.201, "mode": "threshold", "ids": []}
+{"t": 1790615025.14287, "q": "where do you live", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
