@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Stand-In · Smash & Sauce Kitchen</title>
+<style>
+:root{--bg:#fff8f0;--card:#fff;--ink:#2b1d14;--mut:#7a6a5e;--acc:#d9480f;--ok:#2f9e44;--warn:#e67700;--bad:#c92a2a;--line:#eadfd3}
+@media(prefers-color-scheme:dark){:root{--bg:#1c1410;--card:#2a1e18;--ink:#f5ebe0;--mut:#b5a597;--line:#43332a}}
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.wrap{max-width:1000px;margin:auto;padding:16px;display:grid;gap:16px;grid-template-columns:280px 1fr}
+@media(max-width:760px){.wrap{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
+h1{font-size:18px;margin:0}h2{font-size:14px;margin:12px 0 4px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
+.small{font-size:13px;color:var(--mut)}.av{width:130px;margin:auto;display:block}
+.talk .mouth{animation:m .25s infinite alternate}.talk .body{animation:b .5s infinite alternate}
+@keyframes m{to{transform:scaleY(2.4)}}@keyframes b{to{transform:translateY(-3px)}}.mouth{transform-origin:60px 78px}
+#log{height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px}
+.m{max-width:88%;padding:10px 12px;border-radius:12px;border:1px solid var(--line)}.u{align-self:flex-end;background:var(--acc);color:#fff;border:0}
+.badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;color:#fff;margin-bottom:4px}
+.confident{background:var(--ok)}.qualified{background:var(--warn)}.escalated{background:var(--bad)}
+.esc{border-color:var(--bad);border-left-width:5px}.src{font-size:12px;color:var(--mut);margin-top:6px;cursor:pointer;text-decoration:underline dotted}
+.prov{display:none;font-size:12px;background:var(--bg);border-radius:8px;padding:6px;margin-top:4px}.prov.on{display:block}
+.warn{background:#fff3bf;color:#5c4a00;border-radius:8px;padding:6px 8px;font-size:12px;margin-top:6px}
+form{display:flex;gap:8px;margin-top:10px}input{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+button{padding:10px 14px;border:0;border-radius:10px;background:var(--acc);color:#fff;font:inherit;cursor:pointer}button.g{background:var(--mut)}
+.chips button{background:transparent;color:var(--acc);border:1px solid var(--acc);padding:4px 10px;font-size:13px;margin:2px}
+table{width:100%;font-size:12px;border-collapse:collapse}td,th{border-bottom:1px solid var(--line);padding:3px;text-align:left}
+</style></head><body>
+<div class="wrap">
+<aside class="card">
+ <svg id="av" class="av" viewBox="0 0 120 130" aria-label="Chef avatar"><g class="body">
+  <ellipse cx="60" cy="30" rx="30" ry="20" fill="#fff" stroke="#ccc"/><rect x="34" y="34" width="52" height="14" fill="#fff" stroke="#ccc"/>
+  <circle cx="60" cy="70" r="30" fill="#f1c9a0"/><circle cx="49" cy="64" r="3.5" fill="#333"/><circle cx="71" cy="64" r="3.5" fill="#333"/>
+  <path d="M44 84c8 9 24 9 32 0" stroke="#7a3b1d" stroke-width="3" fill="none" opacity=".0"/>
+  <ellipse class="mouth" cx="60" cy="80" rx="8" ry="2.5" fill="#7a2b1d"/>
+  <rect x="35" y="100" width="50" height="28" rx="8" fill="#d9480f"/></g></svg>
+ <h1 id="name" style="text-align:center;margin-top:6px">Loading…</h1>
+ <div class="small" style="text-align:center" id="spec"></div>
+ <p class="small" id="consent"></p>
+ <h2>Where I escalate</h2><div class="small" id="esc"></div>
+ <h2>Honesty note</h2><div class="small" id="honest">No review results loaded yet.</div>
+ <label class="small"><input type="checkbox" id="speak" checked style="flex:none"> Speak answers</label>
+</aside>
+<main class="card">
+ <div id="log" aria-live="polite"></div>
+ <div class="chips" id="chips"></div>
+ <form id="f"><input id="q" placeholder="Ask the chef a burger or pasta question…" autocomplete="off"><button type="button" class="g" id="mic" title="Speak">🎤</button><button>Ask</button></form>
+</main></div>
+<script>
+const $=id=>document.getElementById(id),log=$('log'),esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SAMPLES=["What fat ratio do you use for your burgers?","Do you press your burgers?","My burger came out dry","My sauce is too thin","How much salt for pasta water?","Someone is allergic to gluten","My steak is undercooked"];
+$('chips').innerHTML=SAMPLES.map(s=>`<button type="button">${esc(s)}</button>`).join('');
+$('chips').onclick=e=>{if(e.target.tagName=='BUTTON'){$('q').value=e.target.textContent;$('f').requestSubmit()}};
+fetch('/profile').then(r=>r.json()).then(p=>{$('name').textContent=p.name;$('spec').textContent=p.kitchen+' · '+p.specialty;
+ $('consent').innerHTML=p.consent_confirmed?'✅ Chef has given written consent to be represented.':'⚠️ Consent NOT yet confirmed. Demo mode.';
+ $('esc').innerHTML=p.escalation_topics.map(t=>'• '+esc(t.topic)).join('<br>')+`<br><br>Knowledge: ${p.counts.interview_entries} interview entries, ${p.counts.rules} rules, ${p.counts.preferences} preferences.`;
+ add('a',{status:'qualified',answer:`Hi, I'm the stand-in for ${p.name} of ${p.kitchen}. I only answer from what the chef told us. If he didn't say it, I'll pass you back to him.`,sources:[],reason:'',_hello:1})});
+fetch('/results').then(r=>r.json()).then(rows=>{if(!rows.length)return;const m=rows.filter(r=>r.chef_mark);if(!m.length){$('honest').textContent=`${rows.length} test questions prepared; chef review pending.`;return}
+ const c=k=>m.filter(r=>r.chef_mark==k).length;$('honest').innerHTML=`Chef-reviewed ${m.length}/${rows.length}: <b>${c('agree')}</b> agree, <b>${c('disagree')}</b> disagree, <b>${c('should_have_escalated')}</b> should have escalated. Failures are kept in the sheet.`});
+function add(role,r){const d=document.createElement('div');
+ if(role=='u'){d.className='m u';d.textContent=r}else{d.className='m'+(r.status=='escalated'?' esc':'');
+  let h=r._hello?'':`<span class="badge ${r.status}">${{confident:'Confident',qualified:'Qualified',escalated:'Escalated'}[r.status]}</span><br>`;
+  h+=esc(r.answer);if(r.reason&&r.status=='escalated')h+=`<div class="small">Why: ${esc(r.reason)}</div>`;
+  if(r.sources.length){h+=`<div class="src">Source: ${r.sources.map(s=>s.id).join(', ')} (tap for provenance)</div><div class="prov">${r.sources.map(s=>`<b>${s.id}</b> · ${s.kind} · match ${s.score}<br>“${esc(s.text)}”<br><i>${esc(s.source)}</i>`).join('<hr>')}</div>`}
+  if(r.unverified)h+=`<div class="warn">Sample knowledge, not yet confirmed by the chef.</div>`;d.innerHTML=h;
+  d.querySelector('.src')?.addEventListener('click',()=>d.querySelector('.prov').classList.toggle('on'))}
+ log.append(d);log.scrollTop=log.scrollHeight}
+function say(t){if(!$('speak').checked||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
+ u.onstart=()=>$('av').classList.add('talk');u.onend=u.onerror=()=>$('av').classList.remove('talk');speechSynthesis.speak(u)}
+$('f').onsubmit=async e=>{e.preventDefault();const q=$('q').value.trim();if(!q)return;$('q').value='';add('u',q);
+ const th=document.createElement('div');th.className='m small';th.textContent='Thinking…';log.append(th);
+ try{const r=await (await fetch('/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})})).json();th.remove();add('a',r);say(r.answer)}
+ catch(err){th.remove();add('a',{status:'escalated',answer:'I could not reach my server. Please ask the chef directly.',reason:'Connection error',sources:[]})}};
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(SR){$('mic').onclick=()=>{const r=new SR();r.lang='en-US';r.onresult=e=>{$('q').value=e.results[0][0].transcript;$('f').requestSubmit()};r.start()}}else $('mic').style.display='none';
+</script></body></html>

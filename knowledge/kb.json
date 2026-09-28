@@ -1,0 +1,388 @@
+{
+ "chef_profile": {
+  "name": "Chef [NAME]",
+  "kitchen": "Smash & Sauce Kitchen",
+  "specialty": "Smash burgers & pasta sauces",
+  "bio": "Replace with the chef's real bio from Interview Session 1.",
+  "consent_confirmed": false,
+  "consent_note": "Written consent from the chef is REQUIRED before demo. Set consent_confirmed to true only after signing."
+ },
+ "interview_entries": [
+  {
+   "id": "B01",
+   "category": "burger",
+   "question": "What fat ratio do you use for burgers?",
+   "tags": [
+    "fat",
+    "ratio",
+    "beef",
+    "blend",
+    "lean",
+    "80/20"
+   ],
+   "chef_answer": "I use 80/20 beef, so at least 20% fat. Anything leaner comes out dry.",
+   "source": "SAMPLE - replace with Interview S1 note/timestamp",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B02",
+   "category": "burger",
+   "question": "How thick or heavy is a patty?",
+   "tags": [
+    "patty",
+    "weight",
+    "size",
+    "thickness",
+    "ball"
+   ],
+   "chef_answer": "I portion 90 g balls and smash them thin on the flat top.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B03",
+   "category": "burger",
+   "question": "How and when do you season the burger?",
+   "tags": [
+    "season",
+    "salt",
+    "pepper",
+    "seasoning"
+   ],
+   "chef_answer": "Salt and pepper go on right after the smash, on the side facing up. Never mix salt into the meat.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B04",
+   "category": "burger",
+   "question": "Pan or grill, and how hot?",
+   "tags": [
+    "pan",
+    "grill",
+    "temperature",
+    "heat",
+    "flat top",
+    "cast iron"
+   ],
+   "chef_answer": "Flat top or cast iron at very high heat, around 230 C. It has to be smoking hot for the crust.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B05",
+   "category": "burger",
+   "question": "Do you press burgers while cooking?",
+   "tags": [
+    "press",
+    "pressing",
+    "squash",
+    "smash",
+    "flatten",
+    "spatula"
+   ],
+   "chef_answer": "I smash once, in the first 10 seconds. After that I never press, because pressing pushes the juices out.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B06",
+   "category": "burger",
+   "question": "How do you know a burger is done without cutting it?",
+   "tags": [
+    "done",
+    "doneness",
+    "tell",
+    "ready",
+    "flip",
+    "sign",
+    "look",
+    "touch"
+   ],
+   "chef_answer": "I flip when the edges are dark brown and lacy and juices pool on top, about 90 seconds. Second side is under a minute.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B07",
+   "category": "burger",
+   "question": "How do you toast the bun and when do you add cheese?",
+   "tags": [
+    "bun",
+    "toast",
+    "cheese",
+    "melt",
+    "butter"
+   ],
+   "chef_answer": "Buttered bun goes face down on the flat top for 30 seconds. Cheese goes on straight after the flip so it melts under the steam.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B08",
+   "category": "burger",
+   "question": "What is the biggest mistake home cooks make with burgers?",
+   "tags": [
+    "mistake",
+    "common",
+    "beginner",
+    "home cooks"
+   ],
+   "chef_answer": "Pressing the patty, and using lean beef. Both dry it out.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B09",
+   "category": "burger",
+   "question": "Do you use frozen beef?",
+   "tags": [
+    "frozen",
+    "freeze",
+    "thaw",
+    "defrost"
+   ],
+   "chef_answer": "I prefer fresh. If it has to be frozen, I thaw it in the fridge overnight, never on the counter.",
+   "source": "SAMPLE",
+   "confidence": "inferred",
+   "verified": false
+  },
+  {
+   "id": "P01",
+   "category": "pasta",
+   "question": "How much water and salt for pasta?",
+   "tags": [
+    "water",
+    "salt",
+    "salting",
+    "boil",
+    "litre",
+    "liter",
+    "pot"
+   ],
+   "chef_answer": "About 1 litre of water per 100 g of pasta, with 10 g salt per litre, added once the water boils.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "P02",
+   "category": "pasta",
+   "question": "How do you know pasta is al dente?",
+   "tags": [
+    "al dente",
+    "done",
+    "bite",
+    "test",
+    "cook",
+    "cooked",
+    "firm"
+   ],
+   "chef_answer": "I pull it 2 minutes before the packet time and bite one piece. There should be a thin white dot in the centre.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "P03",
+   "category": "pasta",
+   "question": "When do you use pasta water?",
+   "tags": [
+    "pasta water",
+    "starchy",
+    "water",
+    "sauce",
+    "loosen",
+    "emulsify"
+   ],
+   "chef_answer": "I keep a cup of it. It goes into the pan with the sauce, a splash at a time, to make it silky and cling.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "P04",
+   "category": "pasta",
+   "question": "What is the sauce to pasta ratio and assembly order?",
+   "tags": [
+    "sauce",
+    "ratio",
+    "assembly",
+    "toss",
+    "finish",
+    "pan",
+    "order",
+    "add",
+    "adding"
+   ],
+   "chef_answer": "Pasta goes into the sauce, not the other way round. Toss over heat for a minute, sauce should coat, not pool.",
+   "source": "SAMPLE",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "P05",
+   "category": "pasta",
+   "question": "What do you serve for gluten-free requests?",
+   "tags": [
+    "gluten",
+    "free",
+    "gluten-free",
+    "substitute",
+    "substitution",
+    "alternative"
+   ],
+   "chef_answer": "I use corn-and-rice gluten-free pasta and cook it 1 minute less. For anything medical like celiac, ask me first.",
+   "source": "SAMPLE",
+   "confidence": "inferred",
+   "verified": false
+  }
+ ],
+ "rules": [
+  {
+   "id": "R01",
+   "category": "burger",
+   "condition": "burger came out dry",
+   "tags": [
+    "dry",
+    "tough",
+    "juicy",
+    "crumbly"
+   ],
+   "chef_action": "Check the fat ratio first (I need at least 20% fat), then the heat (very high, no pressing). If neither is the cause, ask me.",
+   "confidence": "documented",
+   "fallback_escalate": true
+  },
+  {
+   "id": "R02",
+   "category": "burger",
+   "condition": "burger is greasy",
+   "tags": [
+    "greasy",
+    "oily",
+    "grease",
+    "soggy"
+   ],
+   "chef_action": "The heat was too low. Get the flat top smoking hot and smash thin so fat renders out and crisps instead of pooling.",
+   "confidence": "documented",
+   "fallback_escalate": true
+  },
+  {
+   "id": "R03",
+   "category": "sauce",
+   "condition": "sauce is too thin",
+   "tags": [
+    "thin",
+    "watery",
+    "runny",
+    "loose"
+   ],
+   "chef_action": "Simmer it uncovered to reduce, then finish tossing with the pasta and a splash of starchy pasta water. Do not add flour.",
+   "confidence": "documented",
+   "fallback_escalate": true
+  },
+  {
+   "id": "R04",
+   "category": "sauce",
+   "condition": "sauce split or broke",
+   "tags": [
+    "split",
+    "broken",
+    "curdled",
+    "separated",
+    "oily"
+   ],
+   "chef_action": "Take it off the heat, add a splash of pasta water and whisk hard until it comes back together.",
+   "confidence": "documented",
+   "fallback_escalate": true
+  },
+  {
+   "id": "R05",
+   "category": "pasta",
+   "condition": "pasta is gummy or sticky",
+   "tags": [
+    "gummy",
+    "sticky",
+    "mushy",
+    "clumped",
+    "overcooked"
+   ],
+   "chef_action": "Not enough water or overcooked. Use 1 litre per 100 g and pull it 2 minutes early. No oil in the water.",
+   "confidence": "documented",
+   "fallback_escalate": true
+  }
+ ],
+ "preferences": [
+  {
+   "id": "F01",
+   "category": "general",
+   "item": "Things the chef never does",
+   "tags": [
+    "never",
+    "don't",
+    "avoid",
+    "refuse",
+    "rule"
+   ],
+   "chef_stance": "Never presses a burger after the first smash, never adds oil to pasta water, never salts the meat mix.",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "F02",
+   "category": "general",
+   "item": "Favourite doneness for burgers",
+   "tags": [
+    "favourite",
+    "favorite",
+    "prefer",
+    "doneness",
+    "medium",
+    "well"
+   ],
+   "chef_stance": "Cooked through but juicy, never grey and dry.",
+   "confidence": "inferred",
+   "verified": false
+  }
+ ],
+ "escalation_topics": [
+  {
+   "id": "E01",
+   "topic": "Allergies",
+   "pattern": "allerg|anaphyla|celiac|coeliac|intoleran",
+   "reason": "Allergies are a safety matter. Ask the chef or a doctor directly; I will not give an opinion."
+  },
+  {
+   "id": "E02",
+   "topic": "Food safety limits",
+   "pattern": "food poison|safe to eat|expired|spoil|bacteria|salmonella|e\\.? ?coli|internal temp|reheat|leftover",
+   "reason": "Food-safety limits must come from the chef or a food-safety officer, not from me."
+  },
+  {
+   "id": "E03",
+   "topic": "Medical",
+   "pattern": "doctor|sick|\\bill\\b|illness|vomit|pregnan|diabet|medic|diet plan|calorie|weight loss",
+   "reason": "This is medical territory. Please ask a doctor."
+  },
+  {
+   "id": "E04",
+   "topic": "Legal / business",
+   "pattern": "lawsuit|legal|licen[cs]e|insurance|refund|complain|\\bsue\\b",
+   "reason": "Legal and business decisions are for the chef himself."
+  },
+  {
+   "id": "E05",
+   "topic": "Outside burgers & pasta",
+   "pattern": "steak|chicken|fish|pizza|biryani|dessert|cake|soup|salad|sushi|lamb|mutton|karahi|curry",
+   "reason": "That is outside the burger and pasta topics the chef documented."
+  }
+ ]
+}

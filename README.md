@@ -31,3 +31,4 @@ Works with NO LLM (answers are the chef's own words, verbatim). Optional free ph
 - **Honesty note (draft)**: Strong: escalation and traceable rules. Weak: keyword retrieval (no embeddings), basic avatar, small knowledge base. Paste chef review scores, including disagreements.
 - Live demo order: intro+consent -> burger -> troubleshooting -> pasta -> edge case (gluten-free, qualified) -> off-domain (steak, escalated) -> open a Source panel -> show review results.
 # kys-alkidhmat-hackathon
+# kys-alkidhmat-hackathon
