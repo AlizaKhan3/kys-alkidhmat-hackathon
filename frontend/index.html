@@ -50,7 +50,7 @@ table{width:100%;font-size:12px;border-collapse:collapse}td,th{border-bottom:1px
 </main></div>
 <script>
 const $=id=>document.getElementById(id),log=$('log'),esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const SAMPLES=["What fat ratio do you use for your burgers?","Do you press your burgers?","My burger came out dry","My sauce is too thin","How much salt for pasta water?","Someone is allergic to gluten","My steak is undercooked"];
+const SAMPLES=["What is your beef mince formula?","How do you make homemade pickles?","Why does the patty break while frying?","What goes into burger sauce?","How long do you boil pasta?","Someone has a peanut allergy","Can you make a steak?"];
 $('chips').innerHTML=SAMPLES.map(s=>`<button type="button">${esc(s)}</button>`).join('');
 $('chips').onclick=e=>{if(e.target.tagName=='BUTTON'){$('q').value=e.target.textContent;$('f').requestSubmit()}};
 fetch('/profile').then(r=>r.json()).then(p=>{$('name').textContent=p.name;$('spec').textContent=p.kitchen+' · '+p.specialty;

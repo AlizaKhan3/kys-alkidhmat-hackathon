@@ -31,7 +31,8 @@ _ACK = re.compile(
 # Kitchen-ish leftovers → don't treat the whole message as pure manners.
 _KITCHENISH = re.compile(
     r"\b(burger|patty|smash|pasta|sauce|salt|fat|ratio|cook|fry|grill|cheese|bun|steak|"
-    r"allerg|gluten|recipe|temperature|season|oil|dough|noodle|meat|beef)\b",
+    r"allerg|gluten|recipe|temperature|season|oil|dough|noodle|meat|beef|pickle|fries|"
+    r"alfredo|griddle|mince|mayo|chicken|packaging|foil|habitt)\b",
     re.I,
 )
 
@@ -39,6 +40,16 @@ _KITCHENISH = re.compile(
 def toks(s):
     return [w[:-1] if len(w) > 3 and w.endswith("s") else w
             for w in re.findall(r"[a-z0-9]+", s.lower()) if w not in STOP]
+
+
+def _pronouns():
+    """Return (subject, object, possessive) from chef_profile — default she/her from consent docs."""
+    raw = (KB.get("chef_profile", {}).get("pronouns") or "she/her").lower()
+    if raw.startswith("he"):
+        return "he", "him", "his"
+    if raw.startswith("they"):
+        return "they", "them", "their"
+    return "she", "her", "her"
 
 
 def _manners_reply(answer):
@@ -53,33 +64,35 @@ def check_manners(q):
         return None
     profile = KB["chef_profile"]
     name, kitchen = profile["name"], profile["kitchen"]
+    subj, obj, pos = _pronouns()
+    be = "are" if subj == "they" else "is"
     intro = (
-        f"I'm the stand-in for {name} at {kitchen} — covering for him while he's not here. "
-        f"I only speak from what he taught me about smash burgers and pasta sauces; "
-        f"if he didn't say it, I'll send you back to him."
+        f"I'm the stand-in for {name} at {kitchen} — covering for {obj} while {subj} {be} not here. "
+        f"I only speak from what {subj} taught me about smash burgers, pasta, and {pos} documented kitchen practice; "
+        f"if {subj} didn't say it, I'll send you back to {obj}."
     )
 
     if _SALAAM.search(q) and len(q) < 80:
         return _manners_reply(f"Wa alaikum assalam! {intro} What would you like to ask?")
     if _WHO.search(q):
         return _manners_reply(
-            f"{intro} I'm not the chef himself and I'm not a free-roaming AI — "
-            f"just his kitchen stand-in for the questions he prepared me for."
+            f"{intro} I'm not the chef {obj}self and I'm not a free-roaming AI — "
+            f"just {pos} kitchen stand-in for the questions {subj} prepared me for."
         )
     if _HOWARE.search(q) and len(q) < 60:
         return _manners_reply(
             f"I'm doing well, thank you — ready to help the line while {name} is away. "
-            f"Ask me anything he covered about burgers or pasta."
+            f"Ask me anything {subj} covered about burgers or pasta."
         )
     if _THANKS.search(q) and len(q) < 80:
         return _manners_reply(
             f"You're welcome. If something else comes up on burgers or pasta, I'm here — "
-            f"and for anything he didn't teach me, please ask {name} directly."
+            f"and for anything {subj} didn't teach me, please ask {name} directly."
         )
     if _BYE.search(q) and len(q) < 60:
         return _manners_reply(
             f"Take care! Come back anytime with a kitchen question — "
-            f"and give {name} my regards when you see him."
+            f"and give {name} my regards when you see {obj}."
         )
     if _SORRY.search(q) and len(q) < 80:
         return _manners_reply(
@@ -103,8 +116,12 @@ def check_manners(q):
 def _docs():
     out = []
     for e in KB["interview_entries"]:
-        out.append(dict(e, kind="interview", head=e["question"] + " " + " ".join(e.get("tags", [])),
-                        body=e["chef_answer"], text=e["chef_answer"]))
+        head = " ".join([
+            e.get("question", ""), e.get("question_ru", ""),
+            " ".join(e.get("tags", [])),
+        ])
+        body = " ".join(x for x in [e.get("chef_answer", ""), e.get("chef_answer_ru", "")] if x)
+        out.append(dict(e, kind="interview", head=head, body=body, text=e["chef_answer"]))
     for r in KB["rules"]:
         out.append(dict(r, kind="rule", head=r["condition"] + " " + " ".join(r.get("tags", [])),
                         body=r["chef_action"], text=f"If {r['condition']}: {r['chef_action']}",
@@ -130,17 +147,22 @@ def retrieve(q, k=3):
     qt = set(toks(q))
     if not qt:
         return []
-    tot = sum(IDF(t) for t in qt)
+    tot = sum(IDF(t) for t in qt) or 1.0
     scored = []
     for d in DOCS:
-        s = sum(IDF(t) * (1 if t in d["h"] else 0.5 if t in d["b"] else 0) for t in qt) / tot
-        if s > 0:  # tie-break: prefer docs whose head is mostly covered by the query (precision)
-            prec = sum(1 for t in d["h"] if t in qt) / max(len(d["h"]), 1)
-            scored.append((round(s, 3), d, s * (0.7 + 0.3 * prec)))
-    scored.sort(key=lambda x: -x[2])
+        head_hit = sum(IDF(t) for t in qt if t in d["h"])
+        body_hit = sum(IDF(t) for t in qt if t in d["b"] and t not in d["h"])
+        s = (head_hit + 0.45 * body_hit) / tot
+        if s > 0:
+            prec = sum(1 for t in qt if t in d["h"]) / max(len(qt), 1)
+            kind_bonus = 0.04 if d["kind"] == "interview" else 0.0
+            # Prefer entries whose question/tags actually name the ask (higher precision).
+            rank = s * (0.55 + 0.45 * prec) + kind_bonus + 0.02 * prec
+            scored.append((round(s, 3), d, rank, prec))
+    scored.sort(key=lambda x: (-x[2], -x[3], x[1]["id"]))
     if scored:
-        scored = [x for x in scored if x[0] >= 0.6 * scored[0][0]]  # drop weak secondary sources
-    return [(s, d) for s, d, _ in scored[:k]]
+        scored = [x for x in scored if x[0] >= 0.55 * scored[0][0]]
+    return [(s, d) for s, d, _, _ in scored[:k]]
 
 
 _ON_DOMAIN = re.compile(r"\b(burger|patty|patties|pasta|sauce)s?\b", re.I)
@@ -151,8 +173,10 @@ _LLM_REFUSAL_PHRASES = (
     "i can't answer this",
     "i cannot answer this",
     "please ask him",
+    "please ask her",
     "please ask the chef",
     "ask him directly",
+    "ask her directly",
 )
 
 
@@ -185,14 +209,24 @@ def _llm(q, ctx):
 
 
 def _grounded(text, ctx):
-    """Hallucination guard: every number in the reply must appear in retrieved content."""
+    """Hallucination guard: every number in the reply must appear in retrieved chef text."""
     src = " ".join(d["text"] for _, d in ctx)
-    return all(n in src for n in re.findall(r"\d+(?:\.\d+)?", text))
+    if not all(n in src for n in re.findall(r"\d+(?:\.\d+)?", text)):
+        return False
+    # Reject replies that invent cooking claims not supported by retrieved tokens.
+    src_toks = set(toks(src))
+    claim_toks = [t for t in toks(text) if t not in STOP and len(t) > 3]
+    if not claim_toks:
+        return False
+    supported = sum(1 for t in claim_toks if t in src_toks)
+    return supported / len(claim_toks) >= 0.72
 
 
-def ask(q, use_llm=True):
+def ask(q, use_llm=False):
+    """Answer only from chef KB. LLM is off by default so we never invent kitchen facts."""
     q = (q or "").strip()
     name = KB["chef_profile"]["name"]
+    subj, obj, pos = _pronouns()
     manners = check_manners(q)
     if manners:
         return manners
@@ -205,13 +239,16 @@ def ask(q, use_llm=True):
     score = hits[0][0] if hits else 0
     if score < QUALIFIED:
         return dict(status="escalated", sources=[], score=score, mode="threshold", unverified=False,
-                    reason="Outside what the chef documented in his interview.",
-                    answer=f"{name} hasn't told me how he'd handle this, so I won't guess. Please ask him directly.")
-    ctx = [h for h in hits if h[0] >= QUALIFIED][:3]
+                    reason="Outside what the chef documented in her interview and operations manual.",
+                    answer=(f"{name} hasn't told me how {subj} would handle this, so I won't guess. "
+                            f"Please ask {obj} directly."))
+    # Only keep strong-enough neighbors; never stitch weak unrelated chunks into a fake answer.
+    ctx = [h for h in hits if h[0] >= max(QUALIFIED, 0.75 * score)][:3]
     top = ctx[0][1]
     status = "confident" if score >= CONFIDENT and top["confidence"] == "documented" else "qualified"
     text, mode, reason = None, "verbatim", ""
-    if use_llm:
+    # Optional LLM rephrase — discarded unless fully grounded in retrieved chef text.
+    if use_llm or os.getenv("STANDIN_USE_LLM") == "1":
         text = _llm(q, ctx)
         if text and _grounded(text, ctx):
             mode = "llm"
@@ -223,9 +260,11 @@ def ask(q, use_llm=True):
         else:
             text = None
     if not text:
-        text = " ".join(d["text"] for _, d in ctx[:2 if status == "qualified" else 1])
+        # Verbatim: always the single top source (never hybridize two recipes).
+        text = top["text"]
     if status == "qualified":
-        text += " (Heads-up: the chef didn't address this exact case; this is his closest documented guidance.)"
+        text += (f" (Heads-up: {name} didn't address this exact case in the docs {subj} gave us; "
+                 f"this is {pos} closest documented guidance.)")
     if greet:
         text = ("Wa alaikum assalam! " if _SALAAM.search(q) else "Hello! ") + text
     return dict(status=status, answer=text, score=score, mode=mode, reason=reason,

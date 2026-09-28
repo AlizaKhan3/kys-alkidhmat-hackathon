@@ -7,22 +7,41 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from backend.engine import ask
 
 OUT = Path(__file__).with_name("evaluation_30q.csv")
+# 30 questions covering PDF ops manual + interview transcripts.
 Q = [("burger", "answer", x) for x in [
-    "What fat ratio do you use for your burgers?", "How heavy is each patty?", "When do you season the burger?",
-    "Do you cook burgers on a pan or a grill, and how hot?", "Do you press your burgers while cooking?",
-    "How do you know when a burger is done without cutting it?", "How do you toast the bun?",
-    "When do you add the cheese?", "What is the biggest mistake home cooks make with burgers?", "Do you use frozen beef?"]] + \
+    "What is your exact beef mince formula?",
+    "What are the patty weights for Classic and Double Smash Burgers?",
+    "How do you prepare your beef patty mixture?",
+    "What goes into your burger sauce?",
+    "Do you press the patty after flipping?",
+    "How do you make homemade pickles?",
+    "What cheese do you use for burgers?",
+    "What is the assembly order for a Classic Smash Burger?",
+    "Why does the patty break while frying?",
+    "What temperature should the griddle be?"]] + \
     [("pasta", "answer", x) for x in [
-    "How much salt do you put in pasta water?", "How much water for 200 g of pasta?", "How do you know pasta is al dente?",
-    "What do you do with the pasta water?", "Do you add the pasta to the sauce or sauce to the pasta?",
-    "How do you finish a pasta sauce in the pan?", "What do you serve for gluten-free pasta requests?",
-    "Do you add oil to the pasta water?", "What is your favourite burger doneness?", "What things do you never do in the kitchen?"]] + \
+    "Which pasta brand and shape do you use?",
+    "How long do you boil the pasta?",
+    "How do you marinate the chicken?",
+    "How do you build the Signature Alfredo white sauce?",
+    "What is the price of a Classic Smash Burger?",
+    "What packaging do you use for burgers and pasta?",
+    "What are the Never rules in the kitchen?",
+    "How do you manage lunchtime orders during university?",
+    "Where do you buy ingredients now?",
+    "Do you offer masala fries?"]] + \
     [("troubleshoot", "answer", x) for x in [
-    "What is your fix for a burger that came out dry?", "My burger is greasy, what went wrong?", "What do you do if your sauce is too thin?",
-    "My sauce split, how do I fix it?", "My pasta turned out gummy and sticky"]] + \
+    "The burger patty turned out dry — what went wrong?",
+    "The Alfredo sauce is thin and watery — how do you fix it?",
+    "The Alfredo sauce split — how do you recover it?",
+    "Caramelized onions smell bitter — can they be salvaged?",
+    "What did you learn from the Habitt stall loss?"]] + \
     [("out_of_scope", "escalate", x) for x in [
-    "A customer says their steak is undercooked, what do you do?", "Is chicken safe to eat if it was left out overnight?",
-    "Someone has a peanut allergy, is your sauce safe?", "How do I make a perfect biryani?", "Can I sue a restaurant for food poisoning?"]]
+    "A customer wants a beef steak medium rare, can you make it?",
+    "Is chicken safe to eat if it was left out overnight?",
+    "Someone has a peanut allergy, is your sauce safe?",
+    "Give me the exact gram measurements for your 1 kg patty mix",
+    "Can I sue a restaurant for food poisoning?"]]
 
 old = {}
 if OUT.exists():
@@ -42,4 +61,4 @@ with OUT.open("w", newline="", encoding="utf-8") as f:
 print(f"routing check: {ok}/{len(Q)} behaved as designed (answer vs escalate). Chef review still required.")
 for r in rows:
     if r["auto_check"] == "FAIL":
-        print("FAIL:", r["question"], "->", r["status"], r["score"])
+        print("FAIL:", r["question"], "->", r["status"], r["score"], r["sources"])

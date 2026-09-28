@@ -1,0 +1,16 @@
+{
+  "title": "Bill of provenance — Smash & Sauce Kitchen Stand-In",
+  "software": [
+    {"part": "FastAPI + Uvicorn backend", "origin": "open source / free", "after": "remains open-source project artifact"},
+    {"part": "Keyword retrieval engine (no paid embeddings)", "origin": "stdlib Python", "after": "kept in repo"},
+    {"part": "Optional Groq Whisper STT (free tier)", "origin": "Groq free API key", "after": "key revoked after hackathon if desired"},
+    {"part": "edge-tts avatar voice", "origin": "open package / Microsoft neural voices, no paid key", "after": "remains free path"},
+    {"part": "Browser mic level + MediaRecorder", "origin": "Chrome web APIs", "after": "n/a"}
+  ],
+  "knowledge_sources": [
+    {"part": "Smash_and_Sauce_QA_Manual.pdf", "origin": "chef-provided with consent", "after": "stored in project; not republished beyond demo scope"},
+    {"part": "Smash_and_Sauce_Kitchen_cleaned.txt", "origin": "chef interview EN with consent", "after": "stored in project"},
+    {"part": "samshandsaucekitchen_romanurdu.txt", "origin": "chef interview Roman Urdu with consent", "after": "stored in project"}
+  ],
+  "hardware_todo": "Fill salvaged device / mic / speaker / webcam details before live judging (old phone/laptop + any scrap parts)."
+}
