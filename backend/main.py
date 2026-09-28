@@ -3,12 +3,14 @@ import json, csv, time
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from backend.engine import ask, KB, ROOT
 from backend.voice import router as voice_router
 
 app = FastAPI(title="Stand-In: Smash & Sauce Kitchen")
 app.include_router(voice_router)
+app.mount("/assets", StaticFiles(directory="frontend/assets"), name="assets")
 LOG = ROOT / "testing" / "conversation_log.jsonl"
 
 

@@ -13,3 +13,26 @@
 {"t": 1790613651.7866611, "q": "Do you press your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B05"]}
 {"t": 1790613664.757826, "q": "ok great!", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
 {"t": 1790614255.66893, "q": "I want you to let me know how a single beef patty takes time to completely get cooked.", "status": "escalated", "score": 0.19, "mode": "threshold", "ids": []}
+{"t": 1790618717.1279697, "q": "hi", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790618725.2965515, "q": "What fat ratio do you use for your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B01"]}
+{"t": 1790618825.9594061, "q": "My sauce is too thin", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["R03"]}
+{"t": 1790619537.0538652, "q": "My steak is undercooked", "status": "escalated", "score": 0, "mode": "rule", "ids": []}
+{"t": 1790619547.5467057, "q": "How much salt for pasta water?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["P01"]}
+{"t": 1790621659.3278542, "q": "My sauce is too thin", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["R03"]}
+{"t": 1790621804.657426, "q": "My sauce is too thin", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["R03"]}
+{"t": 1790622673.1873007, "q": "What fat ratio do you use for your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B01"]}
+{"t": 1790622846.655965, "q": "How much salt for pasta water?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["P01"]}
+{"t": 1790622854.6789389, "q": "My steak is undercooked", "status": "escalated", "score": 0, "mode": "rule", "ids": []}
+{"t": 1790622986.904858, "q": "What fat ratio do you use for your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B01"]}
+{"t": 1790623072.4464908, "q": "My sauce is too thin", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["R03"]}
+{"t": 1790623153.1310353, "q": "My steak is undercooked", "status": "escalated", "score": 0, "mode": "rule", "ids": []}
+{"t": 1790623175.8406444, "q": "What fat ratio do you use for your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B01"]}
+{"t": 1790623230.9768748, "q": "Do you press your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B05"]}
+{"t": 1790623514.246228, "q": "How much salt for pasta water?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["P01"]}
+{"t": 1790623526.168326, "q": "My steak is undercooked", "status": "escalated", "score": 0, "mode": "rule", "ids": []}
+{"t": 1790623912.1645288, "q": "How much salt for pasta water?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["P01"]}
+{"t": 1790623915.3124635, "q": "How much salt for pasta water?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["P01"]}
+{"t": 1790623929.6509402, "q": "What fat ratio do you use for your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B01"]}
+{"t": 1790623974.785648, "q": "Tell me about your pasta sauces and smash burger recipes in full detail", "status": "escalated", "score": 0.189, "mode": "threshold", "ids": []}
+{"t": 1790624068.6284943, "q": "What fat ratio do you use for your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B01"]}
+{"t": 1790624088.2564077, "q": "How much salt for pasta water?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["P01"]}

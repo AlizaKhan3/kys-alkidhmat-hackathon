@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Stand-In · Smash & Sauce Kitchen</title>
+<link rel="preload" as="image" href="/assets/chef.png">
+<link rel="preload" as="image" href="/assets/chef-neutral.png">
+<link rel="preload" as="image" href="/assets/chef-speaking.png">
 <style>
 :root{--bg:#fff8f0;--card:#fff;--ink:#2b1d14;--mut:#7a6a5e;--acc:#d9480f;--ok:#2f9e44;--warn:#e67700;--bad:#c92a2a;--line:#eadfd3}
 @media(prefers-color-scheme:dark){:root{--bg:#1c1410;--card:#2a1e18;--ink:#f5ebe0;--mut:#b5a597;--line:#43332a}}
@@ -9,9 +12,10 @@
 @media(max-width:760px){.wrap{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px}
 h1{font-size:18px;margin:0}h2{font-size:14px;margin:12px 0 4px;color:var(--mut);text-transform:uppercase;letter-spacing:.05em}
-.small{font-size:13px;color:var(--mut)}.av{width:130px;margin:auto;display:block}
-.talk .mouth{animation:m .25s infinite alternate}.talk .body{animation:b .5s infinite alternate}
-@keyframes m{to{transform:scaleY(2.4)}}@keyframes b{to{transform:translateY(-3px)}}.mouth{transform-origin:60px 78px}
+.small{font-size:13px;color:var(--mut)}.av-wrap{width:140px;margin:auto;border-radius:14px;line-height:0;transition:box-shadow .25s}
+.av-wrap img{width:100%;display:block;border-radius:12px;object-fit:contain}
+.av-wrap.talk{animation:avTalk .8s ease-in-out infinite}
+@keyframes avTalk{0%,100%{box-shadow:0 0 0 2px rgba(217,72,15,.2)}50%{box-shadow:0 0 0 4px #d9480f,0 0 18px 6px rgba(217,72,15,.45)}}
 #log{height:52vh;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px}
 .m{max-width:88%;padding:10px 12px;border-radius:12px;border:1px solid var(--line)}.u{align-self:flex-end;background:var(--acc);color:#fff;border:0}
 .badge{display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:99px;color:#fff;margin-bottom:4px}
@@ -29,12 +33,7 @@ table{width:100%;font-size:12px;border-collapse:collapse}td,th{border-bottom:1px
 </style></head><body>
 <div class="wrap">
 <aside class="card">
- <svg id="av" class="av" viewBox="0 0 120 130" aria-label="Chef avatar"><g class="body">
-  <ellipse cx="60" cy="30" rx="30" ry="20" fill="#fff" stroke="#ccc"/><rect x="34" y="34" width="52" height="14" fill="#fff" stroke="#ccc"/>
-  <circle cx="60" cy="70" r="30" fill="#f1c9a0"/><circle cx="49" cy="64" r="3.5" fill="#333"/><circle cx="71" cy="64" r="3.5" fill="#333"/>
-  <path d="M44 84c8 9 24 9 32 0" stroke="#7a3b1d" stroke-width="3" fill="none" opacity=".0"/>
-  <ellipse class="mouth" cx="60" cy="80" rx="8" ry="2.5" fill="#7a2b1d"/>
-  <rect x="35" y="100" width="50" height="28" rx="8" fill="#d9480f"/></g></svg>
+ <div id="av" class="av-wrap"><img id="avatarImg" src="/assets/chef.png" alt="Chef avatar"></div>
  <h1 id="name" style="text-align:center;margin-top:6px">Loading…</h1>
  <div class="small" style="text-align:center" id="spec"></div>
  <p class="small" id="consent"></p>
@@ -70,12 +69,31 @@ function add(role,r){const d=document.createElement('div');
  log.append(d);log.scrollTop=log.scrollHeight}
 function tip(msg){const d=document.createElement('div');d.className='m small';d.textContent=msg;log.append(d);log.scrollTop=log.scrollHeight;return d}
 function setStatus(msg){$('micStatus').textContent=msg||''}
+const IMGS=['/assets/chef.png','/assets/chef-neutral.png','/assets/chef-speaking.png'];
+IMGS.forEach(s=>{const i=new Image();i.src=s});
+let talkTimer=null;
+function setSpeaking(on){
+ $('av').classList.toggle('talk',on);
+ if(talkTimer){clearTimeout(talkTimer);talkTimer=null}
+ const img=$('avatarImg');
+ if(!on){if(img)img.src='/assets/chef.png';return}
+ let state=true;
+ if(img)img.src='/assets/chef-speaking.png';
+ function step(){
+  talkTimer=setTimeout(()=>{
+   state=!state;
+   if(img)img.src=state?'/assets/chef-speaking.png':'/assets/chef-neutral.png';
+   step();
+  },180+Math.floor(Math.random()*71));
+ }
+ step();
+}
 function browserSay(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
- u.onstart=()=>$('av').classList.add('talk');u.onend=u.onerror=()=>$('av').classList.remove('talk');speechSynthesis.speak(u)}
+ u.onstart=()=>setSpeaking(true);u.onend=u.onerror=()=>setSpeaking(false);speechSynthesis.speak(u)}
 async function say(t){if(!$('speak').checked||!t)return;
  try{const r=await fetch('/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
   if(!r.ok)throw new Error('speak '+r.status);const url=URL.createObjectURL(await r.blob());const a=new Audio(url);
-  a.onplay=()=>$('av').classList.add('talk');a.onended=a.onerror=()=>{$('av').classList.remove('talk');URL.revokeObjectURL(url)};await a.play()}
+  a.onplay=()=>setSpeaking(true);a.onended=a.onerror=()=>{setSpeaking(false);URL.revokeObjectURL(url)};await a.play()}
  catch{browserSay(t)}}
 $('f').onsubmit=async e=>{e.preventDefault();const q=$('q').value.trim();if(!q)return;$('q').value='';add('u',q);
  const th=tip('Thinking…');
@@ -83,7 +101,7 @@ $('f').onsubmit=async e=>{e.preventDefault();const q=$('q').value.trim();if(!q)r
  catch(err){th.remove();add('a',{status:'escalated',answer:'I could not reach my server. Please ask the chef directly.',reason:'Connection error',sources:[]})}};
 
 /* STT: live browser captions + MediaRecorder → Whisper polish. User edits & taps Ask. */
-function stopSpeaking(){try{speechSynthesis.cancel()}catch{}document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.src=''}catch{}})}
+function stopSpeaking(){try{speechSynthesis.cancel()}catch{}document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.src=''}catch{}});setSpeaking(false)}
 function pickMime(){if(!window.MediaRecorder)return'';
  for(const t of['audio/webm;codecs=opus','audio/webm','audio/mp4'])if(MediaRecorder.isTypeSupported(t))return t;return''}
 function extFor(mime){if((mime||'').includes('mp4'))return'm4a';if((mime||'').includes('ogg'))return'ogg';return'webm'}
