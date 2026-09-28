@@ -12,3 +12,4 @@
 {"t": 1790613643.539524, "q": "Hi, I want you to tell me how do you melt cheese into pasta to make it creamy? Do you bake it in the oven, cook it on low heat or some other technique you follow?", "status": "escalated", "score": 0.114, "mode": "threshold", "ids": []}
 {"t": 1790613651.7866611, "q": "Do you press your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B05"]}
 {"t": 1790613664.757826, "q": "ok great!", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790614255.66893, "q": "I want you to let me know how a single beef patty takes time to completely get cooked.", "status": "escalated", "score": 0.19, "mode": "threshold", "ids": []}
