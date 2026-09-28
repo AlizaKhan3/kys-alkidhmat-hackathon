@@ -165,7 +165,6 @@ def retrieve(q, k=3):
     return [(s, d) for s, d, _, _ in scored[:k]]
 
 
-_ON_DOMAIN = re.compile(r"\b(burger|patty|patties|pasta|sauce)s?\b", re.I)
 _LLM_REFUSAL_PHRASES = (
     "escalat",
     "ask the chef directly",
@@ -179,14 +178,53 @@ _LLM_REFUSAL_PHRASES = (
     "ask her directly",
 )
 
+# Map escalation topics → chef-authored reply entries (verbatim when present).
+_ESC_ANSWER_IDS = {
+    "E01": "Q31",  # allergen script from ops manual
+    "E05": "Q32",  # polite off-menu refusal from ops manual
+}
+
+
+def _entry_by_id(eid):
+    for e in KB.get("interview_entries", []):
+        if e.get("id") == eid:
+            return e
+    return None
+
+
+def _clean_chef_script(text):
+    """Strip 'Respond politely:' / 'Escalate immediately and say:' wrappers."""
+    t = (text or "").strip()
+    t = re.sub(r'^(Respond politely|Escalate immediately and say)\s*:\s*', '', t, flags=re.I)
+    if len(t) >= 2 and t[0] == '"' and t[-1] == '"':
+        t = t[1:-1]
+    return t.strip()
+
 
 def check_escalation(q):
+    """Match escalation topics. Explicit off-menu / safety patterns always win."""
     for t in KB["escalation_topics"]:
-        if (t.get("id") == "E05" or t.get("topic") == "Outside burgers & pasta") and _ON_DOMAIN.search(q):
-            continue
         if re.search(t["pattern"], q, re.I):
             return t
     return None
+
+
+def _escalation_payload(esc):
+    """Build an accurate escalated reply — prefer the chef's documented script + source."""
+    name = KB["chef_profile"]["name"]
+    reason = esc["reason"]
+    eid = _ESC_ANSWER_IDS.get(esc["id"])
+    entry = _entry_by_id(eid) if eid else None
+    if entry:
+        answer = _clean_chef_script(entry["chef_answer"])
+        sources = [dict(id=entry["id"], kind="interview", source=entry.get("source", ""),
+                        text=entry["chef_answer"], score=1.0)]
+        return dict(status="escalated", reason=reason, sources=sources, score=0,
+                    mode="rule", unverified=not entry.get("verified", False), answer=answer)
+    return dict(
+        status="escalated", reason=reason, sources=[], score=0, mode="rule", unverified=False,
+        answer=f"{name} would want to handle this in person. {reason}",
+    )
 
 
 def _llm(q, ctx):
@@ -233,8 +271,10 @@ def ask(q, use_llm=False):
     greet = bool(_SALAAM.search(q) or (_HELLO.search(q) and len(q) < 120))
     esc = check_escalation(q)
     if esc:
-        return dict(status="escalated", reason=esc["reason"], sources=[], score=0, mode="rule", unverified=False,
-                    answer=f"{name} would want to handle this in person. {esc['reason']}")
+        payload = _escalation_payload(esc)
+        if greet:
+            payload["answer"] = ("Wa alaikum assalam! " if _SALAAM.search(q) else "Hello! ") + payload["answer"]
+        return payload
     hits = retrieve(q)
     score = hits[0][0] if hits else 0
     if score < QUALIFIED:

@@ -236,13 +236,13 @@ def escalation():
         {
             "id": "E01",
             "topic": "Allergies / severe dietary",
-            "pattern": "allerg|anaphyla|celiac|coeliac|intoleran|nut allerg|dairy allerg|peanut|gluten.?free medical|severe diet",
+            "pattern": "allerg|anaphyla|celiac|coeliac|intoleran|nut allerg|dairy allerg|peanut|\\bnuts?\\b.*\\b(allerg|safe)|gluten.?free|severe diet",
             "reason": "This query involves medical health and severe dietary allergens. The Stand-In cannot authorize dietary safety. Please speak directly with the chef/owner before placing this order.",
         },
         {
             "id": "E02",
             "topic": "Food safety limits",
-            "pattern": "food poison|safe to eat|expired|spoil|bacteria|salmonella|e\\.? ?coli|internal temp|reheat old|leftover overnight",
+            "pattern": "food poison|safe to eat|expired|spoil|bacteria|salmonella|e\\.? ?coli|reheat old|leftover overnight|left out overnight",
             "reason": "Food-safety limits must come from the chef or a food-safety officer, not from the stand-in.",
         },
         {
@@ -260,8 +260,8 @@ def escalation():
         {
             "id": "E05",
             "topic": "Off-menu / outside smash burgers, Alfredo pasta & documented sides",
-            "pattern": "steak|zinger|broast|chicken burger|fried chicken|pizza|biryani|dessert|cake|soup|salad|sushi|lamb|mutton|karahi|curry|shawarma|\\bnuggets?\\b|\\bwraps\\b",
-            "reason": "Smash & Sauce Kitchen specializes in handcrafted smash beef burgers, signature Alfredo/pasta, and documented sides like masala fries. Off-menu steaks or fried chicken burgers are not prepared.",
+            "pattern": "steaks?|zinger|broasts?|broasted|(chicke?n|chikcen|chiken|fish|mutton|lamb|turkey|veg|paneer)\\s*-?\\s*burgers?|fried\\s*chicke?n|pizza|biryani|dessert|cake|soup|salad|sushi|lamb\\b|mutton|karahi|curry|shawarma|\\bnuggets?\\b|\\bwraps\\b|off[- ]?menu",
+            "reason": "Smash & Sauce specializes exclusively in handcrafted Smash Beef Burgers and Signature Alfredo Penne Pasta. We do not prepare off-menu items, steaks, or fried chicken burgers.",
         },
         {
             "id": "E06",

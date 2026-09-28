@@ -52,3 +52,7 @@
 {"t": 1790627442.3520908, "q": "Can i sue over food poisoning?", "status": "escalated", "score": 0, "mode": "rule", "ids": []}
 {"t": 1790627463.4990742, "q": "Do you have chicken burger?", "status": "escalated", "score": 0.155, "mode": "threshold", "ids": []}
 {"t": 1790627601.1888463, "q": "Do you offer a chicken burger?", "status": "escalated", "score": 0.155, "mode": "threshold", "ids": []}
+{"t": 1790630033.6767612, "q": "sdshdu", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790630053.6990871, "q": "dsjdhs", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790630066.970232, "q": "do you make chicken burger", "status": "confident", "score": 0.614, "mode": "verbatim", "ids": ["Q04", "Q32", "Q08"]}
+{"t": 1790630279.873167, "q": "do you make chicken burger", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
