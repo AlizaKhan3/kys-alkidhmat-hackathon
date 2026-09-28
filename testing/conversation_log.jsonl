@@ -1,0 +1,14 @@
+{"t": 1790609326.279993, "q": "How do you smash a burger?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B05", "B03", "R02"]}
+{"t": 1790609566.726366, "q": "What fat ratio do you use for your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B01"]}
+{"t": 1790609617.902404, "q": "My burger came out dry", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["R01"]}
+{"t": 1790609646.119126, "q": "how much time you take to cook 11 burgers at a time", "status": "escalated", "score": 0.202, "mode": "threshold", "ids": []}
+{"t": 1790609654.3833542, "q": "My steak is undercooked", "status": "escalated", "score": 0, "mode": "rule", "ids": []}
+{"t": 1790610475.585612, "q": "hi", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790612460.959753, "q": "Hello, everyone.", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790612482.195703, "q": "I'm going to go to the next episode of the", "status": "escalated", "score": 0.082, "mode": "threshold", "ids": []}
+{"t": 1790612644.8535838, "q": "My steak is undercooked", "status": "escalated", "score": 0, "mode": "rule", "ids": []}
+{"t": 1790612677.125215, "q": "The The", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790613267.5108118, "q": "hi I'm Anita I want to mirror experience how you become a chef and what strategies specifically to you you follow  to cook pasta like  how do you like my cheese in it do you bake it in the oven or after cooking the pasta you put it on the loose  you put it on a low flame on the stove to metal the teeth like what did you do follow to Mel the cheese in your pasta", "status": "escalated", "score": 0.051, "mode": "threshold", "ids": []}
+{"t": 1790613643.539524, "q": "Hi, I want you to tell me how do you melt cheese into pasta to make it creamy? Do you bake it in the oven, cook it on low heat or some other technique you follow?", "status": "escalated", "score": 0.114, "mode": "threshold", "ids": []}
+{"t": 1790613651.7866611, "q": "Do you press your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B05"]}
+{"t": 1790613664.757826, "q": "ok great!", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}

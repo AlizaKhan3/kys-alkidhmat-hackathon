@@ -20,8 +20,11 @@ h1{font-size:18px;margin:0}h2{font-size:14px;margin:12px 0 4px;color:var(--mut);
 .prov{display:none;font-size:12px;background:var(--bg);border-radius:8px;padding:6px;margin-top:4px}.prov.on{display:block}
 .warn{background:#fff3bf;color:#5c4a00;border-radius:8px;padding:6px 8px;font-size:12px;margin-top:6px}
 form{display:flex;gap:8px;margin-top:10px}input{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
-button{padding:10px 14px;border:0;border-radius:10px;background:var(--acc);color:#fff;font:inherit;cursor:pointer}button.g{background:var(--mut)}
+button{padding:10px 14px;border:0;border-radius:10px;background:var(--acc);color:#fff;font:inherit;cursor:pointer}button.g{background:var(--mut)}button.rec{background:var(--bad)}
 .chips button{background:transparent;color:var(--acc);border:1px solid var(--acc);padding:4px 10px;font-size:13px;margin:2px}
+.meter{display:none;height:8px;margin-top:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.meter.on{display:block}#meterFill{height:100%;width:0;background:var(--ok);transition:width .08s linear}
+#micStatus{min-height:1.2em;margin-top:6px}
 table{width:100%;font-size:12px;border-collapse:collapse}td,th{border-bottom:1px solid var(--line);padding:3px;text-align:left}
 </style></head><body>
 <div class="wrap">
@@ -42,7 +45,9 @@ table{width:100%;font-size:12px;border-collapse:collapse}td,th{border-bottom:1px
 <main class="card">
  <div id="log" aria-live="polite"></div>
  <div class="chips" id="chips"></div>
- <form id="f"><input id="q" placeholder="Ask the chef a burger or pasta question…" autocomplete="off"><button type="button" class="g" id="mic" title="Speak">🎤</button><button>Ask</button></form>
+ <form id="f"><input id="q" placeholder="Ask the chef a burger or pasta question…" autocomplete="off"><button type="button" class="g" id="mic" title="Hold to speak">🎤</button><button>Ask</button></form>
+ <div class="meter" id="meter"><div id="meterFill"></div></div>
+ <div class="small" id="micStatus"></div>
 </main></div>
 <script>
 const $=id=>document.getElementById(id),log=$('log'),esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -63,12 +68,84 @@ function add(role,r){const d=document.createElement('div');
   if(r.unverified)h+=`<div class="warn">Sample knowledge, not yet confirmed by the chef.</div>`;d.innerHTML=h;
   d.querySelector('.src')?.addEventListener('click',()=>d.querySelector('.prov').classList.toggle('on'))}
  log.append(d);log.scrollTop=log.scrollHeight}
-function say(t){if(!$('speak').checked||!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
+function tip(msg){const d=document.createElement('div');d.className='m small';d.textContent=msg;log.append(d);log.scrollTop=log.scrollHeight;return d}
+function setStatus(msg){$('micStatus').textContent=msg||''}
+function browserSay(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
  u.onstart=()=>$('av').classList.add('talk');u.onend=u.onerror=()=>$('av').classList.remove('talk');speechSynthesis.speak(u)}
+async function say(t){if(!$('speak').checked||!t)return;
+ try{const r=await fetch('/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
+  if(!r.ok)throw new Error('speak '+r.status);const url=URL.createObjectURL(await r.blob());const a=new Audio(url);
+  a.onplay=()=>$('av').classList.add('talk');a.onended=a.onerror=()=>{$('av').classList.remove('talk');URL.revokeObjectURL(url)};await a.play()}
+ catch{browserSay(t)}}
 $('f').onsubmit=async e=>{e.preventDefault();const q=$('q').value.trim();if(!q)return;$('q').value='';add('u',q);
- const th=document.createElement('div');th.className='m small';th.textContent='Thinking…';log.append(th);
+ const th=tip('Thinking…');
  try{const r=await (await fetch('/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})})).json();th.remove();add('a',r);say(r.answer)}
  catch(err){th.remove();add('a',{status:'escalated',answer:'I could not reach my server. Please ask the chef directly.',reason:'Connection error',sources:[]})}};
-const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-if(SR){$('mic').onclick=()=>{const r=new SR();r.lang='en-US';r.onresult=e=>{$('q').value=e.results[0][0].transcript;$('f').requestSubmit()};r.start()}}else $('mic').style.display='none';
+
+/* Best-practice STT: MediaRecorder → Groq Whisper, with a live level meter. */
+function stopSpeaking(){try{speechSynthesis.cancel()}catch{}document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.src=''}catch{}})}
+function pickMime(){if(!window.MediaRecorder)return'';
+ for(const t of['audio/webm;codecs=opus','audio/webm','audio/mp4'])if(MediaRecorder.isTypeSupported(t))return t;return''}
+function extFor(mime){if((mime||'').includes('mp4'))return'm4a';if((mime||'').includes('ogg'))return'ogg';return'webm'}
+function junkTranscript(t){t=(t||'').trim().toLowerCase();
+ return!t||t.length<2||/^(the the|thank you\.?|thanks for watching\.?|hello everyone\.?|subscribe\.?|bye\.?)$/.test(t)}
+
+let session=null; // active recording session
+
+function paintMeter(level){$('meterFill').style.width=Math.min(100,Math.round(level*100))+'%';
+ $('meterFill').style.background=level<0.05?'var(--bad)':level<0.15?'var(--warn)':'var(--ok)'}
+
+async function startRecording(){
+ stopSpeaking();
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('This browser cannot access the mic. Open http://localhost:8000 in desktop Chrome.');
+ const stream=await navigator.mediaDevices.getUserMedia({audio:true});
+ const mime=pickMime();
+ if(!window.MediaRecorder)throw new Error('MediaRecorder missing — use desktop Chrome.');
+ const rec=mime?new MediaRecorder(stream,{mimeType:mime,audioBitsPerSecond:128000}):new MediaRecorder(stream);
+ const chunks=[];let peak=0;rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
+
+ const AC=window.AudioContext||window.webkitAudioContext;const ctx=new AC();
+ if(ctx.state==='suspended')await ctx.resume();
+ const source=ctx.createMediaStreamSource(stream);const analyser=ctx.createAnalyser();analyser.fftSize=2048;
+ source.connect(analyser);const data=new Uint8Array(analyser.fftSize);let raf=0;
+ const tick=()=>{analyser.getByteTimeDomainData(data);let sum=0;for(let i=0;i<data.length;i++){const v=(data[i]-128)/128;sum+=v*v}
+  const rms=Math.sqrt(sum/data.length);if(rms>peak)peak=rms;paintMeter(rms*4);raf=requestAnimationFrame(tick)};
+ raf=requestAnimationFrame(tick);
+
+ await new Promise((resolve,reject)=>{rec.onerror=e=>reject(e.error||e);rec.onstart=resolve;rec.start(200)});
+ const started=Date.now();
+ return{
+  async stop(){
+   cancelAnimationFrame(raf);
+   const blob=await new Promise((resolve,reject)=>{rec.onstop=()=>resolve(new Blob(chunks,{type:rec.mimeType||mime||'audio/webm'}));
+    try{rec.requestData()}catch{}rec.stop()});
+   stream.getTracks().forEach(t=>t.stop());try{await ctx.close()}catch{}
+   $('meter').classList.remove('on');paintMeter(0);
+   return{blob,filename:'question.'+extFor(rec.mimeType||mime),peak,ms:Date.now()-started,bytes:blob.size}}}
+}
+
+function setRecordingUI(on){
+ $('mic').classList.toggle('rec',on);$('mic').textContent=on?'⏹':'🎤';$('mic').title=on?'Stop & transcribe':'Speak';
+ $('meter').classList.toggle('on',on)}
+
+$('mic').onclick=async()=>{
+ if(session){const s=session;session=null;setRecordingUI(false);setStatus('Transcribing with Whisper…');
+  try{const {blob,filename,peak,ms,bytes}=await s.stop();
+   if(ms<600){setStatus('Too short — hold the mic ~2 seconds while speaking, then tap ⏹.');return}
+   if(peak<0.02){setStatus('Mic is silent (green bar should bounce). Allow mic for localhost, or pick the right input in Chrome site settings.');return}
+   if(bytes<2000){setStatus('Recording was empty ('+bytes+' bytes). Try again.');return}
+   const fd=new FormData();fd.append('audio',blob,filename);
+   const r=await fetch('/transcribe',{method:'POST',body:fd});const body=await r.json().catch(()=>({}));
+   if(!r.ok){setStatus('Whisper error: '+(typeof body.detail==='string'?body.detail:r.status)+'. Is GROQ_API_KEY set on the server?');return}
+   const text=(body.text||'').trim();$('q').value=text;
+   if(junkTranscript(text)){setStatus('Heard only noise (“'+text+'”). Speak closer / louder, then try again.');return}
+   setStatus('Heard: “'+text+'”');$('f').requestSubmit()}
+  catch(err){setStatus('Mic/transcription failed: '+(err&&err.message||err))}
+  return}
+ try{setStatus('Allow the microphone, then speak. Watch the green bar move.');
+  session=await startRecording();setRecordingUI(true);setStatus('Listening… speak clearly. Green bar should bounce. Tap ⏹ when done.')}
+ catch(err){session=null;setRecordingUI(false);
+  const msg=String(err&&err.message||err);
+  setStatus(msg.includes('NotAllowed')||msg.includes('Permission')?'Microphone blocked — click the lock icon near the URL → allow Mic for localhost.':msg)}};
 </script></body></html>
+

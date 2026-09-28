@@ -5,8 +5,10 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from backend.engine import ask, KB, ROOT
+from backend.voice import router as voice_router
 
 app = FastAPI(title="Stand-In: Smash & Sauce Kitchen")
+app.include_router(voice_router)
 LOG = ROOT / "testing" / "conversation_log.jsonl"
 
 
