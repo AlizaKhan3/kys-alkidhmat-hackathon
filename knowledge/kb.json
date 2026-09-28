@@ -363,7 +363,7 @@
   {
    "id": "E02",
    "topic": "Food safety limits",
-   "pattern": "food poison|safe to eat|expired|spoil|bacteria|salmonella|e\\.? ?coli|internal temp|reheat|leftover",
+   "pattern": "food poison|safe to eat|expired|spoil|bacteria|salmonella|e\\.? ?coli|reheat|leftover",
    "reason": "Food-safety limits must come from the chef or a food-safety officer, not from me."
   },
   {

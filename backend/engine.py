@@ -143,8 +143,23 @@ def retrieve(q, k=3):
     return [(s, d) for s, d, _ in scored[:k]]
 
 
+_ON_DOMAIN = re.compile(r"\b(burger|patty|patties|pasta|sauce)s?\b", re.I)
+_LLM_REFUSAL_PHRASES = (
+    "escalat",
+    "ask the chef directly",
+    "outside what the chef documented",
+    "i can't answer this",
+    "i cannot answer this",
+    "please ask him",
+    "please ask the chef",
+    "ask him directly",
+)
+
+
 def check_escalation(q):
     for t in KB["escalation_topics"]:
+        if (t.get("id") == "E05" or t.get("topic") == "Outside burgers & pasta") and _ON_DOMAIN.search(q):
+            continue
         if re.search(t["pattern"], q, re.I):
             return t
     return None
@@ -195,11 +210,16 @@ def ask(q, use_llm=True):
     ctx = [h for h in hits if h[0] >= QUALIFIED][:3]
     top = ctx[0][1]
     status = "confident" if score >= CONFIDENT and top["confidence"] == "documented" else "qualified"
-    text, mode = None, "verbatim"
+    text, mode, reason = None, "verbatim", ""
     if use_llm:
         text = _llm(q, ctx)
         if text and _grounded(text, ctx):
             mode = "llm"
+            lowered = text.lower()
+            if any(p in lowered for p in _LLM_REFUSAL_PHRASES):
+                status = "escalated"
+                mode = "llm_refusal"
+                reason = "Deferred by model to the chef."
         else:
             text = None
     if not text:
@@ -208,6 +228,6 @@ def ask(q, use_llm=True):
         text += " (Heads-up: the chef didn't address this exact case; this is his closest documented guidance.)"
     if greet:
         text = ("Wa alaikum assalam! " if _SALAAM.search(q) else "Hello! ") + text
-    return dict(status=status, answer=text, score=score, mode=mode, reason="",
+    return dict(status=status, answer=text, score=score, mode=mode, reason=reason,
                 unverified=any(not d.get("verified", False) for _, d in ctx),
                 sources=[dict(id=d["id"], kind=d["kind"], source=d["source"], text=d["text"], score=s) for s, d in ctx])
