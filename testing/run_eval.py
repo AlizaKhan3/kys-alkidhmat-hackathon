@@ -7,22 +7,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from backend.engine import ask
 
 OUT = Path(__file__).with_name("evaluation_30q.csv")
+# Nisa's menu and kitchen, English + Roman Urdu. 10 burger, 10 pasta/chicken/menu, 5 troubleshooting, 5 should-escalate.
 Q = [("burger", "answer", x) for x in [
-    "What fat ratio do you use for your burgers?", "How heavy is each patty?", "When do you season the burger?",
-    "Do you cook burgers on a pan or a grill, and how hot?", "Do you press your burgers while cooking?",
-    "How do you know when a burger is done without cutting it?", "How do you toast the bun?",
-    "When do you add the cheese?", "What is the biggest mistake home cooks make with burgers?", "Do you use frozen beef?"]] + \
-    [("pasta", "answer", x) for x in [
-    "How much salt do you put in pasta water?", "How much water for 200 g of pasta?", "How do you know pasta is al dente?",
-    "What do you do with the pasta water?", "Do you add the pasta to the sauce or sauce to the pasta?",
-    "How do you finish a pasta sauce in the pan?", "What do you serve for gluten-free pasta requests?",
-    "Do you add oil to the pasta water?", "What is your favourite burger doneness?", "What things do you never do in the kitchen?"]] + \
-    [("troubleshoot", "answer", x) for x in [
-    "What is your fix for a burger that came out dry?", "My burger is greasy, what went wrong?", "What do you do if your sauce is too thin?",
-    "My sauce split, how do I fix it?", "My pasta turned out gummy and sticky"]] + \
-    [("out_of_scope", "escalate", x) for x in [
-    "A customer says their steak is undercooked, what do you do?", "Is chicken safe to eat if it was left out overnight?",
-    "Someone has a peanut allergy, is your sauce safe?", "How do I make a perfect biryani?", "Can I sue a restaurant for food poisoning?"]]
+    "What goes into your patty mixture?", "How heavy is each patty?", "How hot should the griddle be for the smash?",
+    "Do you press the patty after flipping?", "What goes into the burger sauce?", "Pickles kaise banate ho?",
+    "Burger assemble karne ki tarteeb kya hai?", "Which cheese do you use for burgers?",
+    "How do you make caramelised onions?", "Burger kis cheez mein wrap karte ho?"]] +     [("pasta", "answer", x) for x in [
+    "How long do you boil the pasta?", "Pasta sauce mein kya dalta hai?", "Which pasta brand and shape do you use?",
+    "How do you marinate the chicken?", "Chicken kitni der saute karni hai?", "What do you do with the pasta water?",
+    "Should I rinse the pasta with cold water?", "What is the price of the 500 ml pasta?", "What deals do you have?",
+    "How long does a burger and pasta combo take?"]] +     [("troubleshoot", "answer", x) for x in [
+    "Patty fry karte waqt toot rahi hai, kya karun?", "My burger came out dry", "Alfredo sauce patli reh gayi hai",
+    "The sauce split and looks oily", "The bun gets soggy before delivery"]] +     [("out_of_scope", "escalate", x) for x in [
+    "Someone has a gluten allergy, is the pasta safe?", "Can you make a zinger burger?",
+    "Chicken raat bhar bahar rakha tha, use kar sakte hain?", "What are the exact quantities for 1 kg of patty mixture?",
+    "Event ke liye 100 burgers ka order hai, kitna stock banaun?"]]
 
 old = {}
 if OUT.exists():

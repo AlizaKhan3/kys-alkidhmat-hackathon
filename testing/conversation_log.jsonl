@@ -42,3 +42,11 @@
 {"t": 1790623974.785648, "q": "Tell me about your pasta sauces and smash burger recipes in full detail", "status": "escalated", "score": 0.189, "mode": "threshold", "ids": []}
 {"t": 1790624068.6284943, "q": "What fat ratio do you use for your burgers?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B01"]}
 {"t": 1790624088.2564077, "q": "How much salt for pasta water?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["P01"]}
+{"t": 1790628617.0545564, "q": "Pickles kaise banate ho?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["B08"]}
+{"t": 1790628632.724361, "q": "Patty toot rahi hai, kya karun?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["R01"]}
+{"t": 1790629388.6367023, "q": "hello", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790629426.293275, "q": "how are you", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790629443.76811, "q": "shut up", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790629481.773397, "q": "How do you marinate the chicken?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["C01"]}
+{"t": 1790629582.3235006, "q": "What deals do you have?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["G06"]}
+{"t": 1790629627.0208106, "q": "tum kitne pese leti ho", "status": "escalated", "score": 0.284, "mode": "threshold", "ids": []}

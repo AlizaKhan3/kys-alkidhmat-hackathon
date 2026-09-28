@@ -44,19 +44,19 @@ table{width:100%;font-size:12px;border-collapse:collapse}td,th{border-bottom:1px
 <main class="card">
  <div id="log" aria-live="polite"></div>
  <div class="chips" id="chips"></div>
- <form id="f"><input id="q" placeholder="Ask the chef a burger or pasta question…" autocomplete="off"><button type="button" class="g" id="mic" title="Speak (live draft appears as you talk)">🎤</button><button>Ask</button></form>
+ <form id="f"><input id="q" placeholder="Ask a burger or pasta question (English ya Roman Urdu)…" autocomplete="off"><button type="button" class="g" id="mic" title="Speak (live draft appears as you talk)">🎤</button><button>Ask</button></form>
  <div class="meter" id="meter"><div id="meterFill"></div></div>
  <div class="small" id="micStatus"></div>
 </main></div>
 <script>
 const $=id=>document.getElementById(id),log=$('log'),esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const SAMPLES=["What fat ratio do you use for your burgers?","Do you press your burgers?","My burger came out dry","My sauce is too thin","How much salt for pasta water?","Someone is allergic to gluten","My steak is undercooked"];
+const SAMPLES=["What goes into your patty mixture?","Pickles kaise banate ho?","Patty toot rahi hai, kya karun?","How do you marinate the chicken?","Alfredo sauce patli reh gayi hai","What deals do you have?","Is the pasta gluten-free?","Can you make a zinger burger?"];
 $('chips').innerHTML=SAMPLES.map(s=>`<button type="button">${esc(s)}</button>`).join('');
 $('chips').onclick=e=>{if(e.target.tagName=='BUTTON'){$('q').value=e.target.textContent;$('f').requestSubmit()}};
 fetch('/profile').then(r=>r.json()).then(p=>{$('name').textContent=p.name;$('spec').textContent=p.kitchen+' · '+p.specialty;
  $('consent').innerHTML=p.consent_confirmed?'✅ Chef has given written consent to be represented.':'⚠️ Consent NOT yet confirmed. Demo mode.';
- $('esc').innerHTML=p.escalation_topics.map(t=>'• '+esc(t.topic)).join('<br>')+`<br><br>Knowledge: ${p.counts.interview_entries} interview entries, ${p.counts.rules} rules, ${p.counts.preferences} preferences.`;
- add('a',{status:'qualified',answer:`Hi, I'm the stand-in for ${p.name} of ${p.kitchen}. I only answer from what the chef told us. If he didn't say it, I'll pass you back to him.`,sources:[],reason:'',_hello:1})});
+ $('esc').innerHTML=p.escalation_topics.map(t=>'• '+esc(t.topic)).join('<br>')+`<br><br>Knowledge: ${p.counts.interview_entries} interview entries, ${p.counts.rules} rules, ${p.counts.preferences} preferences, ${p.counts.documented_gaps} known gaps (always escalated).`;
+ add('a',{status:'qualified',answer:`Hi, I'm the stand-in for ${p.name} of ${p.kitchen}. I only answer from what she told us. Ask in English or Roman Urdu. If she didn't say it, I'll pass you back to her.`,sources:[],reason:'',_hello:1})});
 fetch('/results').then(r=>r.json()).then(rows=>{if(!rows.length)return;const m=rows.filter(r=>r.chef_mark);if(!m.length){$('honest').textContent=`${rows.length} test questions prepared; chef review pending.`;return}
  const c=k=>m.filter(r=>r.chef_mark==k).length;$('honest').innerHTML=`Chef-reviewed ${m.length}/${rows.length}: <b>${c('agree')}</b> agree, <b>${c('disagree')}</b> disagree, <b>${c('should_have_escalated')}</b> should have escalated. Failures are kept in the sheet.`});
 function add(role,r){const d=document.createElement('div');
@@ -64,7 +64,7 @@ function add(role,r){const d=document.createElement('div');
   let h=r._hello?'':`<span class="badge ${r.status}">${{confident:'Confident',qualified:'Qualified',escalated:'Escalated'}[r.status]}</span><br>`;
   h+=esc(r.answer);if(r.reason&&r.status=='escalated')h+=`<div class="small">Why: ${esc(r.reason)}</div>`;
   if(r.sources.length){h+=`<div class="src">Source: ${r.sources.map(s=>s.id).join(', ')} (tap for provenance)</div><div class="prov">${r.sources.map(s=>`<b>${s.id}</b> · ${s.kind} · match ${s.score}<br>“${esc(s.text)}”<br><i>${esc(s.source)}</i>`).join('<hr>')}</div>`}
-  if(r.unverified)h+=`<div class="warn">Sample knowledge, not yet confirmed by the chef.</div>`;d.innerHTML=h;
+  if(r.unverified)h+=`<div class="warn">Not yet verified by the chef.</div>`;d.innerHTML=h;
   d.querySelector('.src')?.addEventListener('click',()=>d.querySelector('.prov').classList.toggle('on'))}
  log.append(d);log.scrollTop=log.scrollHeight}
 function tip(msg){const d=document.createElement('div');d.className='m small';d.textContent=msg;log.append(d);log.scrollTop=log.scrollHeight;return d}
@@ -88,7 +88,8 @@ function setSpeaking(on){
  }
  step();
 }
-function browserSay(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
+function browserSay(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-IN';
+ const vs=speechSynthesis.getVoices(),v=vs.find(v=>/en-IN/i.test(v.lang)&&/female|neerja|heera|swara/i.test(v.name))||vs.find(v=>/en-IN/i.test(v.lang));if(v)u.voice=v;
  u.onstart=()=>setSpeaking(true);u.onend=u.onerror=()=>setSpeaking(false);speechSynthesis.speak(u)}
 async function say(t){if(!$('speak').checked||!t)return;
  try{const r=await fetch('/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
@@ -118,7 +119,7 @@ function paintMeter(level){$('meterFill').style.width=Math.min(100,Math.round(le
 function startLiveCaption(onUpdate){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!SR)return null;
- const r=new SR();r.lang='en-US';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
+ const r=new SR();r.lang='en-IN';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
  let finalText='',alive=true;
  r.onresult=e=>{let interim='';
   for(let i=e.resultIndex;i<e.results.length;i++){

@@ -1,5 +1,5 @@
 """Voice I/O: Groq Whisper STT + edge-tts TTS. Browser APIs remain the UI fallback."""
-import os
+import os, re
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import Response
 from pydantic import BaseModel
@@ -8,7 +8,14 @@ router = APIRouter()
 
 GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
 WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
-EDGE_VOICE = os.getenv("EDGE_TTS_VOICE", "en-US-GuyNeural")
+# Female Indian-English voice: reads Roman Urdu far better than a US voice.
+EDGE_VOICE = os.getenv("EDGE_TTS_VOICE", "en-IN-NeerjaNeural")
+# Empty = auto-detect, so Roman Urdu / Urdu speech is accepted (English still works).
+WHISPER_LANGUAGE = os.getenv("GROQ_WHISPER_LANGUAGE", "")
+# Bias toward kitchen questions in English and Roman Urdu; cuts down silence hallucinations.
+WHISPER_PROMPT = ("Pickles kaise banate hain? Patty toot rahi hai, kya karun? Alfredo sauce patli hai. "
+                  "Smash burger, burger sauce, pasta, chicken marinade, masala fries, deals, price.")
+_URDU_SCRIPT = re.compile(r"[\u0600-\u06FF]")
 
 
 class SpeakIn(BaseModel):
@@ -50,19 +57,15 @@ async def transcribe(audio: UploadFile = File(...)):
     elif lower.endswith((".mp4", ".m4a")):
         content_type = "audio/mp4"
 
-    form = aiohttp.FormData()
-    form.add_field("file", data, filename=filename, content_type=content_type)
-    form.add_field("model", WHISPER_MODEL)
-    form.add_field("response_format", "json")
-    form.add_field("language", "en")
-    form.add_field("temperature", "0")
-    # Bias toward kitchen questions; cuts down silence hallucinations.
-    form.add_field(
-        "prompt",
-        "Questions about smash burgers, pasta, sauce, salt, fat ratio, cooking, chef kitchen.",
-    )
-
-    try:
+    async def whisper(language):
+        form = aiohttp.FormData()
+        form.add_field("file", data, filename=filename, content_type=content_type)
+        form.add_field("model", WHISPER_MODEL)
+        form.add_field("response_format", "json")
+        if language:
+            form.add_field("language", language)
+        form.add_field("temperature", "0")
+        form.add_field("prompt", WHISPER_PROMPT)
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 GROQ_URL,
@@ -73,6 +76,13 @@ async def transcribe(audio: UploadFile = File(...)):
                 body = await resp.json(content_type=None)
                 if resp.status >= 400:
                     raise HTTPException(resp.status, detail=body.get("error", body))
+                return body
+
+    try:
+        body = await whisper(WHISPER_LANGUAGE)
+        # Urdu speech can come back in Urdu script; the knowledge base is Latin script, so redo it in English.
+        if _URDU_SCRIPT.search(body.get("text") or ""):
+            body = await whisper("en")
     except HTTPException:
         raise
     except Exception as e:

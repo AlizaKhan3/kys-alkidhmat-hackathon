@@ -29,7 +29,7 @@ def _ask(q: Q):
 @app.get("/profile")
 def profile():
     return dict(KB["chef_profile"], escalation_topics=[dict(topic=t["topic"], reason=t["reason"]) for t in KB["escalation_topics"]],
-                counts={k: len(KB[k]) for k in ("interview_entries", "rules", "preferences")})
+                counts={k: len(KB.get(k, [])) for k in ("interview_entries", "rules", "preferences", "documented_gaps")})
 
 
 @app.get("/results")

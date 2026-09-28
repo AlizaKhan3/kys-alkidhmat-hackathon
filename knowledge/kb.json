@@ -1,248 +1,377 @@
 {
  "chef_profile": {
-  "name": "Chef [NAME]",
+  "name": "Chef Nisa",
   "kitchen": "Smash & Sauce Kitchen",
-  "specialty": "Smash burgers & pasta sauces",
-  "bio": "Replace with the chef's real bio from Interview Session 1.",
-  "consent_confirmed": false,
-  "consent_note": "Written consent from the chef is REQUIRED before demo. Set consent_confirmed to true only after signing."
+  "specialty": "Smash beef burgers & Alfredo penne pasta",
+  "bio": "University student who has been making pasta for 4-5 years and beef burgers for about a year. Runs Smash & Sauce Kitchen with her aunt as 50/50 partners: her aunt invests, Nisa handles the cooking and orders.",
+  "bio_source": "Interview transcript (EN/RU) - opening",
+  "consent_confirmed": true,
+  "consent_note": "Written consent signed by Chef Nisa (owner, Smash & Sauce Kitchen).",
+  "sources": {
+   "interview_en": "knowledge/sources/interview_en.txt",
+   "interview_ru": "knowledge/sources/interview_roman_urdu.txt",
+   "qa_manual": "knowledge/sources/QA_Manual.pdf"
+  }
  },
  "interview_entries": [
   {
+   "id": "G01",
+   "category": "general",
+   "question": "Who is Nisa and what is Smash & Sauce Kitchen?",
+   "question_ru": "Nisa kaun hain aur Smash & Sauce Kitchen kya hai?",
+   "tags": ["about", "background", "owner", "business", "story", "started", "partner", "aunt", "kaun", "baare"],
+   "chef_answer": "I'm a university student and I've always had a huge passion for cooking. I've been making pasta for around four to five years, and beef burgers for almost one year. I started this business with my aunt, and we are 50-50 partners. She mainly invests in the business, while I handle the actual work and operations, especially the cooking and orders.",
+   "chef_answer_ru": "Main ek university student hoon, aur mujhe hamesha se cooking ka bohat zyada shauq raha hai. Mujhe pasta banate hue around four to five years ho gaye hain, aur beef burgers banate hue almost one year. Maine ye business apni aunt ke saath start kiya hai, aur hum 50-50 partners hain. Woh mainly investment karti hain, jabke main actual kaam aur operations handle karti hoon, especially cooking aur orders.",
+   "source": "Interview transcript (EN/RU) - opening",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G02",
+   "category": "general",
+   "question": "What happens when an order comes while Nisa is at university?",
+   "question_ru": "Jab Nisa university mein hon aur lunchtime par order aa jaye to kya hota hai?",
+   "tags": ["university", "lunchtime", "lunch", "prebooked", "booked", "night", "before", "class", "away", "whatsapp", "sister"],
+   "chef_answer": "My classes are usually from around 9 to 2 or sometimes 9 to 3. If the order is pre-booked, I usually prepare things the night before so that everything is ready. If we receive an order at that exact time, my sister or someone from my family receives it through our WhatsApp or business number.",
+   "chef_answer_ru": "Meri classes usually around 9 se 2 tak ya kabhi kabhi 9 se 3 tak hoti hain. Agar order pre-booked ho, toh main usually raat ko hi cheezein prepare kar leti hoon taake sab kuch ready ho. Lekin agar usi exact time par order aaye, toh meri sister ya family mein se koi hamare WhatsApp ya business number ke through order receive kar leta hai.",
+   "source": "Interview transcript (EN/RU) - university and lunchtime orders",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G03",
+   "category": "general",
+   "question": "Which brands and suppliers do you use?",
+   "question_ru": "Aap kaunse brands aur vendors use karte ho, cheezein kahan se lete ho?",
+   "tags": ["brand", "brands", "supplier", "vendor", "buy", "purchase", "dawn", "bake", "parlour", "reggia", "regia", "kahan", "khareedte", "lete"],
+   "chef_answer": "For our burgers, we usually use Dawn and Bake Parlour products. For pasta, we use Bake Parlour and Reggia. For chicken and meat, we have our own vendor from whom we regularly purchase.",
+   "chef_answer_ru": "Hamare burgers ke liye hum usually Dawn aur Bake Parlour ke products use karte hain. Pasta ke liye hum Bake Parlour aur Reggia use karte hain. Chicken aur meat ke liye hamara apna vendor hai jahan se hum regularly purchase karte hain.",
+   "source": "Interview transcript (EN/RU) - purchasing",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G04",
+   "category": "menu",
+   "question": "What are the burger prices?",
+   "question_ru": "Burger ki price kya hai, burger kitne ka hai?",
+   "tags": ["price", "prices", "cost", "rate", "menu", "classic", "double", "burger", "qeemat", "paise", "rs", "kitne"],
+   "chef_answer": "Classic Smash Burger (1 patty, lettuce, pickles, onions, sauce): Rs. 749. Double Smash Burger (2 patties, extra cheese, lettuce, pickles, onions, sauce): Rs. 1,199.",
+   "chef_answer_ru": "Classic Smash Burger (1 patty, lettuce, pickles, pyaaz, sauce): Rs. 749. Double Smash Burger (2 patties, extra cheese, lettuce, pickles, pyaaz, sauce): Rs. 1,199.",
+   "source": "QA Manual - Section 6, Menu & Pricing",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G05",
+   "category": "menu",
+   "question": "What are the pasta prices and sizes?",
+   "question_ru": "Pasta ki price aur size kya hai, pasta kitne ka hai?",
+   "tags": ["price", "prices", "cost", "rate", "menu", "pasta", "alfredo", "small", "large", "size", "500", "1000", "ml", "qeemat", "kitne"],
+   "chef_answer": "Alfredo Penne Small: 500 ml box (about 270 g) for Rs. 699. Alfredo Penne Large: 1000 ml box (about 540 g) for Rs. 1,299.",
+   "chef_answer_ru": "Alfredo Penne Small: 500 ml box (takreeban 270 g) Rs. 699 ka. Alfredo Penne Large: 1000 ml box (takreeban 540 g) Rs. 1,299 ka.",
+   "source": "QA Manual - Section 6, Menu & Pricing",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G06",
+   "category": "menu",
+   "question": "What deals do you have?",
+   "question_ru": "Aapke deals kya hain?",
+   "tags": ["deal", "deals", "combo", "offer", "offers", "bundle", "package"],
+   "chef_answer": "2 Classic Smash Burgers: Rs. 1,450. 3 Classic: Rs. 2,200. 4 Classic: Rs. 2,900. 1 Classic + 1 Alfredo Pasta (500 ml): Rs. 1,350. 2 Classic + 2 Alfredo Pastas (500 ml each): Rs. 2,700. 2 Double Smash Burgers: Rs. 2,350. 2 Double + 1 Alfredo Pasta (500 ml): Rs. 3,000.",
+   "chef_answer_ru": "2 Classic Smash Burgers: Rs. 1,450. 3 Classic: Rs. 2,200. 4 Classic: Rs. 2,900. 1 Classic + 1 Alfredo Pasta (500 ml): Rs. 1,350. 2 Classic + 2 Alfredo Pastas (500 ml har ek): Rs. 2,700. 2 Double Smash Burgers: Rs. 2,350. 2 Double + 1 Alfredo Pasta (500 ml): Rs. 3,000.",
+   "source": "QA Manual - Section 6, Menu & Pricing (Deals)",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G07",
+   "category": "menu",
+   "question": "What add-ons do you offer?",
+   "question_ru": "Extra cheezein (add-ons) kya milti hain?",
+   "tags": ["addon", "add", "ons", "extra", "additional", "topping"],
+   "chef_answer": "Extra beef patty (85-90 g): Rs. 250. Extra cheese slice: Rs. 100. Extra chicken (pasta): Rs. 150. Extra caramelised onions: Rs. 50. Extra pickles: Rs. 50. Extra iceberg lettuce: Rs. 50.",
+   "chef_answer_ru": "Extra beef patty (85-90 g): Rs. 250. Extra cheese slice: Rs. 100. Extra chicken (pasta mein): Rs. 150. Extra caramelised pyaaz: Rs. 50. Extra pickles: Rs. 50. Extra iceberg lettuce: Rs. 50.",
+   "source": "QA Manual - Section 6, Menu & Pricing (Add-ons)",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G08",
+   "category": "general",
+   "question": "How long does each item take to prepare?",
+   "question_ru": "Har item banane mein kitna time lagta hai?",
+   "tags": ["time", "long", "minutes", "prep", "ready", "fast", "combo", "der", "lagta", "waqt"],
+   "chef_answer": "Classic or Double Smash: 6-8 minutes (1 min bun toast, 2 min sear and melt, 2 min build, 1 min wrap). Alfredo Penne: 10-12 minutes (4 min chicken, 4 min sauce and toss, 2 min boxing). Burger + Pasta combo: 12-15 minutes, running the griddle and pasta pan at the same time.",
+   "chef_answer_ru": "Classic/Double: 6-8 minute (1 bun toast, 2 patty aur cheese, 2 assembling, 1 wrapping). Alfredo Pasta: 10-12 minute (4 chicken, 4 sauce aur mixing, 2 boxing). Combo: dono stoves ek saath chala kar 12-15 minute mein order tayyar.",
+   "source": "QA Manual - Q20",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G09",
+   "category": "general",
+   "question": "What is always kept prepared in stock?",
+   "question_ru": "Kitchen mein hamesha kya tayyar aur stock mein rehta hai?",
+   "tags": ["stock", "prepared", "ready", "inventory", "prep", "fridge", "hamesha", "tayyar"],
+   "chef_answer": "Always kept prepared in stock: pre-portioned 80/20 beef mince balls (portioned and chilled), marinated chicken breast cubes for the Alfredo pasta, homemade pickles in brine, slow-cooked butter-caramelised onions, and the signature burger sauce base.",
+   "chef_answer_ru": "Hamesha stock mein: 80/20 beef mince ke pehle se tole hue thanday balls, Alfredo pasta ke liye marinate kiya hua chicken, ghar par bani pickles, makhan mein bani caramelised pyaaz, aur burger ki signature sauce ka base.",
+   "source": "QA Manual - Q8",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G10",
+   "category": "general",
+   "question": "How are fresh perishable items bought?",
+   "question_ru": "Jaldi kharab hone wali cheezein (buns, cream, lettuce) kaise li jati hain?",
+   "tags": ["perishable", "fresh", "daily", "bun", "buns", "cream", "lettuce", "olper", "roz", "rozana", "taaza"],
+   "chef_answer": "Fast-spoiling items such as fresh brioche/potato buns, Olper's/dairy cream, cheddar slices and crisp iceberg lettuce are bought fresh daily or sourced immediately from nearby trusted vendors when service opens.",
+   "chef_answer_ru": "Jaldi kharab hone wali cheezein (taaza buns, Olper's/dairy cream, cheddar slices, iceberg lettuce) rozana taaza ya order ke mutabiq qareebi reliable shop se li jati hain.",
+   "source": "QA Manual - Q9",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "G11",
+   "category": "fries",
+   "question": "What potatoes do you use for fries?",
+   "question_ru": "Fries ke liye kaunse aloo use karte ho?",
+   "tags": ["fries", "potato", "potatoes", "aloo", "9mm", "chips"],
+   "chef_answer": "For fries, we initially used normal potatoes, but now we use 9mm potatoes. We also offer homemade masala fries.",
+   "chef_answer_ru": "Fries ke liye starting mein hum normal potatoes use karte the, lekin ab hum 9mm potatoes use karte hain. Hum homemade masala fries bhi offer karte hain.",
+   "source": "Interview transcript (EN/RU) - purchasing",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
    "id": "B01",
    "category": "burger",
-   "question": "What fat ratio do you use for burgers?",
-   "tags": [
-    "fat",
-    "ratio",
-    "beef",
-    "blend",
-    "lean",
-    "80/20"
-   ],
-   "chef_answer": "I use 80/20 beef, so at least 20% fat. Anything leaner comes out dry.",
-   "source": "SAMPLE - replace with Interview S1 note/timestamp",
+   "question": "What goes into the patty mixture?",
+   "question_ru": "Patty ke mixture mein kya dalta hai?",
+   "tags": ["patty", "mixture", "mix", "ingredients", "butter", "garlic", "ginger", "chilli", "spicy", "qeema", "keema", "masala", "dalta", "dalte"],
+   "chef_answer": "For the patty mixture, we start with butter. Then we add garlic and ginger paste, along with our other basic seasonings. We keep the base relatively simple because we want to maintain the original beef flavour. Because some customers prefer a slightly spicy patty, we add a controlled amount of red chilli according to the quantity of meat.",
+   "chef_answer_ru": "Patty mixture ke liye hum butter se start karte hain. Phir hum garlic aur ginger paste add karte hain, saath mein apni doosri basic seasonings bhi. Hum patty ka base relatively simple rakhte hain kyun ke hum original beef flavour maintain karna chahte hain. Kyun ke kuch customers slightly spicy patty prefer karte hain, is liye hum meat ki quantity ke according controlled amount mein red chilli add karte hain.",
+   "source": "Interview transcript (EN/RU) - Our Beef Patty",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "B02",
    "category": "burger",
-   "question": "How thick or heavy is a patty?",
-   "tags": [
-    "patty",
-    "weight",
-    "size",
-    "thickness",
-    "ball"
-   ],
-   "chef_answer": "I portion 90 g balls and smash them thin on the flat top.",
-   "source": "SAMPLE",
+   "question": "What beef mince and fat ratio do you use?",
+   "question_ru": "Beef mince ka formula aur charbi ka ratio kya hai?",
+   "tags": ["fat", "ratio", "80/20", "mince", "beef", "lean", "charbi", "gosht", "double", "minced", "chilled"],
+   "chef_answer": "Strictly 80% lean beef and 20% natural fat, passed through the mincer twice. The fat keeps the burger juicy and caramelised; double mincing gives a fine, cohesive binder so the patty never breaks on the griddle, with no egg or breadcrumbs needed. Keep mince chilled at 2-4°C.",
+   "chef_answer_ru": "Fixed formula: 80% gosht aur 20% charbi, do dafa bareek mince. Charbi juicy aur crispy crust deti hai; do dafa mince se gosht jur jata hai aur taway par tootta nahi, anda ya breadcrumbs ki zaroorat nahi. Mince ko 2-4°C par thanda rakhein.",
+   "source": "QA Manual - Q10",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "B03",
    "category": "burger",
-   "question": "How and when do you season the burger?",
-   "tags": [
-    "season",
-    "salt",
-    "pepper",
-    "seasoning"
-   ],
-   "chef_answer": "Salt and pepper go on right after the smash, on the side facing up. Never mix salt into the meat.",
-   "source": "SAMPLE",
+   "question": "How heavy is each patty for Classic and Double?",
+   "question_ru": "Classic aur Double ki patty ka wazan kitna hota hai?",
+   "tags": ["weight", "grams", "heavy", "size", "ball", "portion", "classic", "double", "wazan"],
+   "chef_answer": "Each chilled raw ball weighs 85-90 g. Classic Smash: 1 patty (85-90 g). Double Smash: 2 patties (170-180 g raw beef).",
+   "chef_answer_ru": "Har thandi kachi ball 85-90 gram ki hoti hai. Classic: 1 patty (85-90 g). Double: 2 patties (170-180 g gosht).",
+   "source": "QA Manual - Q11",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "B04",
    "category": "burger",
-   "question": "Pan or grill, and how hot?",
-   "tags": [
-    "pan",
-    "grill",
-    "temperature",
-    "heat",
-    "flat top",
-    "cast iron"
-   ],
-   "chef_answer": "Flat top or cast iron at very high heat, around 230 C. It has to be smoking hot for the crust.",
-   "source": "SAMPLE",
+   "question": "How do you cook the patty on the griddle step by step?",
+   "question_ru": "Taway par patty pakane ka step by step tareeqa kya hai?",
+   "tags": ["griddle", "tawa", "temperature", "heat", "hot", "smash", "press", "sear", "flip", "cook", "technique", "steps", "pakana", "pakate", "garam"],
+   "chef_answer": "Heat a heavy flat cast-iron griddle to 220-240°C until light wisps of smoke appear. Place the cold 85-90 g ball on the dry, un-oiled griddle and cover it with a small square of butter paper. Press with the heavy smash tool using full body weight for 10 seconds until paper-thin with lacy edges. Remove the paper and season immediately with fine salt and cracked black pepper. Sear side 1 undisturbed for 60-90 seconds until the edges are dark brown and crispy. Slide a stiff metal scraper fully under the crust and flip in one clean motion. Immediately lay a cheddar slice on the hot patty and cook side 2 for only 30-45 seconds until the cheese melts. Remove immediately. Never press the patty after flipping.",
+   "chef_answer_ru": "Griddle ko 220-240°C par garam karein jab tak halka dhuwan na uthay. Thandi 85-90 g ball ko baghair oil ke garam taway par rakhein, upar butter paper ka chhota tukra rakhein. Bhaari smash tool se poori taqat se 10 second dabayein taake kinare patlay aur khurdaray banen. Paper hatayein, foran namak aur kali mirch chhirkein. Pehli side 60-90 second pakne dein jab tak kinare gehre brown aur crispy hon. Scraper neechay daal kar ek hi jhatkay mein palat dein. Palat-te hi garam patty par cheddar slice rakhein aur doosri side sirf 30-45 second pakayein jab tak cheese pighal jaye. Foran utha lein. Palatne ke baad patty ko dobara hargiz na dabayein.",
+   "source": "QA Manual - Q14",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "B05",
    "category": "burger",
-   "question": "Do you press burgers while cooking?",
-   "tags": [
-    "press",
-    "pressing",
-    "squash",
-    "smash",
-    "flatten",
-    "spatula"
-   ],
-   "chef_answer": "I smash once, in the first 10 seconds. After that I never press, because pressing pushes the juices out.",
-   "source": "SAMPLE",
+   "question": "What is the burger assembly order?",
+   "question_ru": "Burger assemble karne ki tarteeb kya hai?",
+   "tags": ["assemble", "assembly", "build", "layer", "layers", "stack", "order", "tarteeb", "jodna", "lettuce", "bun"],
+   "chef_answer": "Bottom bun lightly buttered and toasted golden-brown on the griddle, then a generous spread of signature house sauce, then fresh dry shredded iceberg lettuce (it shields the bun from steam and juices), then exactly 3-4 homemade pickle slices, then the cheesy patty (1 for Classic; 2 stacked for Double with cheese between), then generous caramelised onions over the hot cheese, then the top bun toasted in butter with signature sauce on the cut side, closed gently.",
+   "chef_answer_ru": "Neechay wali bun makhan mein taway par halki golden toast, phir signature sauce ki achhi layer, phir taaza khushk katti hui iceberg lettuce (bun ko geela hone se bachati hai), phir barabar phailay 3-4 pickle slices, phir cheesy patty (Classic ke liye 1; Double ke liye 2 stacked, cheese darmiyan mein), phir garam cheese ke upar caramelised pyaaz, aur aakhir mein makhan mein toast ki hui upar wali bun, andar sauce laga kar halka band karein.",
+   "source": "QA Manual - Q15",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "B06",
    "category": "burger",
-   "question": "How do you know a burger is done without cutting it?",
-   "tags": [
-    "done",
-    "doneness",
-    "tell",
-    "ready",
-    "flip",
-    "sign",
-    "look",
-    "touch"
-   ],
-   "chef_answer": "I flip when the edges are dark brown and lacy and juices pool on top, about 90 seconds. Second side is under a minute.",
-   "source": "SAMPLE",
+   "question": "What goes into the burger sauce?",
+   "question_ru": "Burger sauce mein kya dalta hai, burger sauce kaise banti hai?",
+   "tags": ["burger", "sauce", "mayo", "mayonnaise", "bbq", "barbecue", "dippit", "mustard", "worcestershire", "ketchup", "paprika", "rosemary", "ingredients", "dalta"],
+   "chef_answer": "For our burger sauce, we use mayonnaise, Dippit BBQ sauce, mustard sauce, Worcestershire sauce and tomato ketchup. Apart from barbecue sauce, we also use mustard sauce, rosemary sauce, chilli sauce, paprika powder, rosemary and black pepper. The brands make a big difference: if you use low-quality brands, the taste can change significantly.",
+   "chef_answer_ru": "Burger sauce ke liye hum mayonnaise, Dippit BBQ sauce, mustard sauce, Worcestershire aur tomato ketchup use karte hain. Barbecue sauce ke ilawa hum mustard sauce, rosemary sauce, chilli sauce, paprika powder, rosemary aur black pepper bhi use karte hain. Brands bohat difference create karte hain: low-quality brands use karein toh taste significantly change ho sakta hai.",
+   "source": "Interview transcript (EN/RU) - Our Burger Sauce",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "B07",
    "category": "burger",
-   "question": "How do you toast the bun and when do you add cheese?",
-   "tags": [
-    "bun",
-    "toast",
-    "cheese",
-    "melt",
-    "butter"
-   ],
-   "chef_answer": "Buttered bun goes face down on the flat top for 30 seconds. Cheese goes on straight after the flip so it melts under the steam.",
-   "source": "SAMPLE",
+   "question": "Which cheese do you use?",
+   "question_ru": "Kaunsa cheese use karte ho?",
+   "tags": ["cheese", "adam", "adams", "cheddar", "slice", "melt", "melting", "pighalna"],
+   "chef_answer": "For our burgers, we use Adam's burger cheese. I personally prefer Adam's because I find its quality and melting consistency good. Usually, it takes around five minutes for the cheese to melt properly, depending on how we're preparing the burger. For our pasta, we also use Adam's cheddar cheese.",
+   "chef_answer_ru": "Burgers ke liye hum Adam's burger cheese use karte hain. Personally, main Adam's prefer karti hoon kyun ke mujhe iski quality aur melting consistency achi lagti hai. Usually cheese ko properly melt hone mein around five minutes lagte hain, depending on how we're preparing the burger. Pasta ke liye bhi hum Adam's cheddar cheese use karte hain.",
+   "source": "Interview transcript (EN/RU) - Cheese We Use",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "B08",
    "category": "burger",
-   "question": "What is the biggest mistake home cooks make with burgers?",
-   "tags": [
-    "mistake",
-    "common",
-    "beginner",
-    "home cooks"
-   ],
-   "chef_answer": "Pressing the patty, and using lean beef. Both dry it out.",
-   "source": "SAMPLE",
+   "question": "How do you make the homemade pickles?",
+   "question_ru": "Pickles kaise banate ho?",
+   "tags": ["pickle", "pickles", "cucumber", "kheera", "vinegar", "sirka", "brine", "achar", "lemon", "sugar"],
+   "chef_answer": "We take cucumber and slice it properly. Then, in around one cup of hot water, we add approximately 3-4 tablespoons of vinegar, one small lemon, 2 tablespoons of sugar, and half a teaspoon of salt. We put the sliced cucumbers into this mixture and leave them for around 30 minutes. After that, we let the pickles cool down in the same liquid, and once they have cooled, we store them in the refrigerator.",
+   "chef_answer_ru": "Hum cucumber le kar usko properly slice karte hain. Phir around one cup hot water mein approximately 3-4 tablespoons vinegar, one small lemon, 2 tablespoons sugar aur half teaspoon salt add karte hain. Sliced cucumbers ko is mixture mein daal kar around 30 minutes ke liye chhor dete hain. Uske baad pickles ko isi liquid mein cool hone dete hain, aur jab woh cool ho jayein toh refrigerator mein store kar dete hain.",
+   "source": "Interview transcript (EN/RU) - Our Homemade Pickles",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "B09",
    "category": "burger",
-   "question": "Do you use frozen beef?",
-   "tags": [
-    "frozen",
-    "freeze",
-    "thaw",
-    "defrost"
-   ],
-   "chef_answer": "I prefer fresh. If it has to be frozen, I thaw it in the fridge overnight, never on the counter.",
-   "source": "SAMPLE",
-   "confidence": "inferred",
+   "question": "How do you make the caramelised onions?",
+   "question_ru": "Caramelised pyaaz kaise banate ho?",
+   "tags": ["onion", "onions", "caramelised", "caramelized", "pyaaz", "piyaz", "pyaz"],
+   "chef_answer": "Thinly sliced onions cooked slowly in pure butter over low flame for 35-45 minutes with a pinch of salt. Never rushed on high heat, never any sugar. Slow cooking lets the natural sugars break down and brown deeply.",
+   "chef_answer_ru": "Bareek kati pyaaz ko khalis makhan mein halki aanch par 35-45 minute pakayein, sirf ek chutki namak. Tez aanch nahi, cheeni nahi. Halki aanch se pyaaz ki qudrati meethas nikal kar deep golden brown hoti hai.",
+   "source": "QA Manual - Q13",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "B10",
+   "category": "packaging",
+   "question": "What do you wrap the burgers in?",
+   "question_ru": "Burger kis cheez mein wrap karte ho?",
+   "tags": ["wrap", "wrapping", "foil", "butter", "paper", "packaging", "pack", "packing", "lapet"],
+   "chef_answer": "Two materials: butter paper (standard, everyday handling) and foil paper. Use foil when maximum heat retention is needed, such as cold weather or distant drop-offs, because it keeps the cheese melted and the bun warm.",
+   "chef_answer_ru": "Do materials: butter paper (roz ki wrapping) aur foil paper. Foil tab lagayein jab garmi zyada der rakhni ho, khaas tor par door ki delivery ya thand ke mausam mein.",
+   "source": "QA Manual - Q21 (interview also mentions foil paper for burgers)",
+   "confidence": "documented",
    "verified": false
   },
   {
    "id": "P01",
    "category": "pasta",
-   "question": "How much water and salt for pasta?",
-   "tags": [
-    "water",
-    "salt",
-    "salting",
-    "boil",
-    "litre",
-    "liter",
-    "pot"
-   ],
-   "chef_answer": "About 1 litre of water per 100 g of pasta, with 10 g salt per litre, added once the water boils.",
-   "source": "SAMPLE",
+   "question": "How long do you boil the pasta?",
+   "question_ru": "Pasta kitni der boil karte ho?",
+   "tags": ["boil", "boiling", "time", "minutes", "long", "ubalna", "ubaalna", "der"],
+   "chef_answer": "We usually boil the pasta for around 8-10 minutes, depending on the type and brand we are using.",
+   "chef_answer_ru": "Pasta ko hum usually around 8-10 minutes boil karte hain, depending on the type aur brand jo hum use kar rahe hote hain.",
+   "source": "Interview transcript (EN/RU) - Our Pasta",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "P02",
    "category": "pasta",
-   "question": "How do you know pasta is al dente?",
-   "tags": [
-    "al dente",
-    "done",
-    "bite",
-    "test",
-    "cook",
-    "cooked",
-    "firm"
-   ],
-   "chef_answer": "I pull it 2 minutes before the packet time and bite one piece. There should be a thin white dot in the centre.",
-   "source": "SAMPLE",
+   "question": "Which pasta brand and shape do you use?",
+   "question_ru": "Pasta ka kaunsa brand aur shape use karte ho?",
+   "tags": ["brand", "shape", "penne", "regia", "reggia", "bake", "parlour", "type"],
+   "chef_answer": "Exclusively Penne from Bake Parlour or Regia. The tubular, ridged shape holds thick cream sauce outside and traps cheese inside. Both brands survive high-heat tossing without breaking or turning mushy.",
+   "chef_answer_ru": "Sirf Bake Parlour ya Regia ki Penne. Nali-numa lakeeron wali shape sauce ko andar aur bahar pakad kar rakhti hai. Dono brands tossing mein toot-te nahi aur halwa nahi bante.",
+   "source": "QA Manual - Q16",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "P03",
    "category": "pasta",
-   "question": "When do you use pasta water?",
-   "tags": [
-    "pasta water",
-    "starchy",
-    "water",
-    "sauce",
-    "loosen",
-    "emulsify"
-   ],
-   "chef_answer": "I keep a cup of it. It goes into the pan with the sauce, a splash at a time, to make it silky and cling.",
-   "source": "SAMPLE",
+   "question": "What goes into the pasta sauce?",
+   "question_ru": "Pasta sauce mein kya dalta hai?",
+   "tags": ["pasta", "sauce", "alfredo", "white", "cheddar", "cream", "milk", "butter", "adam", "ingredients", "dalta"],
+   "chef_answer": "For our pasta sauce, we use cheddar cheese, specifically Adam's cheese, along with cream, milk, and butter. We also use all-purpose milk. The quality of the ingredients is really important, because changing the brand or using a lower-quality product can affect the overall taste and consistency of the pasta.",
+   "chef_answer_ru": "Pasta sauce ke liye hum cheddar cheese, specifically Adam's cheese, cream, milk aur butter use karte hain. Hum all-purpose milk bhi use karte hain. Ingredients ki quality bohat important hai kyun ke brand change karne ya lower-quality product use karne se pasta ka taste aur consistency affect ho sakti hai.",
+   "source": "Interview transcript (EN/RU) - Our Pasta",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "P04",
    "category": "pasta",
-   "question": "What is the sauce to pasta ratio and assembly order?",
-   "tags": [
-    "sauce",
-    "ratio",
-    "assembly",
-    "toss",
-    "finish",
-    "pan",
-    "order",
-    "add",
-    "adding"
-   ],
-   "chef_answer": "Pasta goes into the sauce, not the other way round. Toss over heat for a minute, sauce should coat, not pool.",
-   "source": "SAMPLE",
+   "question": "How do you make the Alfredo sauce step by step?",
+   "question_ru": "Alfredo sauce step by step kaise banti hai?",
+   "tags": ["alfredo", "method", "steps", "step", "make", "build", "garlic", "simmer", "whisk", "tareeqa"],
+   "chef_answer": "Melt 1 tablespoon pure butter over medium heat. Sauté finely minced garlic for 30 seconds. Pour in chilled dairy cream and whole milk, stirring gently, and bring to a gentle simmer. Add our in-house secret spice blend (never disclosed), plus black pepper and salt. Fold in grated cheddar and mozzarella with 2-3 tablespoons of reserved pasta water. Whisk until smooth, velvety and clinging to the back of a spoon. Toss in the penne and chicken for 60 seconds.",
+   "chef_answer_ru": "Pan mein 1 chamach makhan pighlayen, bareek lehsan 30 second fry karein. Dairy cream aur doodh daal kar halki aanch par pakayein. Hamara secret spice blend (khufia recipe), kali mirch aur namak shamil karein. Cheddar aur mozzarella aur 2-3 chamach pasta water mila kar chalayein. Sauce gaarhi aur makhmali ho jaye to penne aur chicken daal kar 1 minute mix karein.",
+   "source": "QA Manual - Q19",
    "confidence": "documented",
    "verified": false
   },
   {
    "id": "P05",
    "category": "pasta",
-   "question": "What do you serve for gluten-free requests?",
-   "tags": [
-    "gluten",
-    "free",
-    "gluten-free",
-    "substitute",
-    "substitution",
-    "alternative"
-   ],
-   "chef_answer": "I use corn-and-rice gluten-free pasta and cook it 1 minute less. For anything medical like celiac, ask me first.",
-   "source": "SAMPLE",
-   "confidence": "inferred",
+   "question": "How do you salt the water, check al dente and use pasta water?",
+   "question_ru": "Pasta ke paani mein namak, al dente check aur pasta water ka kya karte ho?",
+   "tags": ["salt", "water", "al", "dente", "drain", "rinse", "pasta", "namak", "paani", "reserve", "starchy"],
+   "chef_answer": "Bring a large pot of water to a rolling boil and salt it generously (it should taste seasoned). Check 1 minute before the packet time: tender outside, firm white core. Drain and reserve half a cup of starchy pasta water. Never rinse with cold tap water.",
+   "chef_answer_ru": "Bade pateeley mein paani khoob ubaalein aur achha namak daalein. Packet time se 1 minute pehle check karein: bahar se naram, andar se halka sakht. Paani nithar kar aadha cup pasta water bacha lein. Thande paani se hargiz na dhoein.",
+   "source": "QA Manual - Q17",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "P06",
+   "category": "packaging",
+   "question": "What boxes do you pack the pasta in?",
+   "question_ru": "Pasta kis box mein pack karte ho?",
+   "tags": ["box", "boxes", "container", "500", "1000", "ml", "packing", "pack", "lid", "dhakkan"],
+   "chef_answer": "Food-grade, leak-resistant plastic boxes: 500 ml for single orders (Rs. 699) and 1000 ml for large/sharing orders (Rs. 1,299). Press the snap-lock lid on all four corners until it clicks, so no cream sauce can leak.",
+   "chef_answer_ru": "Food-grade plastic boxes: 500 ml single ke liye (Rs. 699), 1000 ml sharing ke liye (Rs. 1,299). Dhakkan chaaron konon se daba kar lock karein jab tak click na aaye taake sauce bahar na niklay.",
+   "source": "QA Manual - Q22",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "P07",
+   "category": "packaging",
+   "question": "How do you pack the final bag?",
+   "question_ru": "Final bag packing kaise karte ho?",
+   "tags": ["bag", "sticker", "brown", "paper", "packing", "branding", "seal"],
+   "chef_answer": "Place wrapped burgers and locked pasta boxes into heavy-duty brown paper bags. Seal the top fold with the branded Smash & Sauce sticker. The flat bottom keeps pasta boxes level and upright while burgers rest alongside without crushing.",
+   "chef_answer_ru": "Wrapped burgers aur locked pasta boxes ko brown paper bag mein rakhein. Upar wale fold par Smash & Sauce ka sticker lagayein. Flat painda pasta ko seedha rakhta hai aur burgers dabne se bachte hain.",
+   "source": "QA Manual - Q23",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "C01",
+   "category": "chicken",
+   "question": "How do you marinate the chicken?",
+   "question_ru": "Chicken ka marinade kaise banate ho, chicken mein kya dalta hai?",
+   "tags": ["chicken", "marinade", "marinate", "tikka", "shan", "soy", "oregano", "flakes", "masala", "dalta"],
+   "chef_answer": "For the marinade, we use Shan Chicken Tikka Powder, along with chicken powder, chilli sauce, soy sauce, black pepper, a little salt, chilli flakes, and oregano. Depending on what we're preparing, we also use different seasoning mixes, sometimes Rosemary products or Falak products.",
+   "chef_answer_ru": "Marinade ke liye hum Shan Chicken Tikka Powder use karte hain, along with chicken powder, chilli sauce, soy sauce, black pepper, thoda sa salt, chilli flakes aur oregano. Depending on what we're preparing, hum different seasoning mixes bhi use karte hain, kabhi Rosemary products ya Falak products.",
+   "source": "Interview transcript (EN/RU) - Our Chicken Preparation",
+   "confidence": "documented",
+   "verified": false
+  },
+  {
+   "id": "C02",
+   "category": "chicken",
+   "question": "How do you cook the chicken for the Alfredo pasta?",
+   "question_ru": "Alfredo pasta ke liye chicken kaise aur kitni der pakate ho?",
+   "tags": ["chicken", "saute", "cook", "cubes", "boneless", "breast", "pan", "minutes", "pakana", "der"],
+   "chef_answer": "Boneless breast diced into bite-sized cubes, then sautéed in a hot pan with a little butter/oil over medium-high flame for 5-7 minutes until golden at the edges and juicy inside. Set aside.",
+   "chef_answer_ru": "Boneless chicken breast ke chhote cubes, garam pan mein thode makhan/oil ke saath medium-high aanch par 5-7 minute saute karein taake golden aur juicy rahe. Alag rakh lein.",
+   "source": "QA Manual - Q18",
+   "confidence": "documented",
    "verified": false
   }
  ],
@@ -250,139 +379,234 @@
   {
    "id": "R01",
    "category": "burger",
-   "condition": "burger came out dry",
-   "tags": [
-    "dry",
-    "tough",
-    "juicy",
-    "crumbly"
-   ],
-   "chef_action": "Check the fat ratio first (I need at least 20% fat), then the heat (very high, no pressing). If neither is the cause, ask me.",
+   "condition": "patty breaks or falls apart while frying",
+   "condition_ru": "patty fry karte waqt toot rahi hai",
+   "tags": ["break", "breaks", "breaking", "falls", "apart", "crumble", "weak", "toot", "tootna", "tootti", "toot rahi"],
+   "chef_action": "Check two things: too much butter in the patty mixture, or too much raw papaya paste. Too much papaya paste makes the mixture release water, and that excess moisture makes the patty weak so it breaks while frying. We had this exact problem at our Habitt stall.",
+   "chef_action_ru": "Do cheezein check karein: patty mixture mein zyada butter, ya zyada raw papaya paste. Papaya paste zyada ho jaye toh mixture water release karta hai, aur is excess moisture se patty weak ho kar frying ke waqt toot jati hai. Humein ye exact problem Habitt stall par face hui thi.",
+   "source": "Interview transcript (EN/RU) - A Problem We Faced With Our Patty",
    "confidence": "documented",
-   "fallback_escalate": true
+   "fallback_escalate": true,
+   "verified": false
   },
   {
    "id": "R02",
    "category": "burger",
-   "condition": "burger is greasy",
-   "tags": [
-    "greasy",
-    "oily",
-    "grease",
-    "soggy"
-   ],
-   "chef_action": "The heat was too low. Get the flat top smoking hot and smash thin so fat renders out and crisps instead of pooling.",
+   "condition": "burger patty came out dry",
+   "condition_ru": "patty khushk ya dry ho gayi",
+   "tags": ["dry", "tough", "juicy", "khushk", "sookhi"],
+   "chef_action": "Causes: (1) mince under 20% fat; (2) griddle too cold (below 200°C) so juices stew out instead of searing; (3) patty pressed after flipping. Fix: verify 80/20, heat the griddle to 220°C+ before the meat goes on, and smash once for 10 seconds, never again.",
+   "chef_action_ru": "Wajuhaat: (1) 20% se kam charbi; (2) tawa thanda (200°C se kam) jis se juice beh gaya; (3) palatne ke baad dobara dabaya. Hal: 80/20 mince, tawa 220°C+, sirf pehle 10 second smash.",
+   "source": "QA Manual - Q25",
    "confidence": "documented",
-   "fallback_escalate": true
+   "fallback_escalate": true,
+   "verified": false
   },
   {
    "id": "R03",
-   "category": "sauce",
-   "condition": "sauce is too thin",
-   "tags": [
-    "thin",
-    "watery",
-    "runny",
-    "loose"
-   ],
-   "chef_action": "Simmer it uncovered to reduce, then finish tossing with the pasta and a splash of starchy pasta water. Do not add flour.",
+   "category": "pasta",
+   "condition": "Alfredo sauce is thin or watery",
+   "condition_ru": "Alfredo sauce patli ya watery reh gayi",
+   "tags": ["thin", "watery", "runny", "loose", "patli", "patla", "paani"],
+   "chef_action": "Simmer on medium-low for an extra 90 seconds and add 2 tablespoons more grated cheese. If still thin, dissolve 1/2 teaspoon cornflour in 1 tablespoon cold milk, stir into the bubbling sauce and whisk 60 seconds until thick and glossy.",
+   "chef_action_ru": "Medium-low aanch par 1-2 minute mazeed pakayein aur 2 chamach cheese daalein. Phir bhi patli ho to aadha chamach cornflour thande doodh mein ghol kar daalein aur 1 minute chalayein.",
+   "source": "QA Manual - Q26",
    "confidence": "documented",
-   "fallback_escalate": true
+   "fallback_escalate": true,
+   "verified": false
   },
   {
    "id": "R04",
-   "category": "sauce",
-   "condition": "sauce split or broke",
-   "tags": [
-    "split",
-    "broken",
-    "curdled",
-    "separated",
-    "oily"
-   ],
-   "chef_action": "Take it off the heat, add a splash of pasta water and whisk hard until it comes back together.",
+   "category": "pasta",
+   "condition": "Alfredo sauce split, curdled or oily",
+   "condition_ru": "Alfredo sauce phat gayi ya oil chhor diya",
+   "tags": ["split", "broken", "curdled", "separated", "oily", "phat", "phatna", "oil"],
+   "chef_action": "The pan got too hot and the dairy fat separated. Remove from the flame immediately and whisk in 2 tablespoons of warm starchy pasta water or cold milk vigorously; the sauce re-emulsifies within about 30 seconds.",
+   "chef_action_ru": "Aanch tez hone se fat alag ho gaya. Pan foran choolhe se utarein, 2 chamach garam pasta water ya thanda doodh daal kar taizi se whisk karein; 30 second mein sauce smooth ho jayegi.",
+   "source": "QA Manual - Q27",
    "confidence": "documented",
-   "fallback_escalate": true
+   "fallback_escalate": true,
+   "verified": false
   },
   {
    "id": "R05",
-   "category": "pasta",
-   "condition": "pasta is gummy or sticky",
-   "tags": [
-    "gummy",
-    "sticky",
-    "mushy",
-    "clumped",
-    "overcooked"
-   ],
-   "chef_action": "Not enough water or overcooked. Use 1 litre per 100 g and pull it 2 minutes early. No oil in the water.",
+   "category": "burger",
+   "condition": "caramelised onions are burnt, black or bitter",
+   "condition_ru": "caramelised pyaaz kali ho gayi ya kadwi smell aa rahi",
+   "tags": ["burnt", "burned", "black", "bitter", "onion", "onions", "pyaaz", "kali", "kadwi", "jal"],
+   "chef_action": "Cannot be salvaged. Burnt butter and scorched onion sugars taint the whole batch. Discard it, wash the pan, melt fresh butter over low flame and cook a new batch slowly. Never raise the heat to save time.",
+   "chef_action_ru": "Theek nahi ho sakti. Jala makhan aur jali pyaaz ka kadwapan poora batch kharab kar deta hai. Phenk dein, pan dho kar taza makhan aur halki aanch par nayi pyaaz banayein.",
+   "source": "QA Manual - Q28",
    "confidence": "documented",
-   "fallback_escalate": true
+   "fallback_escalate": true,
+   "verified": false
+  },
+  {
+   "id": "R06",
+   "category": "burger",
+   "condition": "bottom bun gets soggy before delivery",
+   "condition_ru": "neechay wali bun geeli ya soggy ho jati hai",
+   "tags": ["soggy", "wet", "bun", "geeli", "naram", "mushy"],
+   "chef_action": "Toast the cut side in butter until a solid golden crust forms. Lay the shredded iceberg directly over the sauce before the hot patty; it shields the bun from steam and drippings. With foil, don't wrap airtight while blazing hot: let steam escape for 20 seconds first, or wrap in butter paper and then foil.",
+   "chef_action_ru": "Bun ko makhan mein itna toast karein ke crisp crust ban jaye. Sauce ke baad pehle iceberg lettuce, phir garam cheesy patty rakhein. Foil ko foran 100% tight na karein; 20 second bhaap nikalne dein ya pehle butter paper phir foil lagayein.",
+   "source": "QA Manual - Q29",
+   "confidence": "documented",
+   "fallback_escalate": true,
+   "verified": false
+  },
+  {
+   "id": "R07",
+   "category": "packaging",
+   "condition": "delivery is delayed or the rider is late",
+   "condition_ru": "delivery late ho gayi ya rider der se aa raha hai",
+   "tags": ["delay", "delayed", "late", "rider", "delivery", "long", "distance", "der"],
+   "chef_action": "Wrap burgers in foil instead of butter paper if the rider is delayed or the trip is long. Add an extra tablespoon of hot starchy pasta water to the Alfredo right before boxing so it stays silky. Keep the sealed bag upright in an insulated thermal bag. If the rider is delayed beyond 35 minutes, message or call the customer on WhatsApp with an honest update and rider tracking.",
+   "chef_action_ru": "Rider late ho ya trip lambi ho to burger ko foil mein wrap karein. Boxing se pehle 1 chamach garam pasta water extra mila dein taake sauce na jamay. Sealed bag ko rider ke thermal bag mein seedha rakhwayen. 35 minute se zyada late ho to WhatsApp/call par customer ko update aur rider status share karein.",
+   "source": "QA Manual - Q24",
+   "confidence": "documented",
+   "fallback_escalate": true,
+   "verified": false
+  },
+  {
+   "id": "R08",
+   "category": "burger",
+   "condition": "meat needs to be prepared quickly or tenderized",
+   "condition_ru": "gosht jaldi tayyar karna hai ya naram karna hai",
+   "tags": ["quick", "quickly", "fast", "tender", "tenderize", "tenderise", "papaya", "jaldi", "naram", "kacha"],
+   "chef_action": "Sometimes we use a small amount of raw papaya paste to help tenderize the meat. Keep it small: if too much raw papaya paste is added, the mixture releases water and the patty can break while frying.",
+   "chef_action_ru": "Kabhi kabhi hum raw papaya paste ki small amount use karte hain taake meat tenderize ho. Thori hi rakhein: zyada papaya paste se mixture water release karta hai aur patty frying ke waqt toot sakti hai.",
+   "source": "Interview transcript (EN/RU) - A Problem We Faced With Our Patty",
+   "confidence": "documented",
+   "fallback_escalate": true,
+   "verified": false
+  },
+  {
+   "id": "R09",
+   "category": "general",
+   "condition": "a brand is not available or someone wants a cheaper substitute",
+   "condition_ru": "brand nahi mil raha ya sasti cheez use karni hai",
+   "tags": ["substitute", "replace", "cheaper", "wholesale", "available", "unavailable", "alternative", "sasta", "sasti", "badal", "nahi mil"],
+   "chef_action": "Don't swap without checking with Nisa. She tried cheaper wholesale products to reduce cost, but the taste wasn't what she wanted to sell. Changing the brand or using a lower-quality product can affect the overall taste and consistency.",
+   "chef_action_ru": "Nisa se poochay baghair brand na badlein. Unhon ne cost kam karne ke liye wholesale products try kiye the, lekin taste woh nahi tha jo woh customers ko sell karna chahti thin. Brand change karne ya lower-quality product use karne se taste aur consistency affect hoti hai.",
+   "source": "Interview transcript (EN/RU) - Our Burger Sauce / Our Pasta",
+   "confidence": "documented",
+   "fallback_escalate": true,
+   "verified": false
   }
  ],
  "preferences": [
   {
    "id": "F01",
    "category": "general",
-   "item": "Things the chef never does",
-   "tags": [
-    "never",
-    "don't",
-    "avoid",
-    "refuse",
-    "rule"
-   ],
-   "chef_stance": "Never presses a burger after the first smash, never adds oil to pasta water, never salts the meat mix.",
+   "item": "Things Nisa's kitchen never does",
+   "item_ru": "Kitchen ke sakht rules, jo kabhi nahi karte",
+   "tags": ["never", "rules", "rule", "avoid", "dont", "house", "strict", "kabhi", "reheat", "sakht"],
+   "chef_stance": "NEVER use lean mince: strictly 80% meat, 20% fat, minced twice. NEVER press or squeeze the patty after the first 10-second smash. NEVER add sugar to the caramelised onions. NEVER reveal the Alfredo secret spices or pickle brine recipe to anyone. NEVER rinse boiled pasta under cold tap water. NEVER reheat old pre-fried patties: every burger is cooked fresh to order.",
+   "chef_stance_ru": "80/20 aur double mince ke baghair koi mince istemal na karein. Pehle 10 second ke baad patty ko dobara na dabayein. Pyaaz mein cheeni na daalein. Alfredo ke secret spices aur pickle brine ki recipe kisi ko na batayein. Boil ke baad pasta par thanda paani na daalein. Purani tali hui patty reheat na karein; har order fresh banega.",
+   "source": "QA Manual - Q30",
    "confidence": "documented",
    "verified": false
+  }
+ ],
+ "documented_gaps": [
+  {
+   "id": "X01",
+   "question": "Exact quantities and measurements for 1 kg of patty mixture",
+   "question_ru": "1 kg patty mixture ki exact quantity aur measurement kitni hai",
+   "tags": ["exact", "quantity", "quantities", "measurement", "measurements", "measure", "kitna", "kitni", "kg", "kilo", "patty", "mixture", "recipe"],
+   "reason": "Nisa said she would give the exact recipe and measurements for one kilogram of meat separately. Those amounts are not recorded yet.",
+   "reason_ru": "Nisa ne kaha tha ke 1 kg meat ki exact recipe aur measurements woh alag se batayengi. Ye quantities abhi record nahi hui.",
+   "source": "Interview transcript (EN/RU) - Our Beef Patty: \"I'll be explaining the exact recipe and measurements for one kilogram of meat separately.\""
   },
   {
-   "id": "F02",
-   "category": "general",
-   "item": "Favourite doneness for burgers",
-   "tags": [
-    "favourite",
-    "favorite",
-    "prefer",
-    "doneness",
-    "medium",
-    "well"
-   ],
-   "chef_stance": "Cooked through but juicy, never grey and dry.",
-   "confidence": "inferred",
-   "verified": false
+   "id": "X02",
+   "question": "Exact quantities for the burger sauce",
+   "question_ru": "Burger sauce ki exact quantity kitni hai",
+   "tags": ["exact", "quantity", "quantities", "measurement", "measurements", "kitna", "kitni", "burger", "sauce", "recipe", "ratio"],
+   "reason": "Nisa said she would share the exact burger sauce recipe, quantities and process separately. Those amounts are not recorded yet.",
+   "reason_ru": "Nisa ne kaha tha ke burger sauce ki exact recipe, quantities aur process woh alag se batayengi. Ye abhi record nahi hua.",
+   "source": "Interview transcript (EN/RU) - Our Burger Sauce: \"I'll be discussing the exact recipe, quantities, and complete process separately in detail.\""
+  },
+  {
+   "id": "X03",
+   "question": "How to make the masala fries (recipe and masala)",
+   "question_ru": "Masala fries kaise banti hain, masala fries ki recipe",
+   "tags": ["masala", "fries", "recipe", "make", "spice", "fry", "banti"],
+   "reason": "Nisa mentioned homemade masala fries but has not described how she makes them or which masala she uses.",
+   "reason_ru": "Nisa ne homemade masala fries ka zikr kiya hai, lekin unka tareeqa ya masala abhi nahi bataya.",
+   "source": "Interview transcript (EN/RU) - purchasing: mentions masala fries only"
+  },
+  {
+   "id": "X04",
+   "question": "What is in the Alfredo secret spice blend",
+   "question_ru": "Alfredo ke secret spices mein kya hai",
+   "tags": ["secret", "spice", "spices", "blend", "khufia", "proprietary"],
+   "reason": "The Alfredo secret spice blend is proprietary and never disclosed.",
+   "reason_ru": "Alfredo ka secret spice blend khufia recipe hai aur kisi ko nahi bataya jata.",
+   "source": "QA Manual - Q19 and Q30"
+  },
+  {
+   "id": "X05",
+   "question": "Exact quantities for the chicken marinade",
+   "question_ru": "Chicken marinade ki exact quantity kitni hai",
+   "tags": ["exact", "quantity", "quantities", "measurement", "kitna", "kitni", "chicken", "marinade", "recipe"],
+   "reason": "Nisa said the exact marinade ingredients and quantities vary with the recipe; exact amounts are not recorded yet.",
+   "reason_ru": "Nisa ne kaha ke marinade ke exact ingredients aur quantities recipe ke hisaab se badalti hain; exact amounts abhi record nahi hue.",
+   "source": "Interview transcript (EN/RU) - Our Chicken Preparation: \"The exact ingredients and quantities can vary depending on the recipe we're making.\""
   }
  ],
  "escalation_topics": [
   {
    "id": "E01",
-   "topic": "Allergies",
-   "pattern": "allerg|anaphyla|celiac|coeliac|intoleran",
-   "reason": "Allergies are a safety matter. Ask the chef or a doctor directly; I will not give an opinion."
+   "topic": "Allergies & dietary safety",
+   "pattern": "allerg|allerji|anaphyla|celiac|coeliac|intoleran|gluten|lactose|dairy[- ]?free|\\bnuts?\\b|peanut|mungphali",
+   "reason": "This involves medical health and dietary allergens. The Stand-In cannot authorize dietary safety.",
+   "reason_ru": "Yeh maamla medical aur allergy se mutalliq hai. Stand-In iska faisla nahi kar sakta.",
+   "answer": "This query involves medical health and severe dietary allergens. The Stand-In system cannot authorize dietary safety. Please speak directly with the chef/owner before placing this order.",
+   "answer_ru": "Yeh maamla medical aur shadeed allergy se mutalliq hai. AI system iska faisla nahi kar sakta. Order se pehle barah-e-raast owner/chef se baat karein.",
+   "source": "QA Manual - Q31"
   },
   {
    "id": "E02",
-   "topic": "Food safety limits",
-   "pattern": "food poison|safe to eat|expired|spoil|bacteria|salmonella|e\\.? ?coli|internal temp|reheat|leftover",
-   "reason": "Food-safety limits must come from the chef or a food-safety officer, not from me."
+   "topic": "Food safety (spoiled, left out, expired)",
+   "pattern": "food poison|safe to eat|expired|expire|spoil|bacteria|salmonella|e\\.? ?coli|leftover|overnight|raat bhar|baasi|\\bbasi\\b|badbu|bu aa",
+   "reason": "Food-safety calls must come from Nisa herself, not from me.",
+   "reason_ru": "Food safety ka faisla Nisa khud karengi, main nahi.",
+   "source": "Track rule: escalate safety questions"
   },
   {
    "id": "E03",
    "topic": "Medical",
-   "pattern": "doctor|sick|\\bill\\b|illness|vomit|pregnan|diabet|medic|diet plan|calorie|weight loss",
-   "reason": "This is medical territory. Please ask a doctor."
+   "pattern": "doctor|sick|\\bill\\b|illness|vomit|pregnan|diabet|medic|diet plan|calorie|weight loss|bimar|beemar|dawai",
+   "reason": "This is medical territory. Please ask a doctor.",
+   "reason_ru": "Yeh medical maamla hai. Doctor se poochein.",
+   "source": "Track rule: no medical advice"
   },
   {
    "id": "E04",
-   "topic": "Legal / business",
-   "pattern": "lawsuit|legal|licen[cs]e|insurance|refund|complain|\\bsue\\b",
-   "reason": "Legal and business decisions are for the chef himself."
+   "topic": "Complaints, refunds & legal",
+   "pattern": "lawsuit|legal|licen[cs]e|insurance|refund|complain|\\bsue\\b|paise wapas|shikayat",
+   "reason": "Complaints, refunds and legal matters are for Nisa herself.",
+   "reason_ru": "Complaint, refund aur legal maamlat Nisa khud dekhengi.",
+   "source": "Track rule: business decisions stay with the owner"
   },
   {
    "id": "E05",
-   "topic": "Outside burgers & pasta",
-   "pattern": "steak|chicken|fish|pizza|biryani|dessert|cake|soup|salad|sushi|lamb|mutton|karahi|curry",
-   "reason": "That is outside the burger and pasta topics the chef documented."
+   "topic": "Events, bulk orders & discounts",
+   "pattern": "\\bevent|\\bstall|catering|\\bbulk|party order|\\b[3-9]\\d\\s*(burgers?|pastas?)|\\b\\d{3,}\\s*(burgers?|pastas?)|discount|negotiat|kam kar|kam kr",
+   "reason": "Nisa plans event and bulk orders herself. Her lesson from the Habitt stall was never to over-prepare or over-invest without a realistic sales estimate. Prices and discounts are her decision too.",
+   "reason_ru": "Event aur bulk orders Nisa khud plan karti hain. Habitt stall se unka sabaq tha ke realistic sales estimate ke baghair over-prepare ya over-invest na karein. Price aur discount bhi unka faisla hai.",
+   "source": "Interview transcript (EN/RU) - Our Habitt Stall Experience"
+  },
+  {
+   "id": "E06",
+   "topic": "Off-menu requests",
+   "pattern": "steak|zinger|broast|fried chicken|chicken burger|pizza|biryani|karahi|shawarma|sandwich|nihari|haleem|sushi|\\bfish\\b|dessert|\\bcake\\b|\\bsoup\\b|curry|mutton|\\blamb\\b",
+   "reason": "That item is not on the Smash & Sauce menu.",
+   "reason_ru": "Yeh item Smash & Sauce ke menu par nahi hai.",
+   "answer": "Smash & Sauce specializes exclusively in handcrafted Smash Beef Burgers and Signature Alfredo Penne Pasta. We do not prepare off-menu items, steaks, or fried chicken burgers.",
+   "answer_ru": "Smash & Sauce sirf handcrafted Smash Beef Burgers aur Signature Alfredo Penne Pasta par focus karta hai. Steaks ya off-menu fried burgers dastiyab nahi hain.",
+   "source": "QA Manual - Q32"
   }
  ]
 }
