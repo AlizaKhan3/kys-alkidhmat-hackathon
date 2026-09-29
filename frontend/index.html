@@ -88,7 +88,8 @@ function setSpeaking(on){
  }
  step();
 }
-function browserSay(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
+function browserSay(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-IN';
+ const vs=speechSynthesis.getVoices(),v=vs.find(v=>/en-IN/i.test(v.lang)&&/female|neerja|heera|swara/i.test(v.name))||vs.find(v=>/en-IN/i.test(v.lang));if(v)u.voice=v;
  u.onstart=()=>setSpeaking(true);u.onend=u.onerror=()=>setSpeaking(false);speechSynthesis.speak(u)}
 async function say(t){if(!$('speak').checked||!t)return;
  try{const r=await fetch('/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
@@ -118,7 +119,7 @@ function paintMeter(level){$('meterFill').style.width=Math.min(100,Math.round(le
 function startLiveCaption(onUpdate){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!SR)return null;
- const r=new SR();r.lang='en-US';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
+ const r=new SR();r.lang='en-IN';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
  let finalText='',alive=true;
  r.onresult=e=>{let interim='';
   for(let i=e.resultIndex;i<e.results.length;i++){

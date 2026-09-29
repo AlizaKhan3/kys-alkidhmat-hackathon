@@ -64,3 +64,5 @@
 {"t": 1790662417.798, "q": "What goes into burger sauce?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I11"]}
 {"t": 1790666714.394709, "q": "What goes into burger sauce?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I11"]}
 {"t": 1790666724.9802291, "q": "Can you make a steak?", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
+{"t": 1790670458.3588889, "q": "Can you make a steak?", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
+{"t": 1790670461.902587, "q": "What goes into burger sauce?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I11"]}
