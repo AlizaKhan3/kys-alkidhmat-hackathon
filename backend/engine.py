@@ -34,6 +34,12 @@ _HELLO = re.compile(r"\b(hi|hello|hey|yo|good\s*(morning|afternoon|evening|night
 _THANKS = re.compile(r"\b(thanks|thank\s*you|thx|shukriya|shukria|jazak(?:allah)?(?:\s*khair)?)\b", re.I)
 _BYE = re.compile(r"\b(bye|goodbye|good\s*night|see\s*you|allah\s*hafiz|khuda\s*hafiz|take\s*care)\b", re.I)
 _WHO = re.compile(r"\b(who\s+are\s+you|what\s+are\s+you|introduce\s+yourself|your\s+name|are\s+you\s+(?:a\s+)?(?:bot|ai|robot|human|real|the\s+chef))\b", re.I)
+_WHO_CHEF = re.compile(
+    r"\b(?:who(?:'|\u2019)?s|who\s+is)\s+(?:nisa|the\s+chef|chef\s+nisa)|"
+    r"tell\s+me\s+about\s+(?:nisa|the\s+chef|chef\s+nisa)|"
+    r"what(?:'|\u2019)?s\s+nisa|what\s+is\s+nisa\b",
+    re.I,
+)
 _HOWARE = re.compile(r"\b(how\s+are\s+you|how(?:'s|s|\s+is)\s+it\s+going|what'?s\s+up)\b", re.I)
 _SORRY = re.compile(r"\b(sorry|apolog(?:y|ies|ise|ize)|my\s+bad)\b", re.I)
 _HELP = re.compile(r"^\s*(help|can\s+you\s+help(?:\s+me)?|are\s+you\s+there|anybody\s+there)\s*[?.!]?\s*$", re.I)
@@ -89,6 +95,16 @@ def check_manners(q):
 
     if _SALAAM.search(q) and len(q) < 80:
         return _manners_reply(f"Wa alaikum assalam! {intro} What would you like to ask?")
+    if _WHO_CHEF.search(q):
+        rel = (profile.get("relationship") or "").strip()
+        bio = (profile.get("bio") or "").strip()
+        bits = [f"{name} is the chef this stand-in represents at {kitchen}."]
+        if rel:
+            bits.append(f"She is the {rel[0].lower() + rel[1:]}." if rel.lower().startswith("aunt") else f"She is {rel}.")
+        if bio:
+            bits.append(bio)
+        bits.append(f"I answer only from what {name} documented — burgers, pasta, and kitchen practice — and escalate anything else back to her.")
+        return _manners_reply(" ".join(bits))
     if _WHO.search(q):
         return _manners_reply(
             f"{intro} I'm not the chef {obj}self and I'm not a free-roaming AI — "
@@ -318,9 +334,10 @@ def ask(q, use_llm=False):
     if not text:
         # Verbatim: always the single top source (never hybridize two recipes).
         text = top["text"]
-    if status == "qualified":
-        text += (f" (Heads-up: {name} didn't address this exact case in the docs {subj} gave us; "
-                 f"this is {pos} closest documented guidance.)")
+    # Keep meta out of the chef's voice — Qualified uncertainty lives in `reason` (UI), not the answer body.
+    if status == "qualified" and not reason:
+        reason = (f"Closest documented match (score {score:.2f}) — {name} did not address this exact wording; "
+                  f"treat as qualified guidance, not a confident claim.")
     if greet:
         text = ("Wa alaikum assalam! " if _SALAAM.search(q) else "Hello! ") + text
     return dict(status=status, answer=text, score=score, mode=mode, reason=reason,

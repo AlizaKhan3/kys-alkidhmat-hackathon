@@ -1377,8 +1377,9 @@ function add(role,r){
    d.className='m'+(r.status=='escalated'?' esc':'');
    let h=r._hello?'':`<span class="badge ${r.status}">${{confident:'Confident',qualified:'Qualified',escalated:'Escalated'}[r.status]}</span><br>`;
    h+=esc(r.answer);
-   if(r.reason&&r.status=='escalated')h+=`<div class="small" style="margin-top:6px;color:#fca5a5">Why: ${esc(r.reason)}</div>`;
-   if(r.sources.length){
+   if(r.reason&&(r.status=='escalated'||r.status=='qualified'))
+     h+=`<div class="small" style="margin-top:6px;color:${r.status=='escalated'?'#fca5a5':'#fbbf24'}">${r.status=='escalated'?'Why':'Note'}: ${esc(r.reason)}</div>`;
+   if(r.sources&&r.sources.length){
      h+=`<div class="src">🔍 Source: ${r.sources.map(s=>s.id).join(', ')} (tap for provenance)</div><div class="prov">${r.sources.map(s=>`<b>${s.id}</b> · ${s.kind} · match ${s.score}<br>“${esc(s.text)}”<br><i>${esc(s.source)}</i>`).join('<hr>')}</div>`;
    }
    if(r.unverified)h+=`<div class="warn">Sample knowledge, not yet confirmed by the chef.</div>`;

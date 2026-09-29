@@ -88,3 +88,15 @@
 {"t": 1790673107.286357, "q": "who are you", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
 {"t": 1790673116.913147, "q": "who are you", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
 {"t": 1790673210.374971, "q": "whos nisa", "status": "qualified", "score": 0.406, "mode": "verbatim", "ids": ["I01"]}
+{"t": 1790673419.942613, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
+{"t": 1790673445.7335072, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
+{"t": 1790673500.117248, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
+{"t": 1790673554.625731, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790673748.886476, "q": "whos nisa", "status": "qualified", "score": 0.5, "mode": "verbatim", "ids": ["I01"]}
+{"t": 1790673756.322082, "q": "whos nisa", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790673756.3589242, "q": "who's nisa", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790673756.3949382, "q": "who is nisa", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790673756.4300349, "q": "tell me about nisa", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790673899.8395362, "q": "helo", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790673908.544927, "q": "nisa kesi hou", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790674027.151117, "q": "whos nisa", "status": "qualified", "score": 0.406, "mode": "verbatim", "ids": ["I01"]}
