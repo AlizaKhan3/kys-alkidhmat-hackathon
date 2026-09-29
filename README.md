@@ -5,6 +5,7 @@ A rule-grounded stand-in for ONE real chef. Answers only from his interview; esc
 ## Run (2 minutes, free, offline-capable)
     pip install -r requirements.txt
     uvicorn backend.main:app --port 8000        # open http://localhost:8000
+ 
     python testing/run_eval.py                  # builds the 30-question review sheet
 Works with NO LLM (answers are the chef's own words, verbatim). Optional free phrasing:
 - Local: install Ollama, `ollama pull llama3.1:8b` (auto-detected). Or Groq free tier: `set GROQ_API_KEY=...`
