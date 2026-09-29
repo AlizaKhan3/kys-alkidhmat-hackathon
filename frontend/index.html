@@ -1422,16 +1422,38 @@ function setSpeaking(on){
  }
  step();
 }
+function pickFemaleVoice(){
+ // Prefer female Indian / soft neural voices; never knowingly pick male.
+ const vs=speechSynthesis.getVoices()||[];
+ const male=/(\bmale\b|guy|david|daniel|thomas|fred|alex|jorge|diego|lee|ravi|prabhat|ryan)/i;
+ const female=/(\bfemale\b|neerja|heera|swara|sonia|zira|samantha|karen|moira|tessa|veena|google uk english female|microsoft.*neural)/i;
+ const prefer=[
+  v=>/en-IN/i.test(v.lang)&&female.test(v.name),
+  v=>/en-IN/i.test(v.lang)&&!male.test(v.name),
+  v=>/en(-|_)(GB|AU|US)/i.test(v.lang)&&female.test(v.name),
+  v=>female.test(v.name)&&!male.test(v.name),
+  v=>/^en/i.test(v.lang)&&!male.test(v.name),
+ ];
+ for(const fn of prefer){const hit=vs.find(fn);if(hit)return hit}
+ return null;
+}
 function browserSay(t){
  if(!window.speechSynthesis)return;
  speechSynthesis.cancel();
  const u=new SpeechSynthesisUtterance(t);
  u.lang='en-IN';
- const vs=speechSynthesis.getVoices(),v=vs.find(v=>/en-IN/i.test(v.lang)&&/female|neerja|heera|swara/i.test(v.name))||vs.find(v=>/en-IN/i.test(v.lang));
- if(v)u.voice=v;
+ u.pitch=1.05; // slight lift so default OS voice still reads feminine if named voice missing
+ u.rate=0.95;
+ const v=pickFemaleVoice();
+ if(v){u.voice=v;u.lang=v.lang||'en-IN'}
  u.onstart=()=>setSpeaking(true);
  u.onend=u.onerror=()=>setSpeaking(false);
  speechSynthesis.speak(u);
+}
+// Chrome loads voices async — warm the list so first speak is female.
+if(window.speechSynthesis){
+ speechSynthesis.getVoices();
+ speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
 }
 let currentAudio=null,speakGen=0;
 function stopSpeaking(){
@@ -1455,7 +1477,8 @@ async function say(t){
    a.onended=a.onerror=()=>{if(currentAudio===a)currentAudio=null;URL.revokeObjectURL(url);if(my===speakGen)setSpeaking(false)};
    await a.play();
  }
- catch{
+ catch(err){
+   console.warn('Neerja TTS unavailable, female browser fallback:', err);
    if(my===speakGen)browserSay(t);
  }
 }

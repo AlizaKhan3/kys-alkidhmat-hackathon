@@ -8,8 +8,19 @@ router = APIRouter()
 
 GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
 WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
-# Female Indian-English voice: fits she/her chef and reads Roman Urdu better than US male.
-EDGE_VOICE = os.getenv("EDGE_TTS_VOICE", "en-IN-NeerjaNeural")
+# Female Indian-English voice ONLY — Chef Nisa. Never fall back to male.
+FEMALE_EDGE_VOICES = (
+    "en-IN-NeerjaNeural",  # primary
+    "en-GB-SoniaNeural",
+    "en-US-JennyNeural",
+    "en-AU-NatashaNeural",
+)
+_EDGE_REQ = os.getenv("EDGE_TTS_VOICE", FEMALE_EDGE_VOICES[0]).strip()
+_MALE_HINTS = ("guy", "ryan", "prabhat", "davis", "tony", "eric", "christopher", "male", "andrew", "brian")
+if any(h in _EDGE_REQ.lower() for h in _MALE_HINTS) and os.getenv("ALLOW_MALE_TTS") != "1":
+    EDGE_VOICE = FEMALE_EDGE_VOICES[0]
+else:
+    EDGE_VOICE = _EDGE_REQ or FEMALE_EDGE_VOICES[0]
 
 
 class SpeakIn(BaseModel):
@@ -97,15 +108,21 @@ async def speak(body: SpeakIn):
     except ImportError as e:
         raise HTTPException(500, detail="edge-tts not installed") from e
 
-    try:
-        communicate = edge_tts.Communicate(text, EDGE_VOICE)
-        chunks: list[bytes] = []
-        async for chunk in communicate.stream():
-            if chunk["type"] == "audio":
-                chunks.append(chunk["data"])
-    except Exception as e:
-        raise HTTPException(502, detail=f"edge-tts failed: {e}") from e
+    voices = [EDGE_VOICE] + [v for v in FEMALE_EDGE_VOICES if v != EDGE_VOICE]
+    last_err = None
+    for voice in voices:
+        try:
+            communicate = edge_tts.Communicate(text, voice)
+            chunks: list[bytes] = []
+            async for chunk in communicate.stream():
+                if chunk["type"] == "audio":
+                    chunks.append(chunk["data"])
+            if chunks:
+                print(f"[speak] voice={voice} bytes={sum(len(c) for c in chunks)}")
+                return Response(content=b"".join(chunks), media_type="audio/mpeg")
+        except Exception as e:
+            last_err = e
+            print(f"[speak] {voice} failed: {e}")
+            continue
 
-    if not chunks:
-        raise HTTPException(502, detail="edge-tts returned no audio")
-    return Response(content=b"".join(chunks), media_type="audio/mpeg")
+    raise HTTPException(502, detail=f"edge-tts failed (female voices): {last_err}")

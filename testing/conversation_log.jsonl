@@ -100,3 +100,12 @@
 {"t": 1790673899.8395362, "q": "helo", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
 {"t": 1790673908.544927, "q": "nisa kesi hou", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
 {"t": 1790674027.151117, "q": "whos nisa", "status": "qualified", "score": 0.406, "mode": "verbatim", "ids": ["I01"]}
+{"t": 1790674135.93585, "q": "whos nisa", "status": "qualified", "score": 0.406, "mode": "verbatim", "ids": ["I01"]}
+{"t": 1790674135.9992478, "q": "whos nisa", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790674189.913106, "q": "whos nisa", "status": "qualified", "score": 0.406, "mode": "verbatim", "ids": ["I01"]}
+{"t": 1790674230.3227699, "q": "whos nisa", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790674443.449333, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790674546.595343, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790674547.939251, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
+{"t": 1790674549.1342342, "q": "What goes into burger sauce?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I11"]}
+{"t": 1790674569.841061, "q": "hello", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
