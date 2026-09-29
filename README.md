@@ -25,11 +25,11 @@ Works with NO LLM (answers are the chef's own words, verbatim). Optional free ph
 3. Turn each troubleshooting answer into a rule (`rules`), each "never/always" into `preferences`, each "ask a doctor/officer" into `escalation_topics`.
 4. Tune `CONFIDENT/QUALIFIED` in engine.py after review.
 5. Run `python testing/run_eval.py`, have the chef fill `chef_mark` (agree / disagree / should_have_escalated). The sidebar shows the real tally automatically, failures included.
-6. Note: the "30/30" routing check only proves the code works on sample data. It is NOT the chef's Agree rate.
+6. **Chef review (final)**: `testing/evaluation_30q.csv` is chef-approved — **24 Agree / 2 Disagree / 4 should_have_escalated** (30/30 marked). Disagreements kept: Q12 (pasta boil time retrieval miss), Q20 (masala fries retrieval miss).
 
 ## Submission pieces
-- **Bill of provenance**: device (old phone/laptop), mic/speaker, any salvaged part: what it was / where from / where it goes after. Software is free/open-source (FastAPI, Ollama/Llama or Groq free tier).
-- **Honesty note (draft)**: Strong: escalation and traceable rules. Weak: keyword retrieval (no embeddings), basic avatar, small knowledge base. Paste chef review scores, including disagreements.
-- Live demo order: intro+consent -> burger -> troubleshooting -> pasta -> edge case (gluten-free, qualified) -> off-domain (steak, escalated) -> open a Source panel -> show review results.
+- **Bill of provenance**: device (old phone/laptop), mic/speaker, any salvaged part: what it was / where from / where it goes after. Software is free/open-source (FastAPI, Ollama/Llama or Groq free tier). See `knowledge/PROVENANCE.json`.
+- **Honesty note**: Strong — escalation + traceable sources + chef-verified answers. Weak — keyword retrieval (no embeddings), so Q12/Q20 still miss. Chef-reviewed **24 agree / 2 disagree / 4 should_have_escalated**; disagreements left in the sheet.
+- Live demo order: intro+consent -> burger -> troubleshooting -> pasta -> edge case (allergy, escalated) -> off-domain (steak, escalated) -> open a Source panel -> show honesty note tally.
 # kys-alkidhmat-hackathon
 # kys-alkidhmat-hackathon

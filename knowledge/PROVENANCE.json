@@ -12,5 +12,11 @@
     {"part": "Smash_and_Sauce_Kitchen_cleaned.txt", "origin": "chef interview EN with consent", "after": "stored in project"},
     {"part": "samshandsaucekitchen_romanurdu.txt", "origin": "chef interview Roman Urdu with consent", "after": "stored in project"}
   ],
+  "chef_review": {
+    "sheet": "testing/evaluation_30q.csv",
+    "status": "final_approved",
+    "tally": {"agree": 24, "disagree": 2, "should_have_escalated": 4},
+    "disagreements_kept": ["Q12 pasta boil time", "Q20 masala fries"]
+  },
   "hardware_todo": "Fill salvaged device / mic / speaker / webcam details before live judging (old phone/laptop + any scrap parts)."
 }

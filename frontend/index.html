@@ -1345,13 +1345,16 @@ fetch('/profile').then(r=>r.json()).then(p=>{
 
 fetch('/results').then(r=>r.json()).then(rows=>{
  if(!rows.length)return;
- const m=rows.filter(r=>r.chef_mark);
+ const norm=s=>(s||'').trim().toLowerCase().replace(/\s+/g,'_');
+ const m=rows.filter(r=>norm(r.chef_mark));
  if(!m.length){
    $('honest').innerHTML=`<div class="honest-status"><span class="honest-icon">📋</span><span><b>${rows.length} test questions</b> prepared; chef review pending.</span></div>`;
    return;
  }
- const c=k=>m.filter(r=>r.chef_mark==k).length;
- $('honest').innerHTML=`<div class="honest-status"><span class="honest-icon">🛡️</span><span>Chef-reviewed ${m.length}/${rows.length}: <b>${c('agree')}</b> agree, <b>${c('disagree')}</b> disagree, <b>${c('should_have_escalated')}</b> should have escalated.</span></div><div class="honest-note-sub">Failures are kept in the sheet.</div>`;
+ const c=k=>m.filter(r=>norm(r.chef_mark)===k).length;
+ const disagree=m.filter(r=>norm(r.chef_mark)==='disagree').map(r=>`Q${r.id}`).join(', ');
+ let sub=disagree?`Disagreements kept: ${disagree}.`:'Failures are kept in the sheet.';
+ $('honest').innerHTML=`<div class="honest-status"><span class="honest-icon">🛡️</span><span>Chef-reviewed <b>${m.length}/${rows.length}</b>: <b>${c('agree')}</b> agree, <b>${c('disagree')}</b> disagree, <b>${c('should_have_escalated')}</b> should have escalated.</span></div><div class="honest-note-sub">${sub}</div>`;
 });
 
 function add(role,r){
