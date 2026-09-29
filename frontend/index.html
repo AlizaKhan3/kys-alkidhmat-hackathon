@@ -1446,8 +1446,8 @@ function browserSay(t){
  u.rate=0.95;
  const v=pickFemaleVoice();
  if(v){u.voice=v;u.lang=v.lang||'en-IN'}
- u.onstart=()=>setSpeaking(true);
- u.onend=u.onerror=()=>setSpeaking(false);
+ u.onstart=()=>{isSpeakingAudio=true;bargeArmed=true;setSpeaking(true)};
+ u.onend=u.onerror=()=>{isSpeakingAudio=false;bargeArmed=false;setSpeaking(false)};
  speechSynthesis.speak(u);
 }
 // Chrome loads voices async — warm the list so first speak is female.
@@ -1455,17 +1455,29 @@ if(window.speechSynthesis){
  speechSynthesis.getVoices();
  speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
 }
-let currentAudio=null,speakGen=0;
+let currentAudio=null,speakGen=0,isSpeakingAudio=false,bargeArmed=false,askInFlight=false;
+
+function isInterruptCmd(t){
+ t=(t||'').trim().toLowerCase().replace(/[^\w\s']/g,' ');
+ if(!t)return false;
+ return /^(please\s+)?(stop|wait|hold on|hold up|hang on|cancel|never ?mind|nvm|shut up|quiet|silence|enough|bas karo|ruk jao|chup)(\s+please)?$/.test(t)
+  || /\b(please stop|stop talking|stop speaking|can you stop)\b/.test(t);
+}
+
 function stopSpeaking(){
  speakGen++; // invalidate in-flight say() so stale audio never starts
+ bargeArmed=false;
  try{speechSynthesis.cancel()}catch{}
  if(currentAudio){try{currentAudio.onended=currentAudio.onerror=currentAudio.onplay=null;currentAudio.pause();currentAudio.src='';currentAudio.load()}catch{}currentAudio=null}
  document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.removeAttribute('src');a.load()}catch{}});
+ isSpeakingAudio=false;
  setSpeaking(false)
 }
+
 async function say(t){
  if(!$('speak').checked||!t)return;
  const my=++speakGen;stopSpeaking();speakGen=my; // stop prior but keep this generation
+ bargeArmed=true;
  try{
    const r=await fetch('/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
    if(my!==speakGen)return; // newer ask won
@@ -1473,8 +1485,8 @@ async function say(t){
    const url=URL.createObjectURL(await r.blob());
    if(my!==speakGen){URL.revokeObjectURL(url);return}
    const a=new Audio(url);currentAudio=a;
-   a.onplay=()=>{if(my===speakGen)setSpeaking(true)};
-   a.onended=a.onerror=()=>{if(currentAudio===a)currentAudio=null;URL.revokeObjectURL(url);if(my===speakGen)setSpeaking(false)};
+   a.onplay=()=>{if(my===speakGen){isSpeakingAudio=true;setSpeaking(true)}};
+   a.onended=a.onerror=()=>{if(currentAudio===a)currentAudio=null;URL.revokeObjectURL(url);if(my===speakGen){isSpeakingAudio=false;bargeArmed=false;setSpeaking(false)}};
    await a.play();
  }
  catch(err){
@@ -1482,24 +1494,32 @@ async function say(t){
    if(my===speakGen)browserSay(t);
  }
 }
-$('f').onsubmit=async e=>{
- e.preventDefault();
- const q=$('q').value.trim();
- if(!q)return;
+
+async function askQuestion(q,{autoSpeak=true}={}){
+ q=(q||'').trim();
+ if(!q||askInFlight)return;
+ askInFlight=true;
  stopSpeaking();
  $('q').value='';
  add('u',q);
- const th=tip('Thinking…');
+ const th=tip(isInterruptCmd(q)?'Stopping…':'Thinking…');
  try{
    const r=await (await fetch('/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})})).json();
    th.remove();
    add('a',r);
-   say(r.answer);
+   // Short interrupt acks still speak; keeps the turn conversational.
+   if(autoSpeak) say(r.answer);
  }
  catch(err){
    th.remove();
    add('a',{status:'escalated',answer:'I could not reach my server. Please ask the chef directly.',reason:'Connection error',sources:[]});
  }
+ finally{askInFlight=false}
+}
+
+$('f').onsubmit=async e=>{
+ e.preventDefault();
+ await askQuestion($('q').value);
 };
 
 /* STT: live browser captions + MediaRecorder → Whisper polish. User edits & taps Ask. */
@@ -1512,6 +1532,7 @@ function putDraft(text){const q=$('q');q.value=(text||'').trim();q.focus();
  if(q.value){try{q.setSelectionRange(q.value.length,q.value.length)}catch{}}}
 
 let session=null;
+let interruptedSpeak=false; // mic opened while bot was talking → treat next utterance as priority turn
 
 function paintMeter(level){
  $('meterFill').style.width=Math.min(100,Math.round(level*100))+'%';
@@ -1530,7 +1551,7 @@ const r=new SR();r.lang='en-IN';r.continuous=true;r.interimResults=true;r.maxAlt
    if(e.results[i].isFinal)finalText+=(finalText&&!/\s$/.test(finalText)?' ':'')+t.trim();
    else interim+=t;
   }
-  onUpdate((finalText+(interim?' '+interim:'')).replace(/\s+/g,' ').trim(),!!interim);
+  onUpdate((finalText+(interim?' '+interim:'')).replace(/\s+/g,' ').trim(),!!interim,finalText.trim());
  };
  r.onerror=()=>{};
  r.onend=()=>{if(alive){try{r.start()}catch{}}};
@@ -1539,6 +1560,8 @@ const r=new SR();r.lang='en-IN';r.continuous=true;r.interimResults=true;r.maxAlt
 }
 
 async function startRecording(){
+ // Barge-in: cutting TTS is the "please stop / answer me first" moment.
+ if(isSpeakingAudio||bargeArmed) interruptedSpeak=true;
  stopSpeaking();
  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error('This browser cannot access the mic. Open http://localhost:8000 in desktop Chrome.');
  const stream=await navigator.mediaDevices.getUserMedia({audio:true});
@@ -1547,6 +1570,8 @@ async function startRecording(){
  const rec=mime?new MediaRecorder(stream,{mimeType:mime,audioBitsPerSecond:128000}):new MediaRecorder(stream);
  const chunks=[];
  let peak=0;
+ let firedInterrupt=false;
+ const ctl={}; // filled below; finishEarly closes over this
  rec.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data)};
 
  const AC=window.AudioContext||window.webkitAudioContext;
@@ -1569,14 +1594,37 @@ async function startRecording(){
  };
  raf=requestAnimationFrame(tick);
 
- const live=startLiveCaption((text,partial)=>{
+ const finishEarly=async(phrase)=>{
+  if(firedInterrupt)return;
+  firedInterrupt=true;
+  if(session===ctl)session=null;
+  setRecordingUI(false);
+  putDraft(phrase);
+  setStatus('Got it — answering you first.');
+  try{await ctl.stop()}catch{}
+  interruptedSpeak=false;
+  await askQuestion(phrase);
+ };
+
+ const live=startLiveCaption((text,partial,finalOnly)=>{
   putDraft(text);
-  setStatus(partial?'Listening… (live draft — keep speaking)':'Listening… tap ⏹ when done. Edit before Ask.');
+  // Real-time: as soon as "please stop" (or similar) is heard, cut in — don't wait for Ask.
+  const probe=(finalOnly||text||'').trim();
+  if(isInterruptCmd(probe)){
+   setStatus('Stopping…');
+   finishEarly(probe);
+   return;
+  }
+  if(interruptedSpeak){
+   setStatus(partial?'Listening — you interrupted; keep going…':'Listening — tap ⏹ when done (I\'ll answer this first).');
+  }else{
+   setStatus(partial?'Listening… (live draft — keep speaking)':'Listening… tap ⏹ when done. Edit before Ask.');
+  }
  });
 
  await new Promise((resolve,reject)=>{rec.onerror=e=>reject(e.error||e);rec.onstart=resolve;rec.start(200)});
  const started=Date.now();
- return{
+ Object.assign(ctl,{
   liveFinal:()=>(live&&live.getFinal())||$('q').value.trim(),
   async stop(){
    if(live)live.stop();
@@ -1592,13 +1640,14 @@ async function startRecording(){
    paintMeter(0);
    return{blob,filename:'question.'+extFor(rec.mimeType||mime),peak,ms:Date.now()-started,bytes:blob.size};
   }
- };
+ });
+ return ctl;
 }
 
 function setRecordingUI(on){
  $('mic').classList.toggle('rec',on);
  $('mic').textContent=on?'⏹':'🎤';
- $('mic').title=on?'Stop — put text in the box to edit':'Speak (live draft appears as you talk)';
+ $('mic').title=on?'Stop — send what you said':'Speak / interrupt (tap while she talks to cut in)';
  $('meter').classList.toggle('on',on);
 }
 
@@ -1609,6 +1658,14 @@ $('mic').onclick=async()=>{
   setRecordingUI(false);
   const draft=s.liveFinal();
   if(draft)putDraft(draft);
+  const priority=interruptedSpeak||isInterruptCmd(draft);
+  interruptedSpeak=false;
+  if(priority&&draft){
+   setStatus('Answering you first…');
+   try{await s.stop()}catch{}
+   await askQuestion(draft);
+   return;
+  }
   setStatus('Polishing transcript… you can edit the box, then tap Ask.');
   try{
    const {blob,filename,peak,ms,bytes}=await s.stop();
@@ -1623,6 +1680,8 @@ $('mic').onclick=async()=>{
    const text=(body.text||'').trim();
    if(junkTranscript(text)){if(!draft)putDraft('');setStatus('Couldn’t catch that clearly — edit the box or try again.');$('q').focus();return}
    putDraft(text);
+   // Conversational: after polish, auto-ask if it looks like a clear command/question.
+   if(isInterruptCmd(text)){await askQuestion(text);return}
    setStatus('Ready — edit if needed, then tap Ask to send.');
   }
   catch(err){
@@ -1633,13 +1692,20 @@ $('mic').onclick=async()=>{
  }
  try{
   putDraft('');
-  setStatus('Allow the microphone, then speak — text appears as you talk.');
+  if(isSpeakingAudio||bargeArmed){
+   setStatus('Interrupted — listening to you first. Say your question or “please stop”.');
+  }else{
+   setStatus('Allow the microphone, then speak — text appears as you talk.');
+  }
   session=await startRecording();
   setRecordingUI(true);
-  if(!$('q').value)setStatus('Listening… speak clearly. Green bar should bounce. Tap ⏹ when done.');
+  if(!$('q').value)setStatus(interruptedSpeak
+   ?'Listening — you cut in. Tap ⏹ when done; I’ll answer this first.'
+   :'Listening… speak clearly. Green bar should bounce. Tap ⏹ when done.');
  }
  catch(err){
   session=null;
+  interruptedSpeak=false;
   setRecordingUI(false);
   const msg=String(err&&err.message||err);
   setStatus(msg.includes('NotAllowed')||msg.includes('Permission')?'Microphone blocked — click the lock icon near the URL → allow Mic for localhost.':msg);

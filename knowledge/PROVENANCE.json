@@ -10,7 +10,10 @@
   "knowledge_sources": [
     {"part": "Smash_and_Sauce_QA_Manual.pdf", "origin": "chef-provided with consent", "after": "stored in project; not republished beyond demo scope"},
     {"part": "Smash_and_Sauce_Kitchen_cleaned.txt", "origin": "chef interview EN with consent", "after": "stored in project"},
-    {"part": "samshandsaucekitchen_romanurdu.txt", "origin": "chef interview Roman Urdu with consent", "after": "stored in project"}
+    {"part": "samshandsaucekitchen_romanurdu.txt", "origin": "chef interview Roman Urdu with consent", "after": "stored in project"},
+    {"part": "Burger_Recipe.txt", "origin": "chef-provided measured burger recipe with consent", "after": "stored in project"},
+    {"part": "CREAMY CHICKEN ALFREDO PASTA RECIPE.txt", "origin": "chef-provided Alfredo recipe with consent", "after": "stored in project"},
+    {"part": "extra Question_Answers.txt", "origin": "chef-provided troubleshooting Q&A with consent", "after": "stored in project"}
   ],
   "chef_review": {
     "sheet": "testing/evaluation_30q.csv",

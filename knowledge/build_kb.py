@@ -8,6 +8,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC_PDF = "Smash & Sauce Complete Operations Manual (chef-provided PDF, with consent)"
 SRC_EN = "Chef interview transcript — Smash_and_Sauce_Kitchen_cleaned.txt (with consent)"
 SRC_RU = "Chef interview transcript — samshandsaucekitchen_romanurdu.txt (with consent)"
+SRC_BURGER = "Chef recipe — Burger_Recipe.txt (with consent)"
+SRC_ALFREDO = "Chef recipe — CREAMY CHICKEN ALFREDO PASTA RECIPE.txt (with consent)"
+SRC_EXTRA = "Chef Q&A — extra Question_Answers.txt (with consent)"
 
 
 def tags(*parts, limit=20):
@@ -138,15 +141,15 @@ def interview_chunks():
         ("I10", "burger",
          "How do you prepare your beef patty mixture?",
          "Beef patty mixture kaise banati ho?",
-         "For our patty we use our own meat mixture and prepare it according to the quantity we need. We start with butter, then add garlic and ginger paste along with our other basic seasonings. We keep the base relatively simple to maintain the original beef flavour. Because some customers prefer a slightly spicy patty, we add a small amount of red chilli according to the quantity of meat — for example, when preparing one kilogram of meat, we add a controlled amount of red chilli. We also add butter to the mixture in the required quantity. Exact recipe and measurements for one kilogram of meat were to be shared separately and are not in this interview transcript.",
-         "Apna meat mixture; butter, garlic-ginger paste, basic seasonings. Beef flavour simple. 1 kg meat par controlled red chilli. Exact 1 kg measurements is interview mein fully detailed nahi — alag se share karne wali thin.",
-         ["patty", "mixture", "butter", "garlic", "ginger", "chilli", "beef", "seasoning", "kilogram"]),
+         "For the burger patty we use beef mince that is 80% meat and 20% fat from our vendor. For 1 kg of meat we add: 1½ teaspoons black pepper (teaspoon, not tablespoon), 2 tablespoons ginger-garlic paste, 1 to 1½ tablespoons butter (Nurpur/Milkpack) for a juicier patty, optional ½ teaspoon red chilli powder if you want it spicy, and optionally Shan Keema Masala for a spicier different taste. Vendor meat balls are around 80 g; after our spices we re-weigh each patty to 70–80 g.",
+         "Beef mince 80/20. 1 kg par: 1½ tsp black pepper, 2 tbsp ginger-garlic paste, 1–1½ tbsp butter, optional ½ tsp red chilli, optional Shan Keema Masala. Patty 70–80 g.",
+         ["patty", "mixture", "butter", "garlic", "ginger", "chilli", "beef", "seasoning", "kilogram", "80", "20", "keema", "nurpur"]),
         ("I11", "burger",
          "What goes into your burger sauce?",
          "Burger sauce mein kya kya hai?",
-         "For our burger sauce we use mayonnaise, Dippit BBQ sauce, mustard sauce, Worcestershire sauce, and tomato ketchup. Brands matter — low-quality brands change the taste significantly. I tried wholesale products to reduce cost, but the taste wasn't what I wanted to sell, so we switched to ingredients that create the flavour we want. Apart from barbecue sauce we also use mustard sauce, rosemary sauce, chilli sauce, paprika powder, rosemary, and black pepper. These ingredients together make up our burger sauce. Exact quantities and the complete measured process were to be discussed separately and are not fully specified in this transcript.",
-         "Mayonnaise, Dippit BBQ, mustard, Worcestershire, tomato ketchup; mustard, rosemary sauce, chilli sauce, paprika, rosemary, black pepper. Exact quantities is transcript mein fully nahi.",
-         ["burger", "sauce", "mayonnaise", "dippit", "bbq", "mustard", "worcestershire", "ketchup", "paprika", "rosemary"]),
+         "For the burger sauce: 3 tablespoons mayonnaise, 1 tablespoon ketchup, 1½ tablespoons barbecue sauce, ½ tablespoon mustard sauce, 1 tablespoon Worcestershire sauce, ½ teaspoon or slightly less paprika powder, ½ teaspoon or slightly less black pepper, and a pinch of salt. Mix all together — the burger sauce is ready.",
+         "3 tbsp mayo, 1 tbsp ketchup, 1½ tbsp BBQ, ½ tbsp mustard, 1 tbsp Worcestershire, paprika, black pepper, pinch salt — mix.",
+         ["burger", "sauce", "mayonnaise", "bbq", "mustard", "worcestershire", "ketchup", "paprika", "tablespoon"]),
         ("I12", "pasta",
          "How do you cook pasta and what is in the pasta sauce?",
          "Pasta aur pasta sauce kaise banta hai?",
@@ -174,9 +177,9 @@ def interview_chunks():
         ("I16", "burger",
          "How do you make your homemade pickles?",
          "Homemade pickles kaise bante hain?",
-         "We take cucumber and slice it properly. Then in around one cup of hot water we add approximately 3–4 tablespoons of vinegar, one small lemon, 2 tablespoons of sugar, and half a teaspoon of salt. We put the sliced cucumbers into this mixture and leave them for around 30 minutes. After that we let the pickles cool down in the same liquid. Once cooled, we store them in the refrigerator. Keeping them refrigerated helps preserve them properly.",
-         "Kheera slice; ~1 cup garam pani mein 3–4 tbsp vinegar, 1 chhota lemon, 2 tbsp sugar, half tsp salt; 30 minutes; thanda karke fridge mein store.",
-         ["pickle", "pickles", "cucumber", "vinegar", "lemon", "sugar", "salt", "30", "refrigerator"]),
+         "Cut cucumber into round slices. For the pickling liquid: 1½ to 2 cups water, 4 spoons vinegar, juice of 1 complete lemon, 3 teaspoons sugar, 1 teaspoon salt — stir together, add cucumber, boil approximately 15–18 minutes. When the cucumber colour darkens slightly, close the flame. Keep on low flame around 3–20 minutes total as needed.",
+         "Kheera round slices; 1½–2 cups pani, 4 spoons vinegar, 1 lemon juice, 3 tsp sugar, 1 tsp salt; boil 15–18 min; low flame.",
+         ["pickle", "pickles", "cucumber", "vinegar", "lemon", "sugar", "salt", "boil", "15", "18"]),
         ("I17", "brand",
          "What have you learned overall running Smash & Sauce Kitchen?",
          "Is business se kya seekha?",
@@ -197,12 +200,89 @@ def extra_rules():
             "category": "burger",
             "condition": "patty breaks while frying",
             "tags": ["break", "breaking", "crumbly", "falls", "apart", "papaya", "butter", "moisture"],
-            "chef_action": "Sometimes the patty breaks while frying because too much butter was added to the mixture, or because too much raw papaya paste was used to tenderize quickly — excess papaya releases water and weakens the patty. Use controlled butter and only a small amount of papaya paste. We hit this problem at the Habitt stall.",
+            "chef_action": "Sometimes the patty breaks while frying because too much butter was added to the mixture, or because too much raw papaya paste was used to tenderize quickly — excess papaya releases water and weakens the patty. Handle the patty gently and avoid flipping until the bottom is properly cooked. Use controlled butter and only a small amount of papaya paste. We hit this problem at the Habitt stall.",
             "confidence": "documented",
             "fallback_escalate": True,
             "source": SRC_EN,
             "verified": True,
-        }
+        },
+        {
+            "id": "R41",
+            "category": "pasta",
+            "condition": "pasta sauce became too thick",
+            "tags": ["thick", "thickened", "too thick", "sauce thick", "stiff sauce"],
+            "chef_action": "Add a little water and mix well until you get the desired consistency.",
+            "confidence": "documented",
+            "fallback_escalate": False,
+            "source": SRC_EXTRA,
+            "verified": True,
+        },
+        {
+            "id": "R42",
+            "category": "pasta",
+            "condition": "pasta is sticky",
+            "tags": ["sticky", "sticking", "clump", "clumps", "stuck together"],
+            "chef_action": "Wash the boiled pasta with cold water and add a little oil to prevent it from sticking.",
+            "confidence": "documented",
+            "fallback_escalate": False,
+            "source": SRC_EXTRA,
+            "verified": True,
+        },
+        {
+            "id": "R43",
+            "category": "pasta",
+            "condition": "pasta sauce is too watery",
+            "tags": ["watery", "thin sauce", "runny", "too much water", "soupy"],
+            "chef_action": "Cook it for a little longer on medium heat so the excess water can evaporate and the sauce becomes thicker. If you added too much water, let the sauce cook uncovered on medium heat until the extra water evaporates.",
+            "confidence": "documented",
+            "fallback_escalate": False,
+            "source": SRC_EXTRA,
+            "verified": True,
+        },
+        {
+            "id": "R44",
+            "category": "pasta",
+            "condition": "sauce is too salty",
+            "tags": ["salty", "too much salt", "oversalted"],
+            "chef_action": "Add a little more unsalted sauce or other ingredients to balance the saltiness.",
+            "confidence": "documented",
+            "fallback_escalate": False,
+            "source": SRC_EXTRA,
+            "verified": True,
+        },
+        {
+            "id": "R45",
+            "category": "pasta",
+            "condition": "chicken is still raw",
+            "tags": ["raw chicken", "undercooked", "pink chicken", "not cooked"],
+            "chef_action": "Cook it for another 10 minutes. You can add a little water and continue cooking until the chicken is completely cooked. Make sure the chicken is no longer raw or pink inside before serving.",
+            "confidence": "documented",
+            "fallback_escalate": False,
+            "source": SRC_EXTRA,
+            "verified": True,
+        },
+        {
+            "id": "R46",
+            "category": "burger",
+            "condition": "burger patty is too dry",
+            "tags": ["dry", "dry patty", "overcooked patty"],
+            "chef_action": "Avoid overcooking the patty and make sure it is cooked for the recommended time — each side approximately 8–10 minutes. Add about ½ to 1 teaspoon of butter to the pan when cooking.",
+            "confidence": "documented",
+            "fallback_escalate": False,
+            "source": SRC_EXTRA,
+            "verified": True,
+        },
+        {
+            "id": "R47",
+            "category": "burger",
+            "condition": "patty sticks to the pan",
+            "tags": ["sticking", "sticks", "sticky pan", "won't flip"],
+            "chef_action": "Let the bottom cook properly before trying to flip it. Do not force the patty while it is still sticking. Flip only when the bottom is properly cooked and is no longer sticky to the pan.",
+            "confidence": "documented",
+            "fallback_escalate": False,
+            "source": SRC_EXTRA,
+            "verified": True,
+        },
     ]
 
 
@@ -229,6 +309,97 @@ def extra_prefs():
             "source": SRC_EN,
         },
     ]
+
+
+def _sort_key(eid):
+    m = re.match(r"([A-Za-z]+)(\d+)", eid)
+    if not m:
+        return (99, 0)
+    order = {"Q": 0, "I": 1, "BR": 2, "AP": 3, "XQ": 4, "M": 5, "QR": 6}.get(m.group(1), 9)
+    return (order, int(m.group(2)))
+
+
+def burger_recipe_entries():
+    """Full measured burger recipe from Burger_Recipe.txt."""
+    path = ROOT / "Burger_Recipe.txt"
+    if not path.exists():
+        return []
+    chunks = [
+        ("BR01", "burger", "What is the full beef patty recipe for 1 kg of meat?",
+         "For the burger patty we use beef mince that is 80% meat and 20% fat from the vendor. For 1 kg of meat add: 1½ teaspoons black pepper (teaspoon, not tablespoon), 2 tablespoons ginger-garlic paste, 1 to 1½ tablespoons butter (Nurpur/Milkpack) for juicier patties, optional ½ teaspoon red chilli powder, and optionally Shan Keema Masala for a spicier taste. Vendor balls are ~80 g; after spices re-weigh each patty to 70–80 g.",
+         ["patty", "mince", "80", "20", "kilogram", "pepper", "ginger", "garlic", "butter", "nurpur", "keema", "weight", "70", "80"]),
+        ("BR02", "burger", "What are the exact burger sauce measurements?",
+         "For the burger sauce: 3 tablespoons mayonnaise, 1 tablespoon ketchup, 1½ tablespoons barbecue sauce, ½ tablespoon mustard sauce, 1 tablespoon Worcestershire sauce, ½ teaspoon or slightly less paprika powder, ½ teaspoon or slightly less black pepper, and a pinch of salt. Mix all ingredients together.",
+         ["burger", "sauce", "mayonnaise", "ketchup", "barbecue", "mustard", "worcestershire", "paprika", "tablespoon"]),
+        ("BR03", "burger", "How do you prepare iceberg lettuce for burgers?",
+         "Wash the iceberg lettuce once, dry it properly, then chop it.",
+         ["lettuce", "iceberg", "wash", "dry", "chop"]),
+        ("BR04", "burger", "How do you make caramelized onions for burgers?",
+         "Take one onion and cut into round slices. Add 1 to 1½ tablespoons butter to a pan and caramelize on low flame until slightly sweet — never high heat or they burn and taste bitter. Caramelized onions should always be cooked on low flame.",
+         ["caramelized", "onions", "butter", "low", "flame", "sweet", "bitter"]),
+        ("BR05", "burger", "What is the full pickle recipe with boiling times?",
+         "Cut cucumber into round slices. Pickling liquid: 1½ to 2 cups water, 4 spoons vinegar, juice of 1 complete lemon, 3 teaspoons sugar, 1 teaspoon salt — stir, add cucumber, boil approximately 15–18 minutes until colour darkens slightly, then close flame. Keep on low flame around 3–20 minutes as needed.",
+         ["pickle", "pickles", "cucumber", "vinegar", "lemon", "boil", "15", "18", "sugar"]),
+        ("BR06", "burger", "How do you toast burger buns?",
+         "Apply a little butter to the bun halves and toast them slightly in a pan, then use for assembly.",
+         ["bun", "toast", "butter", "pan"]),
+        ("BR07", "burger", "How do you cook the patty and melt cheese?",
+         "Add 1 to 2 teaspoons butter to the pan. Place the meat ball on the butter, smash once only to form the patty — do not repeatedly press. Do not flip while the bottom is still sticky; wait until properly cooked then flip. Each side takes approximately 8–10 minutes. Place cheese on the cooked patty; it melts in approximately 3–4 minutes.",
+         ["cook", "patty", "smash", "flip", "cheese", "melt", "8", "10", "minutes", "sticky", "butter"]),
+        ("BR08", "burger", "What is the burger assembly order?",
+         "1) Bottom toasted bun with burger sauce. 2) Iceberg lettuce. 3) Caramelized onions. 4) Cheese-covered patty. 5) Pickles on top. 6) Another layer of sauce. 7) Top bun. Ready to serve.",
+         ["assembly", "assemble", "order", "bottom", "lettuce", "onions", "pickles", "sauce", "top"]),
+    ]
+    return [entry(eid, cat, q, ans, SRC_BURGER, extra_tags=xtags) for eid, cat, q, ans, xtags in chunks]
+
+
+def alfredo_recipe_entries():
+    """Creamy chicken Alfredo from chef recipe txt."""
+    path = ROOT / "CREAMY CHICKEN ALFREDO PASTA RECIPE.txt"
+    if not path.exists():
+        return []
+    chunks = [
+        ("AP01", "pasta", "How do you boil pasta for creamy chicken Alfredo?",
+         "Add water to a pot on medium flame with 1½ teaspoons salt and 2 tablespoons oil. Bring to a proper boil, add 1 packet pasta, cook until boiled but not overcooked. Strain, immediately wash with cold water, add a small amount of oil and mix gently so pasta does not stick. Keep aside until sauce and chicken are ready.",
+         ["boil", "pasta", "salt", "oil", "cold", "water", "strain", "packet", "overcook"]),
+        ("AP02", "pasta", "How do you make the creamy Alfredo sauce?",
+         "Mix in a bowl: 2 cups milk, 1 packet cream, 1 tbsp chicken powder, 1 tsp salt, 1 tsp black pepper, 1 tsp chilli flakes, 1 tsp organic leaves, 1 tsp mixed herbs, slightly less than 1 tsp rosemary leaves. On low flame: 1 tbsp butter, 1 tbsp chopped garlic (sauté lightly, do not brown), add flour/maida and mix, gradually add milk-cream mixture while mixing to avoid lumps. Cook on low ~15 minutes until creamy and thick. Add 2–4 slices cheddar cheese until melted. Taste and adjust spices.",
+         ["alfredo", "sauce", "cream", "milk", "garlic", "maida", "flour", "cheddar", "rosemary", "herbs", "15", "minutes"]),
+        ("AP03", "pasta", "How do you marinate and cook chicken for Alfredo pasta (1 kg)?",
+         "For 1 kg chicken marinate with: 1 tbsp garlic paste, 2 tsp chicken tikka powder, ½ tsp oregano, ½ tsp mixed herbs, ½ tsp rosemary, 1 tsp chicken powder, 1 tbsp vinegar, 1 tbsp chilli sauce, 1 tbsp soy sauce, ½ tsp chilli flakes, 1 tsp black pepper, less than ½ tsp salt. Mix thoroughly, marinate 15 minutes. Cook on low flame ~15 minutes; add remaining marinade mixed with a little water and continue until fully cooked.",
+         ["chicken", "marinate", "tikka", "vinegar", "soy", "oregano", "rosemary", "15", "minutes", "kilogram"]),
+        ("AP04", "pasta", "How do you assemble creamy chicken Alfredo pasta?",
+         "Add boiled pasta to the Alfredo sauce and mix until evenly coated. Add cooked chicken and mix carefully. Cook pasta, sauce, and chicken together ~10 minutes on low flame, stirring gently. If pasta is already soft from boiling, reduce final cooking time — do not cook full 10 minutes or it becomes mushy. Final pasta should be creamy, well-coated, and not mushy.",
+         ["assembly", "assemble", "combine", "10", "minutes", "mushy", "soft", "coated", "creamy"]),
+    ]
+    return [entry(eid, cat, q, ans, SRC_ALFREDO, extra_tags=xtags) for eid, cat, q, ans, xtags in chunks]
+
+
+def extra_qa_entries():
+    """Parse extra Question_Answers.txt (Q: / A: blocks)."""
+    path = ROOT / "extra Question_Answers.txt"
+    if not path.exists():
+        return []
+    text = path.read_text(encoding="utf-8").strip()
+    blocks = re.split(r"\n\s*\n", text)
+    out = []
+    n = 0
+    for block in blocks:
+        m = re.match(r"Q:\s*(.+?)\s*\nA:\s*(.+)", block.strip(), re.S)
+        if not m:
+            continue
+        n += 1
+        q, ans = m.group(1).strip(), m.group(2).strip()
+        cat = "general"
+        ql = q.lower()
+        if any(w in ql for w in ("burger", "patty", "bun", "pickle")):
+            cat = "burger"
+        elif any(w in ql for w in ("pasta", "sauce", "chicken", "maida", "aata")):
+            cat = "pasta"
+        elif "loss" in ql:
+            cat = "brand"
+        out.append(entry(f"XQ{n:02d}", cat, q, ans, SRC_EXTRA))
+    return out
 
 
 def escalation():
@@ -265,23 +436,28 @@ def escalation():
         },
         {
             "id": "E06",
-            "topic": "Secret / unpublished exact recipes",
-            "pattern": "secret spice|proprietary|pickle brine recipe|exact spice blend|reveal.*(spice|recipe)|give.*(spice|brine) recipe|exact\\s+(grams?|measurements?|quantit\\w*)|full recipe with (grams?|quantit)|1\\s*kg (patty|meat).*(recipe|measure|quantit|grams?)|(patty|sauce).*(exact|precise).*(grams?|measure|quantit)",
-            "reason": "Exact measured recipes she said she would share separately (e.g. full 1 kg patty mix quantities, full burger-sauce gram sheet, proprietary Alfredo spices) are not fully in the stand-in knowledge base. Ask Chef Nisa directly — the stand-in will not invent numbers.",
+            "topic": "Secret / proprietary blends only",
+            "pattern": "secret spice|proprietary|exact spice blend|reveal.*(spice|recipe)|give.*(spice|brine) recipe|alfredo.*secret|never disclose.*spice",
+            "reason": "Proprietary spice blends and unpublished secret recipes are not in the stand-in knowledge base. Ask Chef Nisa directly — the stand-in will not invent them.",
+        },
+        {
+            "id": "E07",
+            "topic": "Outside kitchen knowledge",
+            "pattern": "quaid|jinnah|who (was|is) (the )?(president|founder|prime minister)|history homework|geography|math homework|unrelated to (food|recipe|kitchen|burger|pasta)",
+            "reason": "That's outside Chef Nisa's documented kitchen knowledge. I'll refer you to her rather than guess.",
         },
     ]
 
 
 def main():
     pdf_entries, pdf_rules, pdf_prefs, _ = load_pdf_entries()
-    # Dedup by id — interview I* added fresh
+    # Dedup by id — interview I* added fresh; recipe + extra Q&A merged in
     by_id = {e["id"]: e for e in pdf_entries}
     for e in interview_chunks():
         by_id[e["id"]] = e
-    interviews = sorted(by_id.values(), key=lambda e: (
-        {"Q": 0, "I": 1, "M": 2, "QR": 3}.get(re.match(r"[A-Za-z]+", e["id"]).group(), 9),
-        int(re.search(r"\d+", e["id"]).group()),
-    ))
+    for e in burger_recipe_entries() + alfredo_recipe_entries() + extra_qa_entries():
+        by_id[e["id"]] = e
+    interviews = sorted(by_id.values(), key=lambda e: _sort_key(e["id"]))
 
     rules_by = {r["id"]: r for r in pdf_rules}
     for r in extra_rules():
@@ -299,7 +475,7 @@ def main():
             "relationship": "Aunt of Laiba",
             "bio": "Chef Nisa of Smash & Sauce Kitchen — aunt of Laiba. Family 50/50 kitchen partnership (investment + cooking/orders). Pasta cook for 4–5 years; beef burgers for about 1 year. Home-based kitchen balancing university-day lunchtime orders.",
             "consent_confirmed": True,
-            "consent_note": "Chef Nisa (Laiba's aunt) provided the Operations Manual PDF plus English and Roman Urdu interview transcripts with consent for this stand-in. Knowledge is limited to those documents; unpublished exact gram sheets mentioned separately are escalated.",
+            "consent_note": "Chef Nisa (Laiba's aunt) provided the Operations Manual PDF, EN/RU interview transcripts, Burger_Recipe.txt, CREAMY CHICKEN ALFREDO PASTA RECIPE.txt, and extra Question_Answers.txt with consent. Knowledge is limited to those documents; proprietary secret blends are escalated.",
         },
         "interview_entries": interviews,
         "rules": list(rules_by.values()),

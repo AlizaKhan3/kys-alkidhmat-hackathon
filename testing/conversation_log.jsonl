@@ -109,3 +109,17 @@
 {"t": 1790674547.939251, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
 {"t": 1790674549.1342342, "q": "What goes into burger sauce?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I11"]}
 {"t": 1790674569.841061, "q": "hello", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790674728.756775, "q": "please stop", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790674728.780194, "q": "stop talking", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790677877.908155, "q": "Someone has a peanut allergy", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q31"]}
+{"t": 1790678470.459323, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790678483.0338979, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790678848.384737, "q": "who are you?", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790678862.036523, "q": "Why does the patty break while frying?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I13", "R40"]}
+{"t": 1790678876.5559921, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790678924.735863, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790678998.204669, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790679013.3201768, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790679069.7546182, "q": "Hi, i'm aliza who are you?", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790679122.893555, "q": "Hi, I'm aliza who are you?", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790679144.164716, "q": "hi I am I want to watch recipe do you follow to make your pasta", "status": "escalated", "score": 0.113, "mode": "threshold", "ids": []}

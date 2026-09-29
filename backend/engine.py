@@ -40,6 +40,12 @@ _WHO_CHEF = re.compile(
     r"what(?:'|\u2019)?s\s+nisa|what\s+is\s+nisa\b",
     re.I,
 )
+_STOP = re.compile(
+    r"^\s*(?:please\s+)?(?:stop|wait|hold\s+on|hold\s+up|hang\s+on|cancel|never\s*mind|nvm|"
+    r"shut\s*up|quiet|silence|enough|bas\s+karo|ruk\s+jao|chup)(?:\s+please)?\s*[.!]?\s*$|"
+    r"\b(?:please\s+stop|stop\s+talking|stop\s+speaking|can\s+you\s+stop)\b",
+    re.I,
+)
 _HOWARE = re.compile(r"\b(how\s+are\s+you|how(?:'s|s|\s+is)\s+it\s+going|what'?s\s+up)\b", re.I)
 _SORRY = re.compile(r"\b(sorry|apolog(?:y|ies|ise|ize)|my\s+bad)\b", re.I)
 _HELP = re.compile(r"^\s*(help|can\s+you\s+help(?:\s+me)?|are\s+you\s+there|anybody\s+there)\s*[?.!]?\s*$", re.I)
@@ -95,6 +101,8 @@ def check_manners(q):
 
     if _SALAAM.search(q) and len(q) < 80:
         return _manners_reply(f"Wa alaikum assalam! {intro} What would you like to ask?")
+    if _STOP.search(q):
+        return _manners_reply("Okay — I've stopped. I'm listening. Go ahead.")
     if _WHO_CHEF.search(q):
         rel = (profile.get("relationship") or "").strip()
         bio = (profile.get("bio") or "").strip()
