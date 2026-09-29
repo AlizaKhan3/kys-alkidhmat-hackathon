@@ -1497,6 +1497,7 @@ if(window.speechSynthesis){
  speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
 }
 let currentAudio=null,speakGen=0,isSpeakingAudio=false,bargeArmed=false,askInFlight=false;
+let chatHistory=[]; // short-term context for follow-ups like "also its recipe"
 
 function isInterruptCmd(t){
  t=(t||'').trim().toLowerCase().replace(/[^\w\s']/g,' ');
@@ -1579,9 +1580,12 @@ async function askQuestion(q,{autoSpeak=true}={}){
  add('u',q);
  const th=tip(isInterruptCmd(q)?'Stopping…':'Thinking…');
  try{
-   const r=await (await fetch('/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})})).json();
+   const history=chatHistory.slice(-6);
+   const r=await (await fetch('/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q,history})})).json();
    th.remove();
    add('a',r);
+   chatHistory.push({q, a:r.answer||'', status:r.status||''});
+   if(chatHistory.length>12) chatHistory=chatHistory.slice(-12);
    // Short interrupt acks still speak; keeps the turn conversational.
    if(autoSpeak) say(r.answer);
  }

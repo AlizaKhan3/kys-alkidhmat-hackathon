@@ -153,3 +153,7 @@
 {"t": 1790685890.759288, "q": "who are you", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
 {"t": 1790685947.839333, "q": "how much time a beef burger take to cook completely?", "status": "confident", "score": 0.515, "mode": "verbatim", "ids": ["Q20"]}
 {"t": 1790685972.0712981, "q": "can you tell its recipe also?", "status": "escalated", "score": 0.541, "mode": "threshold", "ids": []}
+{"t": 1790687276.149985, "q": "can you tell its recipe also?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["BR00"]}
+{"t": 1790687378.989619, "q": "how much time a beef burger take to cook completely?", "status": "confident", "score": 0.515, "mode": "verbatim", "ids": ["Q20"]}
+{"t": 1790687383.0928488, "q": "how much time a beef burger take to cook completely?", "status": "confident", "score": 0.515, "mode": "verbatim", "ids": ["Q20"]}
+{"t": 1790687398.599102, "q": "and what is its recipe ?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["BR00"]}

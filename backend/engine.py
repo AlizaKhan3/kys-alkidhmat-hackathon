@@ -155,6 +155,83 @@ def _normalize_q(q):
     return q
 
 
+def _detect_topic(text):
+    """Coarse topic from a turn — used to resolve 'its recipe' follow-ups."""
+    t = (text or "").lower()
+    if re.search(r"\b(allerg|peanut|gluten|celiac|food.?safe|overnight|steak|zinger|sue|lawsuit|quaid)\b", t):
+        return "escalate"
+    if re.search(r"\b(alfredo|creamy\s+chicken|penne)\b", t):
+        return "alfredo"
+    if re.search(r"\b(pasta|paste)\b", t):
+        return "pasta"
+    if re.search(r"\b(pickle|cucumber)\b", t):
+        return "pickle"
+    if re.search(r"\b(burger|patty|smash|mince|beef\s+burger|bun)\b", t):
+        return "burger"
+    if re.search(r"\b(fries|masala)\b", t):
+        return "fries"
+    return ""
+
+
+_FOLLOWUP = re.compile(
+    r"^\s*(?:(?:can\s+you|could\s+you|please|pls|also|and|ok|okay|then)\s+)*"
+    r"(?:tell\s+(?:me\s+)?|share\s+|give\s+(?:me\s+)?|show\s+)?"
+    r"(?:(?:also|too)\s+)?"
+    r"(?:(?:me\s+)?(?:the|its|it'?s|that|this|their)\s+)?"
+    r"(?:full\s+|complete\s+)?"
+    r"(recipe|ingredients?|steps?|method|process|sauce|assembly|marinade|how(?:\s+to)?|"
+    r"details?|more|measurements?|quantit(?:y|ies)|procedure)\b"
+    r"(?:\s+also|\s+too|\s+please|\s+pls)*\s*[?.!]?\s*$",
+    re.I,
+)
+
+
+def _expand_with_history(q, history=None):
+    """Resolve short follow-ups using the last burger/pasta topic in the chat."""
+    q = _normalize_q(q)
+    if not history:
+        return q
+    # Last explicit topic from recent user turns (and assistant answers as backup).
+    topic = ""
+    for turn in reversed(list(history)[-8:]):
+        if not isinstance(turn, dict):
+            continue
+        topic = _detect_topic(turn.get("q") or "") or _detect_topic(turn.get("a") or "") or topic
+        if topic and topic != "escalate":
+            break
+    if not topic or topic == "escalate":
+        return q
+
+    ql = q.lower().strip()
+    # Pronoun / "also its recipe" style follow-ups
+    if _FOLLOWUP.search(q) or re.search(r"\b(its|it'?s|that|this|the)\s+recipe\b", ql) or re.fullmatch(
+        r"\s*(?:also|and)?\s*(?:the\s+)?recipe(?:\s+also|\s+too)?\s*[?.!]?\s*", ql
+    ):
+        if re.search(r"\bsauce\b", ql):
+            if topic in ("pasta", "alfredo"):
+                return "How do you make the creamy Alfredo sauce?"
+            return "What goes into your burger sauce?"
+        if re.search(r"\bmarinade\b", ql):
+            return "How do you marinate chicken for Alfredo pasta?"
+        if re.search(r"\bassembly|assemble|build\b", ql):
+            return "What is the burger assembly order?" if topic == "burger" else "How do you assemble creamy chicken Alfredo pasta?"
+        # Default: full recipe for the last topic
+        if topic == "burger":
+            return "What is your full smash burger recipe? Share the burger recipe."
+        if topic in ("pasta", "alfredo"):
+            return "What is your creamy chicken Alfredo pasta recipe? Share the pasta recipe."
+        if topic == "pickle":
+            return "How do you make your homemade pickles?"
+    # "also tell me how long" etc. still needs topic nouns — prepend topic word if missing
+    if topic == "burger" and not re.search(r"\b(burger|patty|smash|beef|mince|bun|pickle)\b", ql):
+        if re.search(r"\b(cook|time|long|minutes?|recipe|sauce|cheese|flip)\b", ql):
+            return f"For the smash beef burger: {q}"
+    if topic in ("pasta", "alfredo") and not re.search(r"\b(pasta|paste|alfredo|chicken|penne)\b", ql):
+        if re.search(r"\b(cook|time|long|minutes?|recipe|sauce|boil|marinate)\b", ql):
+            return f"For the creamy chicken Alfredo pasta: {q}"
+    return q
+
+
 def _force_entry(eid, score=1.0):
     e = _entry_by_id(eid)
     if not e:
@@ -426,10 +503,12 @@ _LLM_REFUSAL_PHRASES = (
 )
 
 
-def ask(q, use_llm=False):
+def ask(q, use_llm=False, history=None):
     """Answer only from chef KB. LLM is off by default so we never invent kitchen facts."""
     global BRIEF_MODE
     get_kb()
+    raw_q = (q or "").strip()
+    q = _expand_with_history(raw_q, history)
     q = _normalize_q(q)
     name = KB["chef_profile"]["name"]
     subj, obj, pos = _pronouns()

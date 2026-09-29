@@ -34,11 +34,12 @@ LOG = ROOT / "testing" / "conversation_log.jsonl"
 
 class Q(BaseModel):
     question: str
+    history: list | None = None  # optional [{q,a}, ...] for follow-ups like "its recipe"
 
 
 @app.post("/ask")
 def _ask(q: Q):
-    r = ask(q.question)
+    r = ask(q.question, history=q.history)
     with LOG.open("a", encoding="utf-8") as f:
         f.write(json.dumps(dict(t=time.time(), q=q.question, **{k: r[k] for k in ("status", "score", "mode")}, ids=[s["id"] for s in r["sources"]])) + "\n")
     return r
