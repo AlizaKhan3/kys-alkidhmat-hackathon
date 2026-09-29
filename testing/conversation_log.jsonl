@@ -66,3 +66,7 @@
 {"t": 1790666724.9802291, "q": "Can you make a steak?", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
 {"t": 1790670458.3588889, "q": "Can you make a steak?", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
 {"t": 1790670461.902587, "q": "What goes into burger sauce?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I11"]}
+{"t": 1790670487.09175, "q": "Why does the patty break while frying?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I13", "R40"]}
+{"t": 1790670648.618521, "q": "How long do you boil pasta?", "status": "confident", "score": 0.603, "mode": "verbatim", "ids": ["I14", "I12", "Q17"]}
+{"t": 1790670653.4925241, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
+{"t": 1790670660.696892, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
