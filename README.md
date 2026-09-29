@@ -1,35 +1,156 @@
-# Stand-In: Smash & Sauce Kitchen (Rocketathon, Track 1)
+# Stand-In · Chef Nisa (Smash & Sauce Kitchen)
 
-A rule-grounded stand-in for **Chef Nisa** of Smash & Sauce Kitchen (Laiba's aunt). Answers only from her interview; escalates everything else and says why.
+**Rocketathon Track 1** — a stand-in for one real chef: **Nisa** of Smash & Sauce Kitchen (aunt of Laiba).
 
-## Run (2 minutes, free, offline-capable)
-    pip install -r requirements.txt
-    uvicorn backend.main:app --port 8000        # open http://localhost:8000
- 
-    python testing/run_eval.py                  # builds the 30-question review sheet
-Works with NO LLM (answers are the chef's own words, verbatim). Optional free phrasing:
-- Local: install Ollama, `ollama pull llama3.1:8b` (auto-detected). Or Groq free tier: `set GROQ_API_KEY=...`
-- Guard: if the LLM writes any number not present in retrieved chef content, it is discarded and the verbatim answer is used.
-- Use `python testing/run_eval.py --llm` to score the LLM path too.
+She answers only from what she documented (interview + recipes + ops manual). Outside that scope she **escalates and says why**. No paid model required for core answers.
 
-## How it decides (backend/engine.py)
-1. Escalation rules (regex, run FIRST): allergy, food safety, medical, legal, off-topic -> escalate with reason.
-2. Retrieval: IDF-weighted keyword match over interview entries + IF/THEN rules + preferences (top 3).
-3. Score >= 0.60 and documented -> **Confident**; 0.30-0.60 or "inferred" entry -> **Qualified**; below 0.30 -> **Escalated**.
-4. Every answer shows source ids + the exact chef text + interview note (tap "Source").
+---
 
-## BEFORE THE DEMO: what you MUST do (this is 80% of the score)
-`knowledge/kb.json` currently holds **SAMPLE entries written by us so the system runs. They are NOT the chef's views.**
-1. Get the chef's **written consent**; set `consent_confirmed: true` and fill name/bio in `chef_profile`.
-2. Interview 3+ hours (see guide section 6). Replace every SAMPLE entry with his real words; put timestamp/note in `source`; set `verified: true` after he confirms it.
-3. Turn each troubleshooting answer into a rule (`rules`), each "never/always" into `preferences`, each "ask a doctor/officer" into `escalation_topics`.
-4. Tune `CONFIDENT/QUALIFIED` in engine.py after review.
-5. Run `python testing/run_eval.py`, have the chef fill `chef_mark` (agree / disagree / should_have_escalated). The sidebar shows the real tally automatically, failures included.
-6. **Chef review (final)**: `testing/evaluation_30q.csv` is chef-approved — **24 Agree / 2 Disagree / 4 should_have_escalated** (30/30 marked). Disagreements kept: Q12 (pasta boil time retrieval miss), Q20 (masala fries retrieval miss).
+## Quick start
 
-## Submission pieces
-- **Bill of provenance**: device (old phone/laptop), mic/speaker, any salvaged part: what it was / where from / where it goes after. Software is free/open-source (FastAPI, Ollama/Llama or Groq free tier). See `knowledge/PROVENANCE.json`.
-- **Honesty note**: Strong — escalation + traceable sources + chef-verified answers. Weak — keyword retrieval (no embeddings), so Q12/Q20 still miss. Chef-reviewed **24 agree / 2 disagree / 4 should_have_escalated**; disagreements left in the sheet.
-- Live demo order: intro+consent -> burger -> troubleshooting -> pasta -> edge case (allergy, escalated) -> off-domain (steak, escalated) -> open a Source panel -> show honesty note tally.
-# kys-alkidhmat-hackathon
-# kys-alkidhmat-hackathon
+```bash
+cd stand-in
+python3 -m venv .venv
+source .venv/bin/activate          # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+
+# Optional — mic polish (Groq Whisper) + faster Neerja TTS path
+export GROQ_API_KEY='gsk_...'      # or put it in a gitignored .env
+
+python -m uvicorn backend.main:app --port 8000 --reload
+```
+
+Open **http://127.0.0.1:8000**
+
+Copy `.env.example` → `.env` if you prefer file-based keys (`.env` is gitignored).
+
+---
+
+## What this is
+
+| Piece | Detail |
+|---|---|
+| **Person** | Chef Nisa — smash beef burgers + Creamy Chicken Alfredo Pasta |
+| **Consent** | Written consent on profile (`consent_confirmed: true`) |
+| **Knowledge** | Verbatim retrieval from chef docs — not free-form LLM inventing recipes |
+| **Limits** | Allergy, food safety, legal, off-menu → escalate with reason |
+| **Presence** | Avatar + female voice (Neerja / browser female fallback) + mic |
+| **Honesty** | Chef-reviewed 30Q sheet; failures kept visible in the UI |
+
+---
+
+## Knowledge sources (with consent)
+
+| File | Role |
+|---|---|
+| `Smash_and_Sauce_QA_Manual.pdf` | Ops Q&A / rules |
+| `Smash_and_Sauce_Kitchen_cleaned.txt` | Interview (EN) |
+| `samshandsaucekitchen_romanurdu.txt` | Interview (Roman Urdu) |
+| `Burger_Recipe.txt` | Measured smash-burger recipe |
+| `CREAMY CHICKEN ALFREDO PASTA RECIPE.txt` | Alfredo pasta recipe |
+| `extra Question_Answers.txt` | Troubleshooting Q&A |
+
+Rebuild the knowledge base after editing sources:
+
+```bash
+python knowledge/build_kb.py
+```
+
+This writes `knowledge/kb.json` (~97 interview chunks, 13 rules, 7 escalation topics). The server hot-reloads when `kb.json` changes.
+
+---
+
+## How it decides (`backend/engine.py`)
+
+1. **Manners / identity** — greetings, “who is Nisa?”, “what do you cook?”, “don’t speak too much”.
+2. **Hard recipe routes** — pasta/burger recipe asks, boil-time, typo fixes (`paste` → `pasta`).
+3. **Escalation first** — allergy, food safety, medical, legal, off-menu, off-topic.
+4. **Retrieval** — IDF keyword match over interview + rules + preferences; prefer head overlap so weak matches don’t invent answers.
+5. **Confidence** — strong documented match → **Confident**; too weak → **Escalated** (no bluffing).
+6. **Sources** — every kitchen answer can show provenance (tap Source).
+7. **Short context** — last few chat turns resolve follow-ups like “also its recipe” (browser memory only; cleared on refresh).
+
+Optional LLM rephrase (Ollama / Groq) is **off by default**. If enabled, any reply with numbers not in retrieved chef text is discarded.
+
+---
+
+## Voice & mic
+
+| Feature | How |
+|---|---|
+| **Speak answers** | Toggle in the left panel (default ON) |
+| **TTS** | Prefer `en-IN-NeerjaNeural` via `/speak`; if slow (>~1.5s) → female browser voice |
+| **Mic** | Tap 🎤 → speak → ⏹. Live captions + optional Groq Whisper polish |
+| **Barge-in** | Tap mic while she talks to cut in; “please stop” handled as interrupt |
+
+Without `GROQ_API_KEY`, mic still works via browser live captions; Whisper polish is skipped.
+
+---
+
+## Demo script (judges · ~2 minutes)
+
+1. Intro: Chef **Nisa**, consent, Smash & Sauce specialty.  
+2. Burger: *What goes into your burger sauce?* → source panel.  
+3. Pasta: *Share the creamy pasta recipe* → Creamy Chicken Alfredo overview.  
+4. Escalate: *Someone has a peanut allergy* → escalate + why.  
+5. Honesty note: chef review tally in the sidebar.
+
+Suggested prompts that work well:
+
+- Who is Nisa? / What do you cook?  
+- What is your beef mince formula?  
+- Burger recipe / How long do you boil pasta?  
+- My pasta sauce became too thick  
+- Can you make a steak?  
+
+---
+
+## Chef review (honesty note)
+
+`testing/evaluation_30q.csv` — chef-approved:
+
+| Mark | Count |
+|---|---|
+| Agree | 24 |
+| Disagree | 2 |
+| Should have escalated | 4 |
+
+Disagreements kept on record (e.g. historical retrieval misses). Rebuild sheet with:
+
+```bash
+python testing/run_eval.py
+```
+
+---
+
+## Project layout
+
+```
+backend/
+  main.py          # FastAPI: /ask /profile /results /speak /transcribe
+  engine.py        # escalation + retrieval + context follow-ups
+  voice.py         # Groq Whisper STT + edge-tts TTS
+frontend/
+  index.html       # Stand-In room UI
+  assets/          # Chef avatar frames
+knowledge/
+  kb.json          # Built knowledge base
+  build_kb.py      # Rebuild from chef docs
+  PROVENANCE.json  # Software / source provenance notes
+testing/
+  evaluation_30q.csv
+  run_eval.py
+```
+
+---
+
+## Submission checklist (Track 1)
+
+- [x] Real named person + written consent  
+- [x] Knowledge base with sources on answers  
+- [x] Escalation with reasons  
+- [x] Presence (face + voice + mic)  
+- [x] Honesty note (30Q chef marks, failures included)  
+- [ ] Bill of provenance — fill salvaged hardware in `knowledge/PROVENANCE.json` before live judging  
+
+Software stack is free/open: FastAPI, keyword retrieval, edge-tts, optional Groq free tier / local Ollama.
