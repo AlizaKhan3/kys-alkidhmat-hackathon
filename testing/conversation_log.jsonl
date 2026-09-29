@@ -84,3 +84,7 @@
 {"t": 1790670871.7714229, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
 {"t": 1790671790.2097356, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
 {"t": 1790671792.3507504, "q": "Someone has a peanut allergy", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q31"]}
+{"t": 1790672856.987492, "q": "are you nisa?", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
+{"t": 1790673107.286357, "q": "who are you", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790673116.913147, "q": "who are you", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790673210.374971, "q": "whos nisa", "status": "qualified", "score": 0.406, "mode": "verbatim", "ids": ["I01"]}

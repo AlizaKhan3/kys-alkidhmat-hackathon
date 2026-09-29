@@ -5,10 +5,10 @@ from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from backend.engine import ask, KB, ROOT
+from backend.engine import ask, get_kb, ROOT
 from backend.voice import router as voice_router
 
-app = FastAPI(title="Stand-In: Smash & Sauce Kitchen")
+app = FastAPI(title="Stand-In: Chef Nisa · Smash & Sauce Kitchen")
 app.include_router(voice_router)
 app.mount("/assets", StaticFiles(directory="frontend/assets"), name="assets")
 LOG = ROOT / "testing" / "conversation_log.jsonl"
@@ -28,8 +28,9 @@ def _ask(q: Q):
 
 @app.get("/profile")
 def profile():
-    return dict(KB["chef_profile"], escalation_topics=[dict(topic=t["topic"], reason=t["reason"]) for t in KB["escalation_topics"]],
-                counts={k: len(KB[k]) for k in ("interview_entries", "rules", "preferences")})
+    kb = get_kb()
+    return dict(kb["chef_profile"], escalation_topics=[dict(topic=t["topic"], reason=t["reason"]) for t in kb["escalation_topics"]],
+                counts={k: len(kb[k]) for k in ("interview_entries", "rules", "preferences")})
 
 
 @app.get("/results")

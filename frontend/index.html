@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Stand-In · Smash & Sauce Kitchen Chef</title>
+<title>Stand-In · Nisa · Smash & Sauce Kitchen</title>
 <link rel="preload" as="image" href="/assets/chef.png">
 <link rel="preload" as="image" href="/assets/chef-neutral.png">
 <link rel="preload" as="image" href="/assets/chef-speaking.png">
@@ -595,6 +595,14 @@ h2::before {
   font-size: 13px;
   color: var(--mut);
   font-weight: 500;
+}
+
+.hero-bio {
+  margin: 8px auto 0;
+  max-width: 36ch;
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--mut);
 }
 
 .consent-pill-wrap {
@@ -1254,7 +1262,7 @@ button#mic.rec {
       <div class="sound-ring ring-3"></div>
 
       <div id="av" class="av-wrap">
-        <img id="avatarImg" src="/assets/chef.png" alt="Chef avatar">
+        <img id="avatarImg" src="/assets/chef.png" alt="Chef Nisa">
       </div>
     </div>
 
@@ -1265,13 +1273,14 @@ button#mic.rec {
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
-      <span class="wave-text">CHEF IS SPEAKING</span>
+      <span class="wave-text">NISA IS SPEAKING</span>
     </div>
 
     <!-- Below the Avatar: Name, Tagline, Consent Pill -->
     <div class="hero-identity">
       <h1 id="name">Loading…</h1>
       <div class="small hero-spec" id="spec"></div>
+      <p class="small hero-bio" id="bio"></p>
       <div class="consent-pill-wrap">
         <p class="small" id="consent"></p>
       </div>
@@ -1285,7 +1294,7 @@ button#mic.rec {
     <div class="chat-header">
       <div class="chat-title-group">
         <span class="chat-online-dot"></span>
-        <span class="chat-header-title">Chef Consultation Desk</span>
+        <span class="chat-header-title">Ask Chef Nisa</span>
       </div>
       <span class="chat-header-badge">AI Stand-In</span>
     </div>
@@ -1301,7 +1310,7 @@ button#mic.rec {
 
       <!-- Question Form -->
       <form id="f">
-        <input id="q" placeholder="Ask the chef a burger or pasta question…" autocomplete="off">
+        <input id="q" placeholder="Ask Nisa a burger or pasta question…" autocomplete="off">
         <button type="button" class="g" id="mic" title="Speak (live draft appears as you talk)">🎤</button>
         <button type="submit" id="askBtn">Ask</button>
       </form>
@@ -1322,8 +1331,10 @@ $('chips').onclick=e=>{if(e.target.tagName=='BUTTON'){$('q').value=e.target.text
 
 fetch('/profile').then(r=>r.json()).then(p=>{
  $('name').textContent=p.name;
- $('spec').textContent=p.kitchen+' · '+p.specialty;
- $('consent').innerHTML=p.consent_confirmed?'✅ Chef has given written consent to be represented.':'⚠️ Consent NOT yet confirmed. Demo mode.';
+ const rel=p.relationship?` · ${p.relationship}`:'';
+ $('spec').textContent=p.kitchen+rel+' · '+p.specialty;
+ if(p.bio){const bioEl=$('bio'); if(bioEl) bioEl.textContent=p.bio;}
+ $('consent').innerHTML=p.consent_confirmed?'✅ Chef Nisa has given written consent to be represented.':'⚠️ Consent NOT yet confirmed. Demo mode.';
  
  if(p.escalation_topics && p.escalation_topics.length){
    $('esc').innerHTML=p.escalation_topics.map(t=>`
@@ -1340,7 +1351,7 @@ fetch('/profile').then(r=>r.json()).then(p=>{
  if($('statRules')) $('statRules').textContent = p.counts.rules;
  if($('statPrefs')) $('statPrefs').textContent = p.counts.preferences;
 
- add('a',{status:'qualified',answer:`Hi, I'm the stand-in for ${p.name} of ${p.kitchen}. I only answer from what the chef told us. If he didn't say it, I'll pass you back to him.`,sources:[],reason:'',_hello:1})
+ add('a',{status:'qualified',answer:`Hi, I'm the stand-in for Chef ${p.name} of ${p.kitchen}${p.relationship?' ('+p.relationship+')':''}. I only answer from what she told us. If she didn't say it, I'll pass you back to her.`,sources:[],reason:'',_hello:1})
 });
 
 fetch('/results').then(r=>r.json()).then(rows=>{

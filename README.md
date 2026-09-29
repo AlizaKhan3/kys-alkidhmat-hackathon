@@ -1,6 +1,6 @@
 # Stand-In: Smash & Sauce Kitchen (Rocketathon, Track 1)
 
-A rule-grounded stand-in for ONE real chef. Answers only from his interview; escalates everything else and says why.
+A rule-grounded stand-in for **Chef Nisa** of Smash & Sauce Kitchen (Laiba's aunt). Answers only from her interview; escalates everything else and says why.
 
 ## Run (2 minutes, free, offline-capable)
     pip install -r requirements.txt

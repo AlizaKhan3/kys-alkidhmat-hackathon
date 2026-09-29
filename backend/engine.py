@@ -3,7 +3,22 @@ import json, re, math, os, urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-KB = json.loads((ROOT / "knowledge" / "kb.json").read_text(encoding="utf-8"))
+_KB_PATH = ROOT / "knowledge" / "kb.json"
+_KB_MTIME = None
+KB = {}
+
+
+def get_kb():
+    """Hot-reload kb.json when it changes so profile/name updates without a full restart."""
+    global KB, _KB_MTIME
+    mtime = _KB_PATH.stat().st_mtime
+    if not KB or _KB_MTIME != mtime:
+        KB = json.loads(_KB_PATH.read_text(encoding="utf-8"))
+        _KB_MTIME = mtime
+    return KB
+
+
+get_kb()
 PROMPT = (ROOT / "system_prompt.md").read_text(encoding="utf-8")
 STOP = set("the a an is are do you your i to of for in on it how what when why my me and or with be if can should does did that this so we went wrong tell about please give say".split())
 CONFIDENT, QUALIFIED = 0.60, 0.30  # thresholds: tune after the 30-question review
@@ -262,6 +277,7 @@ def _grounded(text, ctx):
 
 def ask(q, use_llm=False):
     """Answer only from chef KB. LLM is off by default so we never invent kitchen facts."""
+    get_kb()
     q = (q or "").strip()
     name = KB["chef_profile"]["name"]
     subj, obj, pos = _pronouns()

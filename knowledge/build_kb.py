@@ -237,7 +237,7 @@ def escalation():
             "id": "E01",
             "topic": "Allergies / severe dietary",
             "pattern": "allerg|anaphyla|celiac|coeliac|intoleran|nut allerg|dairy allerg|peanut|\\bnuts?\\b.*\\b(allerg|safe)|gluten.?free|severe diet",
-            "reason": "This query involves medical health and severe dietary allergens. The Stand-In cannot authorize dietary safety. Please speak directly with the chef/owner before placing this order.",
+            "reason": "This query involves medical health and severe dietary allergens. The Stand-In cannot authorize dietary safety. Please speak directly with Chef Nisa before placing this order.",
         },
         {
             "id": "E02",
@@ -255,7 +255,7 @@ def escalation():
             "id": "E04",
             "topic": "Legal / business disputes",
             "pattern": "lawsuit|legal|licen[cs]e|insurance|refund|complain|\\bsue\\b",
-            "reason": "Legal and business decisions are for the chef/owner herself.",
+            "reason": "Legal and business decisions are for Chef Nisa herself.",
         },
         {
             "id": "E05",
@@ -267,7 +267,7 @@ def escalation():
             "id": "E06",
             "topic": "Secret / unpublished exact recipes",
             "pattern": "secret spice|proprietary|pickle brine recipe|exact spice blend|reveal.*(spice|recipe)|give.*(spice|brine) recipe|exact\\s+(grams?|measurements?|quantit\\w*)|full recipe with (grams?|quantit)|1\\s*kg (patty|meat).*(recipe|measure|quantit|grams?)|(patty|sauce).*(exact|precise).*(grams?|measure|quantit)",
-            "reason": "Exact measured recipes she said she would share separately (e.g. full 1 kg patty mix quantities, full burger-sauce gram sheet, proprietary Alfredo spices) are not fully in the stand-in knowledge base. Ask the chef/owner directly — the stand-in will not invent numbers.",
+            "reason": "Exact measured recipes she said she would share separately (e.g. full 1 kg patty mix quantities, full burger-sauce gram sheet, proprietary Alfredo spices) are not fully in the stand-in knowledge base. Ask Chef Nisa directly — the stand-in will not invent numbers.",
         },
     ]
 
@@ -292,13 +292,14 @@ def main():
 
     kb = {
         "chef_profile": {
-            "name": "Smash & Sauce Kitchen Chef",
+            "name": "Nisa",
             "kitchen": "Smash & Sauce Kitchen",
             "specialty": "Smash beef burgers, Alfredo/pasta sauces, homemade pickles & masala fries",
             "pronouns": "she/her",
-            "bio": "University student and chef-operator of Smash & Sauce Kitchen; 50/50 partner with her aunt (aunt invests; she runs cooking and orders). Pasta cook for 4–5 years; beef burgers for about 1 year. Home-based kitchen balancing classes (~9–2/9–3) with lunchtime orders.",
+            "relationship": "Aunt of Laiba",
+            "bio": "Chef Nisa of Smash & Sauce Kitchen — aunt of Laiba. Family 50/50 kitchen partnership (investment + cooking/orders). Pasta cook for 4–5 years; beef burgers for about 1 year. Home-based kitchen balancing university-day lunchtime orders.",
             "consent_confirmed": True,
-            "consent_note": "Chef provided the Operations Manual PDF plus English and Roman Urdu interview transcripts with consent for this stand-in. Knowledge is limited to those documents; unpublished exact gram sheets she mentioned separately are escalated.",
+            "consent_note": "Chef Nisa (Laiba's aunt) provided the Operations Manual PDF plus English and Roman Urdu interview transcripts with consent for this stand-in. Knowledge is limited to those documents; unpublished exact gram sheets mentioned separately are escalated.",
         },
         "interview_entries": interviews,
         "rules": list(rules_by.values()),
