@@ -56,3 +56,11 @@
 {"t": 1790630053.6990871, "q": "dsjdhs", "status": "escalated", "score": 0, "mode": "threshold", "ids": []}
 {"t": 1790630066.970232, "q": "do you make chicken burger", "status": "confident", "score": 0.614, "mode": "verbatim", "ids": ["Q04", "Q32", "Q08"]}
 {"t": 1790630279.873167, "q": "do you make chicken burger", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
+{"t": 1790660097.320787, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790662033.417506, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
+{"t": 1790662138.4224799, "q": "Can you make a steak?", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
+{"t": 1790662143.1579158, "q": "Someone has a peanut allergy", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q31"]}
+{"t": 1790662277.898798, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
+{"t": 1790662417.798, "q": "What goes into burger sauce?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I11"]}
+{"t": 1790666714.394709, "q": "What goes into burger sauce?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I11"]}
+{"t": 1790666724.9802291, "q": "Can you make a steak?", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
