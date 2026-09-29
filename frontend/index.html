@@ -1407,36 +1407,48 @@ function setSpeaking(on){
  }
  step();
 }
-
 function browserSay(t){
  if(!window.speechSynthesis)return;
  speechSynthesis.cancel();
  const u=new SpeechSynthesisUtterance(t);
+ u.lang='en-IN';
+ const vs=speechSynthesis.getVoices(),v=vs.find(v=>/en-IN/i.test(v.lang)&&/female|neerja|heera|swara/i.test(v.name))||vs.find(v=>/en-IN/i.test(v.lang));
+ if(v)u.voice=v;
  u.onstart=()=>setSpeaking(true);
  u.onend=u.onerror=()=>setSpeaking(false);
  speechSynthesis.speak(u);
 }
-
+let currentAudio=null,speakGen=0;
+function stopSpeaking(){
+ speakGen++; // invalidate in-flight say() so stale audio never starts
+ try{speechSynthesis.cancel()}catch{}
+ if(currentAudio){try{currentAudio.onended=currentAudio.onerror=currentAudio.onplay=null;currentAudio.pause();currentAudio.src='';currentAudio.load()}catch{}currentAudio=null}
+ document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.removeAttribute('src');a.load()}catch{}});
+ setSpeaking(false)
+}
 async function say(t){
  if(!$('speak').checked||!t)return;
+ const my=++speakGen;stopSpeaking();speakGen=my; // stop prior but keep this generation
  try{
    const r=await fetch('/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
+   if(my!==speakGen)return; // newer ask won
    if(!r.ok)throw new Error('speak '+r.status);
    const url=URL.createObjectURL(await r.blob());
-   const a=new Audio(url);
-   a.onplay=()=>setSpeaking(true);
-   a.onended=a.onerror=()=>{setSpeaking(false);URL.revokeObjectURL(url)};
+   if(my!==speakGen){URL.revokeObjectURL(url);return}
+   const a=new Audio(url);currentAudio=a;
+   a.onplay=()=>{if(my===speakGen)setSpeaking(true)};
+   a.onended=a.onerror=()=>{if(currentAudio===a)currentAudio=null;URL.revokeObjectURL(url);if(my===speakGen)setSpeaking(false)};
    await a.play();
  }
  catch{
-   browserSay(t);
+   if(my===speakGen)browserSay(t);
  }
 }
-
 $('f').onsubmit=async e=>{
  e.preventDefault();
  const q=$('q').value.trim();
  if(!q)return;
+ stopSpeaking();
  $('q').value='';
  add('u',q);
  const th=tip('Thinking…');
@@ -1453,35 +1465,13 @@ $('f').onsubmit=async e=>{
 };
 
 /* STT: live browser captions + MediaRecorder → Whisper polish. User edits & taps Ask. */
-function stopSpeaking(){
- try{speechSynthesis.cancel()}catch{}
- document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.src=''}catch{}});
- setSpeaking(false);
-}
-
-function pickMime(){
- if(!window.MediaRecorder)return'';
- for(const t of['audio/webm;codecs=opus','audio/webm','audio/mp4'])if(MediaRecorder.isTypeSupported(t))return t;
- return'';
-}
-
-function extFor(mime){
- if((mime||'').includes('mp4'))return'm4a';
- if((mime||'').includes('ogg'))return'ogg';
- return'webm';
-}
-
-function junkTranscript(t){
- t=(t||'').trim().toLowerCase();
- return!t||t.length<2||/^(the the|thank you\.?|thanks for watching\.?|hello everyone\.?|subscribe\.?|bye\.?)$/.test(t);
-}
-
-function putDraft(text){
- const q=$('q');
- q.value=(text||'').trim();
- q.focus();
- if(q.value){try{q.setSelectionRange(q.value.length,q.value.length)}catch{}}
-}
+function pickMime(){if(!window.MediaRecorder)return'';
+ for(const t of['audio/webm;codecs=opus','audio/webm','audio/mp4'])if(MediaRecorder.isTypeSupported(t))return t;return''}
+function extFor(mime){if((mime||'').includes('mp4'))return'm4a';if((mime||'').includes('ogg'))return'ogg';return'webm'}
+function junkTranscript(t){t=(t||'').trim().toLowerCase();
+ return!t||t.length<2||/^(the the|thank you\.?|thanks for watching\.?|hello everyone\.?|subscribe\.?|bye\.?)$/.test(t)}
+function putDraft(text){const q=$('q');q.value=(text||'').trim();q.focus();
+ if(q.value){try{q.setSelectionRange(q.value.length,q.value.length)}catch{}}}
 
 let session=null;
 
@@ -1493,11 +1483,7 @@ function paintMeter(level){
 function startLiveCaption(onUpdate){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!SR)return null;
- const r=new SR();
- r.lang='en-US';
- r.continuous=true;
- r.interimResults=true;
- r.maxAlternatives=1;
+const r=new SR();r.lang='en-IN';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
  let finalText='',alive=true;
  r.onresult=e=>{
   let interim='';

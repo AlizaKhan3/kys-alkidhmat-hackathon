@@ -8,7 +8,8 @@ router = APIRouter()
 
 GROQ_URL = "https://api.groq.com/openai/v1/audio/transcriptions"
 WHISPER_MODEL = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
-EDGE_VOICE = os.getenv("EDGE_TTS_VOICE", "en-US-GuyNeural")
+# Female Indian-English voice: fits she/her chef and reads Roman Urdu better than US male.
+EDGE_VOICE = os.getenv("EDGE_TTS_VOICE", "en-IN-NeerjaNeural")
 
 
 class SpeakIn(BaseModel):
