@@ -1,5 +1,6 @@
 """Voice I/O: Groq Whisper STT + edge-tts TTS. Browser APIs remain the UI fallback."""
 import os
+import re
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import Response
 from pydantic import BaseModel
@@ -27,10 +28,21 @@ class SpeakIn(BaseModel):
     text: str
 
 
+def whisper_ready():
+    """UI probe: is Groq Whisper configured for /transcribe?"""
+    key = (os.getenv("GROQ_API_KEY") or "").strip()
+    return {
+        "whisper": bool(key),
+        "model": WHISPER_MODEL if key else None,
+        "tts_voice": EDGE_VOICE,
+        "hint": None if key else "Set GROQ_API_KEY in .env or export it before starting uvicorn.",
+    }
+
+
 @router.post("/transcribe")
 async def transcribe(audio: UploadFile = File(...)):
     """Speech → text via Groq Whisper. Needs GROQ_API_KEY."""
-    key = os.getenv("GROQ_API_KEY")
+    key = (os.getenv("GROQ_API_KEY") or "").strip()
     if not key:
         raise HTTPException(503, detail="GROQ_API_KEY not set")
 
@@ -98,31 +110,38 @@ async def transcribe(audio: UploadFile = File(...)):
 
 @router.post("/speak")
 async def speak(body: SpeakIn):
-    """Text → MP3 via edge-tts (no API key)."""
-    text = (body.text or "").strip()
+    """Text → MP3 via edge-tts. Fast path: Neerja only, short timeout — no multi-voice cascade."""
+    import asyncio
+
+    text = re.sub(r"\s+", " ", (body.text or "").strip())
     if not text:
         raise HTTPException(400, detail="Empty text")
+    # Keep TTS short so generation stays under a few seconds.
+    if len(text) > 480:
+        text = text[:480].rsplit(" ", 1)[0] + "…"
 
     try:
         import edge_tts
     except ImportError as e:
         raise HTTPException(500, detail="edge-tts not installed") from e
 
-    voices = [EDGE_VOICE] + [v for v in FEMALE_EDGE_VOICES if v != EDGE_VOICE]
-    last_err = None
-    for voice in voices:
-        try:
-            communicate = edge_tts.Communicate(text, voice)
-            chunks: list[bytes] = []
-            async for chunk in communicate.stream():
-                if chunk["type"] == "audio":
-                    chunks.append(chunk["data"])
-            if chunks:
-                print(f"[speak] voice={voice} bytes={sum(len(c) for c in chunks)}")
-                return Response(content=b"".join(chunks), media_type="audio/mpeg")
-        except Exception as e:
-            last_err = e
-            print(f"[speak] {voice} failed: {e}")
-            continue
+    voice = EDGE_VOICE if EDGE_VOICE in FEMALE_EDGE_VOICES else FEMALE_EDGE_VOICES[0]
 
-    raise HTTPException(502, detail=f"edge-tts failed (female voices): {last_err}")
+    async def _synth(v: str) -> bytes:
+        communicate = edge_tts.Communicate(text, v)
+        chunks: list[bytes] = []
+        async for chunk in communicate.stream():
+            if chunk["type"] == "audio":
+                chunks.append(chunk["data"])
+        return b"".join(chunks)
+
+    try:
+        audio = await asyncio.wait_for(_synth(voice), timeout=6.0)
+    except Exception as e:
+        print(f"[speak] {voice} failed/timeout: {e}")
+        raise HTTPException(504, detail=f"edge-tts slow/unavailable: {e}") from e
+
+    if not audio:
+        raise HTTPException(502, detail="edge-tts returned no audio")
+    print(f"[speak] voice={voice} bytes={len(audio)} chars={len(text)}")
+    return Response(content=audio, media_type="audio/mpeg")

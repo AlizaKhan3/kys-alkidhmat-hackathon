@@ -1,12 +1,30 @@
 """Run: uvicorn backend.main:app --port 8000   (from the stand-in/ folder)"""
-import json, csv, time
+import json, csv, time, os
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from backend.engine import ask, get_kb, ROOT
-from backend.voice import router as voice_router
+from backend.voice import router as voice_router, whisper_ready
+
+
+def _load_dotenv():
+    """Pull GROQ_API_KEY etc. from stand-in/.env without requiring python-dotenv."""
+    path = ROOT / ".env"
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, _, v = line.partition("=")
+        k, v = k.strip(), v.strip().strip('"').strip("'")
+        if k and k not in os.environ:
+            os.environ[k] = v
+
+
+_load_dotenv()
 
 app = FastAPI(title="Stand-In: Chef Nisa · Smash & Sauce Kitchen")
 app.include_router(voice_router)
@@ -31,6 +49,11 @@ def profile():
     kb = get_kb()
     return dict(kb["chef_profile"], escalation_topics=[dict(topic=t["topic"], reason=t["reason"]) for t in kb["escalation_topics"]],
                 counts={k: len(kb[k]) for k in ("interview_entries", "rules", "preferences")})
+
+
+@app.get("/voice/status")
+def voice_status():
+    return whisper_ready()
 
 
 @app.get("/results")

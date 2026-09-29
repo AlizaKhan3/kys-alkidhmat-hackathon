@@ -151,11 +151,17 @@ def interview_chunks():
          "3 tbsp mayo, 1 tbsp ketchup, 1½ tbsp BBQ, ½ tbsp mustard, 1 tbsp Worcestershire, paprika, black pepper, pinch salt — mix.",
          ["burger", "sauce", "mayonnaise", "bbq", "mustard", "worcestershire", "ketchup", "paprika", "tablespoon"]),
         ("I12", "pasta",
-         "How do you cook pasta and what is in the pasta sauce?",
-         "Pasta aur pasta sauce kaise banta hai?",
-         "For pasta we usually boil it for around 8–10 minutes, depending on the type and brand. We use Bake Parlour and Reggia pasta. For our pasta sauce we use cheddar cheese — specifically Adam's cheese — along with cream, milk, and butter. We also use all-purpose milk. Ingredient quality matters because changing the brand or using a lower-quality product affects taste and consistency.",
-         "Pasta usually 8–10 minutes boil; Bake Parlour aur Reggia. Sauce: Adam's cheddar, cream, milk, butter, all-purpose milk.",
-         ["pasta", "boil", "8", "10", "adams", "cheddar", "cream", "milk", "butter", "reggia", "bake"]),
+         "How long do you boil the pasta? How do you cook pasta?",
+         "Pasta kitni der boil karti ho?",
+         "For pasta we usually boil it for around 8–10 minutes, depending on the type and brand. We use Bake Parlour and Reggia pasta. For Creamy Chicken Alfredo we boil 1 packet of pasta in salted oiled water until done but not overcooked, then strain and rinse with cold water.",
+         "Pasta usually 8–10 minutes boil; Bake Parlour aur Reggia. Alfredo: 1 packet, salt+oil, strain, cold rinse.",
+         ["pasta", "boil", "boiling", "long", "how", "long", "minutes", "8", "10", "duration", "time", "packet", "reggia", "bake", "parlour"]),
+        ("I18", "pasta",
+         "What is in the pasta sauce and which brands do you use?",
+         "Pasta sauce mein kya hai aur brand kaunsa?",
+         "For our pasta sauce we use cheddar cheese — specifically Adam's cheese — along with cream, milk, and butter. We also use all-purpose milk. We use Bake Parlour and Reggia pasta. Ingredient quality matters because changing the brand or using a lower-quality product affects taste and consistency.",
+         "Sauce: Adam's cheddar, cream, milk, butter. Pasta brands: Bake Parlour aur Reggia.",
+         ["pasta", "sauce", "adams", "cheddar", "cream", "milk", "butter", "reggia", "bake", "brand"]),
         ("I13", "troubleshooting",
          "Why does the patty sometimes break while frying, and how do you prevent it?",
          "Patty fry karte waqt break kyun hoti hai?",
@@ -167,7 +173,7 @@ def interview_chunks():
          "Cheese kaunsi use karti ho?",
          "For our burgers we use Adam's burger cheese. I prefer Adam's because of its quality and melting consistency. Usually it takes around five minutes for the cheese to melt properly, depending on how we're preparing the burger. For our pasta we also use Adam's cheddar cheese.",
          "Burgers: Adam's burger cheese — usually around five minutes melt. Pasta: Adam's cheddar.",
-         ["adams", "cheese", "melt", "five", "minutes", "cheddar", "burger"]),
+         ["adams", "cheese", "melt", "melting", "five", "minutes", "cheddar", "burger", "slice"]),
         ("I15", "pasta",
          "How do you marinate the chicken?",
          "Chicken kaise marinate karti ho?",
@@ -325,6 +331,9 @@ def burger_recipe_entries():
     if not path.exists():
         return []
     chunks = [
+        ("BR00", "burger", "What is your full smash burger recipe? Share the burger recipe.",
+         "Nisa's burger is the Smash Beef Burger (from Burger_Recipe.txt): (1) 80/20 beef mince patty with spices for 1 kg, re-weighed 70–80 g. (2) Burger sauce with mayo, ketchup, BBQ, mustard, Worcestershire, paprika, pepper, salt. (3) Iceberg lettuce, caramelized onions, homemade pickles, butter-toasted buns. (4) Cook patty with butter, smash once, ~8–10 min per side, melt cheese 3–4 min. (5) Assemble: bun → sauce → lettuce → onions → cheesy patty → pickles → sauce → top bun. Ask for any one step for exact measures.",
+         ["burger", "smash", "beef", "recipe", "full", "share", "how", "make", "patty", "assembly"]),
         ("BR01", "burger", "What is the full beef patty recipe for 1 kg of meat?",
          "For the burger patty we use beef mince that is 80% meat and 20% fat from the vendor. For 1 kg of meat add: 1½ teaspoons black pepper (teaspoon, not tablespoon), 2 tablespoons ginger-garlic paste, 1 to 1½ tablespoons butter (Nurpur/Milkpack) for juicier patties, optional ½ teaspoon red chilli powder, and optionally Shan Keema Masala for a spicier taste. Vendor balls are ~80 g; after spices re-weigh each patty to 70–80 g.",
          ["patty", "mince", "80", "20", "kilogram", "pepper", "ginger", "garlic", "butter", "nurpur", "keema", "weight", "70", "80"]),
@@ -359,18 +368,21 @@ def alfredo_recipe_entries():
     if not path.exists():
         return []
     chunks = [
+        ("AP00", "pasta", "What is your creamy chicken Alfredo pasta recipe? Share the pasta recipe.",
+         "Nisa's pasta dish is Creamy Chicken Alfredo Pasta (from CREAMY CHICKEN ALFREDO PASTA RECIPE). Four parts: (1) Boil 1 packet pasta with 1½ tsp salt + 2 tbsp oil, strain, rinse with cold water, lightly oil. (2) Creamy Alfredo sauce: milk, cream, chicken powder, spices, butter, garlic, maida, cheddar. (3) Marinate & cook 1 kg chicken with tikka powder, sauces, herbs. (4) Toss pasta + sauce + chicken ~10 min on low flame. Ask me for any one step in detail — boil, sauce, chicken, or assembly.",
+         ["pasta", "paste", "alfredo", "creamy", "chicken", "recipe", "full", "share", "how", "make", "penne", "signature"]),
         ("AP01", "pasta", "How do you boil pasta for creamy chicken Alfredo?",
          "Add water to a pot on medium flame with 1½ teaspoons salt and 2 tablespoons oil. Bring to a proper boil, add 1 packet pasta, cook until boiled but not overcooked. Strain, immediately wash with cold water, add a small amount of oil and mix gently so pasta does not stick. Keep aside until sauce and chicken are ready.",
-         ["boil", "pasta", "salt", "oil", "cold", "water", "strain", "packet", "overcook"]),
+         ["boil", "pasta", "paste", "salt", "oil", "cold", "water", "strain", "packet", "overcook", "alfredo"]),
         ("AP02", "pasta", "How do you make the creamy Alfredo sauce?",
          "Mix in a bowl: 2 cups milk, 1 packet cream, 1 tbsp chicken powder, 1 tsp salt, 1 tsp black pepper, 1 tsp chilli flakes, 1 tsp organic leaves, 1 tsp mixed herbs, slightly less than 1 tsp rosemary leaves. On low flame: 1 tbsp butter, 1 tbsp chopped garlic (sauté lightly, do not brown), add flour/maida and mix, gradually add milk-cream mixture while mixing to avoid lumps. Cook on low ~15 minutes until creamy and thick. Add 2–4 slices cheddar cheese until melted. Taste and adjust spices.",
-         ["alfredo", "sauce", "cream", "milk", "garlic", "maida", "flour", "cheddar", "rosemary", "herbs", "15", "minutes"]),
+         ["alfredo", "sauce", "cream", "creamy", "milk", "garlic", "maida", "flour", "cheddar", "rosemary", "herbs", "15", "minutes", "pasta", "paste"]),
         ("AP03", "pasta", "How do you marinate and cook chicken for Alfredo pasta (1 kg)?",
          "For 1 kg chicken marinate with: 1 tbsp garlic paste, 2 tsp chicken tikka powder, ½ tsp oregano, ½ tsp mixed herbs, ½ tsp rosemary, 1 tsp chicken powder, 1 tbsp vinegar, 1 tbsp chilli sauce, 1 tbsp soy sauce, ½ tsp chilli flakes, 1 tsp black pepper, less than ½ tsp salt. Mix thoroughly, marinate 15 minutes. Cook on low flame ~15 minutes; add remaining marinade mixed with a little water and continue until fully cooked.",
-         ["chicken", "marinate", "tikka", "vinegar", "soy", "oregano", "rosemary", "15", "minutes", "kilogram"]),
+         ["chicken", "marinate", "tikka", "vinegar", "soy", "oregano", "rosemary", "15", "minutes", "kilogram", "alfredo", "pasta"]),
         ("AP04", "pasta", "How do you assemble creamy chicken Alfredo pasta?",
          "Add boiled pasta to the Alfredo sauce and mix until evenly coated. Add cooked chicken and mix carefully. Cook pasta, sauce, and chicken together ~10 minutes on low flame, stirring gently. If pasta is already soft from boiling, reduce final cooking time — do not cook full 10 minutes or it becomes mushy. Final pasta should be creamy, well-coated, and not mushy.",
-         ["assembly", "assemble", "combine", "10", "minutes", "mushy", "soft", "coated", "creamy"]),
+         ["assembly", "assemble", "combine", "10", "minutes", "mushy", "soft", "coated", "creamy", "alfredo", "pasta", "paste", "recipe"]),
     ]
     return [entry(eid, cat, q, ans, SRC_ALFREDO, extra_tags=xtags) for eid, cat, q, ans, xtags in chunks]
 

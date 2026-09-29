@@ -123,3 +123,33 @@
 {"t": 1790679069.7546182, "q": "Hi, i'm aliza who are you?", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
 {"t": 1790679122.893555, "q": "Hi, I'm aliza who are you?", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
 {"t": 1790679144.164716, "q": "hi I am I want to watch recipe do you follow to make your pasta", "status": "escalated", "score": 0.113, "mode": "threshold", "ids": []}
+{"t": 1790679439.592871, "q": "Hi Nisa, please tell me what do you cook?", "status": "escalated", "score": 0.189, "mode": "threshold", "ids": []}
+{"t": 1790679470.469619, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790679488.444633, "q": "Hi Nisa, please tell me what do you cook?", "status": "escalated", "score": 0.189, "mode": "threshold", "ids": []}
+{"t": 1790679544.648289, "q": "Hi Nisa, please tell me what do you cook?", "status": "escalated", "score": 0.189, "mode": "threshold", "ids": []}
+{"t": 1790679579.051736, "q": "Hi Nisa, please tell me what do you cook?", "status": "escalated", "score": 0.189, "mode": "threshold", "ids": []}
+{"t": 1790679798.6698089, "q": "Hi Nisa, please tell me what do you cook?", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790679858.327412, "q": "Hi Nisa, whats in your menu?", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790681370.4310322, "q": "Hi nisa, what items are in your menu?", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790681404.78897, "q": "This is not how it is. And, in\u015fallah, these people are not as good as they are.", "status": "escalated", "score": 0.198, "mode": "threshold", "ids": []}
+{"t": 1790681489.439209, "q": "Can you please tell me your pasta recipe?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["XQ20"]}
+{"t": 1790681556.80408, "q": "Hi Mr. How do you make the creamy, yellow, sauce and pasta?", "status": "qualified", "score": 0.391, "mode": "verbatim", "ids": ["AP02", "AP04"]}
+{"t": 1790681617.935153, "q": "do you cook chicken burgers?", "status": "escalated", "score": 0, "mode": "rule", "ids": ["Q32"]}
+{"t": 1790684906.3874712, "q": "What is the burger assembly order?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["BR08", "Q15", "QR04"]}
+{"t": 1790684930.862198, "q": "What is your beef mince formula?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["Q10"]}
+{"t": 1790685069.750514, "q": "How do you make homemade pickles?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I16"]}
+{"t": 1790685092.4261608, "q": "shutup", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790685101.456316, "q": "dont speak too much", "status": "qualified", "score": 0.369, "mode": "verbatim", "ids": ["XQ19", "R43", "R44"]}
+{"t": 1790685141.359018, "q": "please share recipe of creamy paste", "status": "escalated", "score": 0.278, "mode": "threshold", "ids": []}
+{"t": 1790685152.345217, "q": "pasta recipe", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["XQ20"]}
+{"t": 1790685168.7363682, "q": "CREAMY CHICKEN ALFREDO PASTA RECIPE", "status": "confident", "score": 0.78, "mode": "verbatim", "ids": ["AP01", "AP04", "AP02"]}
+{"t": 1790685452.758016, "q": "please share recipe of creamy paste", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["AP00"]}
+{"t": 1790685720.447872, "q": "recipe of pasta", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["AP00"]}
+{"t": 1790685771.59186, "q": "Hi Nissa, what is the recipe of pasta?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["AP00"]}
+{"t": 1790685799.112401, "q": "what is the recipe  to make a pasta?", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["AP00"]}
+{"t": 1790685830.732378, "q": "how long do you boil pasta", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["I12"]}
+{"t": 1790685830.7336981, "q": "please share recipe of creamy paste", "status": "confident", "score": 1.0, "mode": "verbatim", "ids": ["AP00"]}
+{"t": 1790685830.7346041, "q": "dont speak too much", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790685890.759288, "q": "who are you", "status": "confident", "score": 1.0, "mode": "manners", "ids": []}
+{"t": 1790685947.839333, "q": "how much time a beef burger take to cook completely?", "status": "confident", "score": 0.515, "mode": "verbatim", "ids": ["Q20"]}
+{"t": 1790685972.0712981, "q": "can you tell its recipe also?", "status": "escalated", "score": 0.541, "mode": "threshold", "ids": []}

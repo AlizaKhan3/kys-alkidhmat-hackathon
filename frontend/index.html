@@ -1197,7 +1197,7 @@ button#mic.rec {
       <label class="switch-card" for="speak">
         <div class="switch-content">
           <span class="switch-title">🔊 Speak answers</span>
-          <span class="switch-desc">Text-to-speech audio voice</span>
+          <span class="switch-desc" id="speakHint">Neerja voice — must stay ON for audio</span>
         </div>
         <div class="switch-toggle">
           <input type="checkbox" id="speak" checked>
@@ -1236,7 +1236,7 @@ button#mic.rec {
         <div class="small honest-card" id="honest">No review results loaded yet.</div>
       </div>
     </div>
-  </aside>
+</aside>
 
   <!-- ========================================================
        CENTER STAGE: Large Hero Chef Avatar
@@ -1300,13 +1300,13 @@ button#mic.rec {
     </div>
 
     <!-- Message List -->
-    <div id="log" aria-live="polite"></div>
+ <div id="log" aria-live="polite"></div>
 
     <!-- Chat Footer -->
     <div class="chat-footer">
       <!-- Suggested Question Chips -->
       <div class="chips-header-label">Suggested Questions:</div>
-      <div class="chips" id="chips"></div>
+ <div class="chips" id="chips"></div>
 
       <!-- Question Form -->
       <form id="f">
@@ -1351,8 +1351,13 @@ fetch('/profile').then(r=>r.json()).then(p=>{
  if($('statRules')) $('statRules').textContent = p.counts.rules;
  if($('statPrefs')) $('statPrefs').textContent = p.counts.preferences;
 
- add('a',{status:'qualified',answer:`Hi, I'm the stand-in for Chef ${p.name} of ${p.kitchen}${p.relationship?' ('+p.relationship+')':''}. I only answer from what she told us. If she didn't say it, I'll pass you back to her.`,sources:[],reason:'',_hello:1})
+ add('a',{status:'qualified',answer:`Hi, I'm the stand-in for Chef ${p.name} of ${p.kitchen}${p.relationship?' ('+p.relationship+')':''}. I only answer from what she told us. If she didn't say it, I'll pass you back to her.`,sources:[],reason:'',_hello:1});
+ unlockAudio();
 });
+fetch('/voice/status').then(r=>r.json()).then(s=>{
+ if(!s.whisper) setStatus('Mic: live captions ON · Whisper polish needs GROQ_API_KEY (export before uvicorn).');
+ else setStatus('Mic ready — Whisper polish ON. Tap 🎤, speak, tap ⏹.');
+}).catch(()=>{});
 
 fetch('/results').then(r=>r.json()).then(rows=>{
  if(!rows.length)return;
@@ -1375,7 +1380,7 @@ function add(role,r){
    d.textContent=r;
  } else {
    d.className='m'+(r.status=='escalated'?' esc':'');
-   let h=r._hello?'':`<span class="badge ${r.status}">${{confident:'Confident',qualified:'Qualified',escalated:'Escalated'}[r.status]}</span><br>`;
+  let h=r._hello?'':`<span class="badge ${r.status}">${{confident:'Confident',qualified:'Qualified',escalated:'Escalated'}[r.status]}</span><br>`;
    h+=esc(r.answer);
    if(r.reason&&(r.status=='escalated'||r.status=='qualified'))
      h+=`<div class="small" style="margin-top:6px;color:${r.status=='escalated'?'#fca5a5':'#fbbf24'}">${r.status=='escalated'?'Why':'Note'}: ${esc(r.reason)}</div>`;
@@ -1423,7 +1428,6 @@ function setSpeaking(on){
  step();
 }
 function pickFemaleVoice(){
- // Prefer female Indian / soft neural voices; never knowingly pick male.
  const vs=speechSynthesis.getVoices()||[];
  const male=/(\bmale\b|guy|david|daniel|thomas|fred|alex|jorge|diego|lee|ravi|prabhat|ryan)/i;
  const female=/(\bfemale\b|neerja|heera|swara|sonia|zira|samantha|karen|moira|tessa|veena|google uk english female|microsoft.*neural)/i;
@@ -1437,20 +1441,57 @@ function pickFemaleVoice(){
  for(const fn of prefer){const hit=vs.find(fn);if(hit)return hit}
  return null;
 }
-function browserSay(t){
- if(!window.speechSynthesis)return;
- speechSynthesis.cancel();
- const u=new SpeechSynthesisUtterance(t);
- u.lang='en-IN';
- u.pitch=1.05; // slight lift so default OS voice still reads feminine if named voice missing
- u.rate=0.95;
- const v=pickFemaleVoice();
- if(v){u.voice=v;u.lang=v.lang||'en-IN'}
- u.onstart=()=>{isSpeakingAudio=true;bargeArmed=true;setSpeaking(true)};
- u.onend=u.onerror=()=>{isSpeakingAudio=false;bargeArmed=false;setSpeaking(false)};
- speechSynthesis.speak(u);
+function waitForVoices(ms=400){
+ return new Promise(res=>{
+  if(!window.speechSynthesis)return res();
+  if(speechSynthesis.getVoices().length)return res();
+  speechSynthesis.onvoiceschanged=()=>res();
+  setTimeout(res,ms);
+ });
 }
-// Chrome loads voices async — warm the list so first speak is female.
+function ttsText(raw){
+ let t=(raw||'').replace(/\s+/g,' ').trim();
+ if(!t)return '';
+ // Speak the first beat fast — long recipes were making edge-tts take 1–2 minutes.
+ if(t.length>420) t=t.slice(0,420).replace(/\s+\S*$/,'')+'…';
+ return t;
+}
+let audioUnlocked=false;
+async function unlockAudio(){
+ if(audioUnlocked)return true;
+ try{
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(AC){const ctx=new AC();await ctx.resume();await ctx.close()}
+  const ping=new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQQAAAAAAA==');
+  ping.volume=0.01;
+  await ping.play();
+  audioUnlocked=true;
+  return true;
+ }catch(e){
+  console.warn('audio unlock',e);
+  return false;
+ }
+}
+function browserSay(t){
+ if(!window.speechSynthesis)return Promise.resolve(false);
+ t=ttsText(t);
+ if(!t)return Promise.resolve(false);
+ return waitForVoices().then(()=>{
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);
+  u.lang='en-IN';
+  u.pitch=1.05;
+  u.rate=0.95;
+  const v=pickFemaleVoice();
+  if(v){u.voice=v;u.lang=v.lang||'en-IN'}
+  return new Promise(resolve=>{
+   u.onstart=()=>{isSpeakingAudio=true;bargeArmed=true;setSpeaking(true)};
+   u.onend=()=>{isSpeakingAudio=false;bargeArmed=false;setSpeaking(false);resolve(true)};
+   u.onerror=()=>{isSpeakingAudio=false;bargeArmed=false;setSpeaking(false);resolve(false)};
+   speechSynthesis.speak(u);
+  });
+ });
+}
 if(window.speechSynthesis){
  speechSynthesis.getVoices();
  speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
@@ -1476,22 +1517,55 @@ function stopSpeaking(){
 
 async function say(t){
  if(!$('speak').checked||!t)return;
- const my=++speakGen;stopSpeaking();speakGen=my; // stop prior but keep this generation
+ t=ttsText(t);
+ if(!t)return;
+ const my=++speakGen;
+ stopSpeaking();
+ speakGen=my;
  bargeArmed=true;
+ await unlockAudio();
+
+ // Instant: if Neerja isn't back in ~1.5s, speak with female browser voice (don't wait minutes).
+ let settled=false;
+ const ctrl=typeof AbortController!=='undefined'?new AbortController():null;
+ const kill=setTimeout(()=>{
+  if(settled||my!==speakGen)return;
+  settled=true;
+  try{ctrl&&ctrl.abort()}catch{}
+  browserSay(t);
+ },1500);
  try{
-   const r=await fetch('/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
-   if(my!==speakGen)return; // newer ask won
+   const r=await fetch('/speak',{
+     method:'POST',
+     headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({text:t}),
+     signal:ctrl?ctrl.signal:undefined,
+   });
+   if(my!==speakGen){clearTimeout(kill);return}
+   if(settled){clearTimeout(kill);return} // already speaking via browser
    if(!r.ok)throw new Error('speak '+r.status);
-   const url=URL.createObjectURL(await r.blob());
-   if(my!==speakGen){URL.revokeObjectURL(url);return}
-   const a=new Audio(url);currentAudio=a;
+   const blob=await r.blob();
+   if(my!==speakGen||settled){clearTimeout(kill);return}
+   if(!blob.size)throw new Error('empty audio');
+   settled=true;
+   clearTimeout(kill);
+   const url=URL.createObjectURL(blob);
+   const a=new Audio(url);
+   currentAudio=a;
    a.onplay=()=>{if(my===speakGen){isSpeakingAudio=true;setSpeaking(true)}};
-   a.onended=a.onerror=()=>{if(currentAudio===a)currentAudio=null;URL.revokeObjectURL(url);if(my===speakGen){isSpeakingAudio=false;bargeArmed=false;setSpeaking(false)}};
+   a.onended=a.onerror=()=>{
+    if(currentAudio===a)currentAudio=null;
+    URL.revokeObjectURL(url);
+    if(my===speakGen){isSpeakingAudio=false;bargeArmed=false;setSpeaking(false)}
+   };
    await a.play();
  }
  catch(err){
-   console.warn('Neerja TTS unavailable, female browser fallback:', err);
-   if(my===speakGen)browserSay(t);
+  clearTimeout(kill);
+  if(settled||my!==speakGen)return;
+  settled=true;
+  console.warn('Neerja skipped — instant female browser voice');
+  browserSay(t);
  }
 }
 
@@ -1499,6 +1573,7 @@ async function askQuestion(q,{autoSpeak=true}={}){
  q=(q||'').trim();
  if(!q||askInFlight)return;
  askInFlight=true;
+ await unlockAudio();
  stopSpeaking();
  $('q').value='';
  add('u',q);
@@ -1517,10 +1592,17 @@ async function askQuestion(q,{autoSpeak=true}={}){
  finally{askInFlight=false}
 }
 
-$('f').onsubmit=async e=>{
+$('f').addEventListener('submit',async e=>{
  e.preventDefault();
+ await unlockAudio();
  await askQuestion($('q').value);
-};
+});
+$('askBtn')?.addEventListener('pointerdown',()=>unlockAudio());
+$('mic')?.addEventListener('pointerdown',()=>unlockAudio());
+$('speak')?.addEventListener('change',()=>{
+ const on=$('speak').checked;
+ if($('speakHint')) $('speakHint').textContent=on?'Neerja voice ON':'Voice OFF — answers text only';
+});
 
 /* STT: live browser captions + MediaRecorder → Whisper polish. User edits & taps Ask. */
 function pickMime(){if(!window.MediaRecorder)return'';
@@ -1542,8 +1624,13 @@ function paintMeter(level){
 function startLiveCaption(onUpdate){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!SR)return null;
-const r=new SR();r.lang='en-IN';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
- let finalText='',alive=true;
+ const r=new SR();
+ // en-US is more reliable on Chrome macOS; en-IN often returns empty.
+ r.lang='en-US';
+ r.continuous=true;
+ r.interimResults=true;
+ r.maxAlternatives=1;
+ let finalText='',alive=true,lastErr='';
  r.onresult=e=>{
   let interim='';
   for(let i=e.resultIndex;i<e.results.length;i++){
@@ -1553,10 +1640,18 @@ const r=new SR();r.lang='en-IN';r.continuous=true;r.interimResults=true;r.maxAlt
   }
   onUpdate((finalText+(interim?' '+interim:'')).replace(/\s+/g,' ').trim(),!!interim,finalText.trim());
  };
- r.onerror=()=>{};
+ r.onerror=e=>{
+  lastErr=(e&&e.error)||'error';
+  // not-allowed / service-not-allowed: don't restart forever
+  if(lastErr==='not-allowed'||lastErr==='service-not-allowed')alive=false;
+ };
  r.onend=()=>{if(alive){try{r.start()}catch{}}};
  try{r.start()}catch{return null}
- return{stop(){alive=false;try{r.onend=null;r.stop()}catch{}} , getFinal:()=>finalText.trim()};
+ return{
+  stop(){alive=false;try{r.onend=null;r.stop()}catch{}},
+  getFinal:()=>finalText.trim(),
+  lastError:()=>lastErr,
+ };
 }
 
 async function startRecording(){
@@ -1666,26 +1761,46 @@ $('mic').onclick=async()=>{
    await askQuestion(draft);
    return;
   }
-  setStatus('Polishing transcript… you can edit the box, then tap Ask.');
+  setStatus('Polishing transcript…');
   try{
    const {blob,filename,peak,ms,bytes}=await s.stop();
-   if(ms<600){setStatus('Too short — speak ~2 seconds, then tap ⏹. Edit the box if anything appeared.');$('q').focus();return}
-   if(peak<0.02){setStatus('Mic looked silent. Edit the draft or try again.');$('q').focus();return}
-   if(bytes<2000){setStatus('Recording was empty. Edit the draft or try again.');$('q').focus();return}
+   if(ms<600){setStatus('Too short — speak ~2 seconds, then tap ⏹.');$('q').focus();return}
+   if(peak<0.02){setStatus('Mic looked silent — check macOS System Settings → Privacy → Microphone for Chrome.');$('q').focus();return}
+   if(bytes<2000){setStatus('Recording was empty. Try again closer to the mic.');$('q').focus();return}
    const fd=new FormData();
    fd.append('audio',blob,filename);
    const r=await fetch('/transcribe',{method:'POST',body:fd});
    const body=await r.json().catch(()=>({}));
-   if(!r.ok){setStatus('Kept live draft (Whisper unavailable). Edit, then tap Ask.');$('q').focus();return}
+   if(!r.ok){
+     // Live browser caption is the fallback when Groq Whisper is down.
+     if(draft&&!junkTranscript(draft)){
+       putDraft(draft);
+       setStatus('Whisper offline — using live caption. Sending…');
+       await askQuestion(draft);
+       return;
+     }
+     const detail=(body&&body.detail)||'Whisper unavailable';
+     setStatus('Couldn’t hear speech text. Speak again (watch the green meter) or type. ('+detail+')');
+     $('q').focus();
+     return;
+   }
    const text=(body.text||'').trim();
-   if(junkTranscript(text)){if(!draft)putDraft('');setStatus('Couldn’t catch that clearly — edit the box or try again.');$('q').focus();return}
+   if(junkTranscript(text)){
+     if(draft&&!junkTranscript(draft)){putDraft(draft);setStatus('Whisper unclear — using live caption. Sending…');await askQuestion(draft);return}
+     putDraft('');
+     setStatus('Couldn’t catch that clearly — speak again or type.');
+     $('q').focus();
+     return;
+   }
    putDraft(text);
-   // Conversational: after polish, auto-ask if it looks like a clear command/question.
    if(isInterruptCmd(text)){await askQuestion(text);return}
-   setStatus('Ready — edit if needed, then tap Ask to send.');
+   // Conversational: auto-ask after a clear mic capture.
+   setStatus('Got it — asking Nisa…');
+   await askQuestion(text);
   }
   catch(err){
-   setStatus('Kept live draft. Edit, then tap Ask. ('+(err&&err.message||err)+')');
+   if(draft&&!junkTranscript(draft)){setStatus('Using live caption…');await askQuestion(draft);return}
+   setStatus('Mic error: '+(err&&err.message||err)+'. Type your question if needed.');
    $('q').focus();
   }
   return;
