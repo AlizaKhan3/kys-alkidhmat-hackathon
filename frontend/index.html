@@ -88,20 +88,33 @@ function setSpeaking(on){
  }
  step();
 }
-function browserSay(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);
+function browserSay(t){if(!window.speechSynthesis)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-IN';
+ const vs=speechSynthesis.getVoices(),v=vs.find(v=>/en-IN/i.test(v.lang)&&/female|neerja|heera|swara/i.test(v.name))||vs.find(v=>/en-IN/i.test(v.lang));if(v)u.voice=v;
  u.onstart=()=>setSpeaking(true);u.onend=u.onerror=()=>setSpeaking(false);speechSynthesis.speak(u)}
+let currentAudio=null,speakGen=0;
+function stopSpeaking(){
+ speakGen++; // invalidate in-flight say() so stale audio never starts
+ try{speechSynthesis.cancel()}catch{}
+ if(currentAudio){try{currentAudio.onended=currentAudio.onerror=currentAudio.onplay=null;currentAudio.pause();currentAudio.src='';currentAudio.load()}catch{}currentAudio=null}
+ document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.removeAttribute('src');a.load()}catch{}});
+ setSpeaking(false)}
 async function say(t){if(!$('speak').checked||!t)return;
+ const my=++speakGen;stopSpeaking();speakGen=my; // stop prior but keep this generation
  try{const r=await fetch('/speak',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
-  if(!r.ok)throw new Error('speak '+r.status);const url=URL.createObjectURL(await r.blob());const a=new Audio(url);
-  a.onplay=()=>setSpeaking(true);a.onended=a.onerror=()=>{setSpeaking(false);URL.revokeObjectURL(url)};await a.play()}
- catch{browserSay(t)}}
-$('f').onsubmit=async e=>{e.preventDefault();const q=$('q').value.trim();if(!q)return;$('q').value='';add('u',q);
+  if(my!==speakGen)return; // newer ask won
+  if(!r.ok)throw new Error('speak '+r.status);const url=URL.createObjectURL(await r.blob());
+  if(my!==speakGen){URL.revokeObjectURL(url);return}
+  const a=new Audio(url);currentAudio=a;
+  a.onplay=()=>{if(my===speakGen)setSpeaking(true)};
+  a.onended=a.onerror=()=>{if(currentAudio===a)currentAudio=null;URL.revokeObjectURL(url);if(my===speakGen)setSpeaking(false)};
+  await a.play()}
+ catch{if(my===speakGen)browserSay(t)}}
+$('f').onsubmit=async e=>{e.preventDefault();const q=$('q').value.trim();if(!q)return;stopSpeaking();$('q').value='';add('u',q);
  const th=tip('Thinking…');
  try{const r=await (await fetch('/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question:q})})).json();th.remove();add('a',r);say(r.answer)}
  catch(err){th.remove();add('a',{status:'escalated',answer:'I could not reach my server. Please ask the chef directly.',reason:'Connection error',sources:[]})}};
 
 /* STT: live browser captions + MediaRecorder → Whisper polish. User edits & taps Ask. */
-function stopSpeaking(){try{speechSynthesis.cancel()}catch{}document.querySelectorAll('audio').forEach(a=>{try{a.pause();a.src=''}catch{}});setSpeaking(false)}
 function pickMime(){if(!window.MediaRecorder)return'';
  for(const t of['audio/webm;codecs=opus','audio/webm','audio/mp4'])if(MediaRecorder.isTypeSupported(t))return t;return''}
 function extFor(mime){if((mime||'').includes('mp4'))return'm4a';if((mime||'').includes('ogg'))return'ogg';return'webm'}
@@ -118,7 +131,7 @@ function paintMeter(level){$('meterFill').style.width=Math.min(100,Math.round(le
 function startLiveCaption(onUpdate){
  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
  if(!SR)return null;
- const r=new SR();r.lang='en-US';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
+ const r=new SR();r.lang='en-IN';r.continuous=true;r.interimResults=true;r.maxAlternatives=1;
  let finalText='',alive=true;
  r.onresult=e=>{let interim='';
   for(let i=e.resultIndex;i<e.results.length;i++){
